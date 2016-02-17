@@ -760,7 +760,7 @@ function addAccessors($scope) {
         }
     }
 
-    initCustomization();
+    // initCustomization();
 
     function addTexts() {
         var iText = new fabric.IText('lorem ipsum\ndolor\nsit Amet\nconsectetur', {
@@ -831,7 +831,7 @@ function addAccessors($scope) {
         canvas.add(iText, iText2);
     }
 
-    addTexts();
+    // addTexts();
 
 
     $scope.getFreeDrawingMode = function() {
@@ -1014,6 +1014,33 @@ function addAccessors($scope) {
             return patternCanvas;
         };
     }
+
+
+  var elements = <%= raw Element.all.to_json %>
+  elements.forEach(function(element) {
+  var shape = "<%= asset_path('basura.svg') %>"
+
+  fabric.loadSVGFromURL(shape, function(objects, options) {
+
+    var loadedObject = fabric.util.groupSVGElements(objects, options);
+
+    loadedObject.set({
+          left: 0,
+          top: 0,
+          angle: getRandomInt(-10, 10)
+        })
+        .setCoords();
+
+//        loadedObject.toObject = function() {
+//          return $.extend(loadedObject, {name: "asd"} )
+//        };
+
+    console.log(loadedObject.toJSON());
+
+    canvas.add(loadedObject);
+  });
+
+  });
 }
 
 function watchCanvas($scope) {
@@ -1138,6 +1165,7 @@ kitchensink.controller('CanvasControls', function($scope) {
     preEl.appendChild(codeEl);
     document.getElementById('bd-wrapper').appendChild(preEl);
 })();
+
 
 (function() {
     fabric.util.addListener(fabric.window, 'load', function() {

@@ -11,7 +11,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20160217095422) do
+ActiveRecord::Schema.define(version: 20160217104146) do
 
   create_table "articles", force: :cascade do |t|
     t.string   "title",      limit: 255
@@ -24,6 +24,7 @@ ActiveRecord::Schema.define(version: 20160217095422) do
     t.string   "name",       limit: 255, null: false
     t.datetime "created_at",             null: false
     t.datetime "updated_at",             null: false
+    t.string   "svg_path",   limit: 255
   end
 
   create_table "elements", force: :cascade do |t|
@@ -37,6 +38,7 @@ ActiveRecord::Schema.define(version: 20160217095422) do
     t.float    "opacity",         limit: 24,  default: 1.0, null: false
     t.datetime "created_at",                                null: false
     t.datetime "updated_at",                                null: false
+    t.integer  "floor",           limit: 4
   end
 
   add_index "elements", ["element_type_id"], name: "index_elements_on_element_type_id", using: :btree
