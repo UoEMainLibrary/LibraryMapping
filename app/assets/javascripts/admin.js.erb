@@ -1031,9 +1031,12 @@ function addAccessors($scope) {
         })
         .setCoords();
 
-//        loadedObject.toObject = function() {
-//          return $.extend(loadedObject, {name: "asd"} )
-//        };
+        loadedObject.toObject = function() {
+          return $.extend(loadedObject, {
+            id: element.id
+            //TODO rest of the extra data
+          })
+        };
 
     console.log(loadedObject.toJSON());
 

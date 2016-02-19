@@ -331,6 +331,9 @@
           <p>
             <button class="btn btn-danger clear" ng-click="confirmClear()">Clear canvas</button>
           </p>
+          <p>
+            <button class="btn btn-default clear" onclick="saveCanvas()">Save elements</button>
+          </p>
         </div>
 
         <div class="object-controls" object-buttons-enabled="getSelected()">
@@ -513,4 +516,14 @@
 
   <%= javascript_tag do %>
     var canvas = new fabric.Canvas('canvas');
+
+    function saveCanvas(){
+       var obj = canvas.getObjects();
+
+      $.ajax({
+        url : "/admin",
+        type : "post",
+        data : { elements: JSON.stringify(obj) }
+      });
+    }
   <% end %>
