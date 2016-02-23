@@ -4,10 +4,17 @@ class AdminController < ApplicationController
       @elements = JSON.parse params[:elements]
 
       @elements.each do |element|
-
-        #TODO define left,top,rot etc.
-
-        #TODO Element.update(element.id, :left => left, :top => top ....)
+        Element.update(element["id"],
+               :left => element["left"],
+               :top => element["top"],
+               :height => element["height"],
+               :width => element["width"],
+               :opacity => element["opacity"],
+               :angle => element["angle"],
+               :fill => element["fill"],
+               :scaleX => element["scaleX"],
+               :scaleY => element["scaleY"]
+              )
 
       end
 
