@@ -11,14 +11,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20160217104146) do
-
-  create_table "articles", force: :cascade do |t|
-    t.string   "title",      limit: 255
-    t.text     "body",       limit: 65535
-    t.datetime "created_at",               null: false
-    t.datetime "updated_at",               null: false
-  end
+ActiveRecord::Schema.define(version: 20160223125117) do
 
   create_table "element_types", force: :cascade do |t|
     t.string   "name",       limit: 255, null: false
@@ -30,15 +23,17 @@ ActiveRecord::Schema.define(version: 20160217104146) do
   create_table "elements", force: :cascade do |t|
     t.integer  "element_type_id", limit: 4
     t.float    "left",            limit: 24,                null: false
-    t.float    "right",           limit: 24,                null: false
+    t.float    "top",             limit: 24,                null: false
     t.integer  "width",           limit: 4,                 null: false
     t.integer  "height",          limit: 4,                 null: false
-    t.float    "rotation",        limit: 24,  default: 0.0, null: false
+    t.float    "angle",           limit: 24,  default: 0.0, null: false
     t.string   "fill",            limit: 255
     t.float    "opacity",         limit: 24,  default: 1.0, null: false
     t.datetime "created_at",                                null: false
     t.datetime "updated_at",                                null: false
     t.integer  "floor",           limit: 4
+    t.float    "scaleX",          limit: 24
+    t.float    "scaleY",          limit: 24
   end
 
   add_index "elements", ["element_type_id"], name: "index_elements_on_element_type_id", using: :btree

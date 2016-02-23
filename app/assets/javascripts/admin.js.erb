@@ -1015,35 +1015,6 @@ function addAccessors($scope) {
         };
     }
 
-
-  var elements = <%= raw Element.all.to_json %>
-  elements.forEach(function(element) {
-  var shape = "<%= asset_path('basura.svg') %>"
-
-  fabric.loadSVGFromURL(shape, function(objects, options) {
-
-    var loadedObject = fabric.util.groupSVGElements(objects, options);
-
-    loadedObject.set({
-          left: 0,
-          top: 0,
-          angle: getRandomInt(-10, 10)
-        })
-        .setCoords();
-
-        loadedObject.toObject = function() {
-          return $.extend(loadedObject, {
-            id: element.id
-            //TODO rest of the extra data
-          })
-        };
-
-    console.log(loadedObject.toJSON());
-
-    canvas.add(loadedObject);
-  });
-
-  });
 }
 
 function watchCanvas($scope) {
