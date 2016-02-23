@@ -4,8 +4,14 @@
 # model remove the '{}' from the fixture names and add the columns immediately
 # below each fixture, per the syntax in the comments below
 #
-one: {}
-# column: value
-#
-two: {}
-#  column: value
+
+<% 200.times do |n| %>
+element_<%= n %>:
+  height: <%= rand(1..200) %>,
+  width: <%= rand(1..200) %>,
+  opacity: <%= rand(20..100) / 100 %>,
+  rotation: 0,
+  left: <%= rand(1..200) %>,
+  right: <%= rand(1..200) %>,
+  fill: "null"
+<% end %>
