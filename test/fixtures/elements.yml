@@ -5,13 +5,16 @@
 # below each fixture, per the syntax in the comments below
 #
 
-<% 200.times do |n| %>
+<% 50.times do |n| %>
 element_<%= n %>:
-  height: <%= rand(1..200) %>,
-  width: <%= rand(1..200) %>,
-  opacity: <%= rand(20..100) / 100 %>,
-  rotation: 0,
-  left: <%= rand(1..200) %>,
-  right: <%= rand(1..200) %>,
+  height: 100,
+  width: 100,
+  opacity: 1,
+  angle: 0,
+  left: <%= rand(1..500) %>,
+  top: <%= rand(1..500) %>,
+  scaleX: 1
+  scaleY: 1
+  element_type_id: 1
   fill: "null"
 <% end %>

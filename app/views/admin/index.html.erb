@@ -517,48 +517,46 @@
 <script>
   var canvas = new fabric.Canvas('canvas');
 
-  var elements = <%= raw Element.all.to_json %>
-      elements.forEach(function(element) {
-        var shape = "<%= asset_path('basura.svg') %>"
+  <% Element.all.each do |element| %>
 
-        fabric.loadSVGFromURL(shape, function(objects, options) {
+  var shape = "<%= asset_path(element.element_type.svg_path + ".svg") %>"
 
-          var loadedObject = fabric.util.groupSVGElements(objects, options);
+  fabric.loadSVGFromURL(shape, function(objects, options) {
 
-          loadedObject.toObject = (function (toObject) {
-            return function () {
-              return fabric.util.object.extend(toObject.call(this), {
-                id: this.id,
-                floor: this.floor,
-                element_type_id: this.element_type_id
-              });
-            };
-          })(fabric.Object.prototype.toObject);
+    var loadedObject = fabric.util.groupSVGElements(objects, options);
 
-          console.log(element.top);
-          loadedObject.set({
-                left: element.left,
-                top: element.top,
-                height: element.height,
-                width: element.width,
-                scaleX: element.scaleX,
-                scaleY: element.scaleY,
-                opacity: element.opacity,
-                angle: element.angle,
-                fill: element.fill,
-                id: element.id,
-                floor: element.floor,
-                element_type_id: element.element_type_id
-              })
-              .setCoords();
-
-
-          console.log(loadedObject.toJSON());
-
-          canvas.add(loadedObject);
+    loadedObject.toObject = (function (toObject) {
+      return function () {
+        return fabric.util.object.extend(toObject.call(this), {
+          id: this.id,
+          floor: this.floor,
+          element_type_id: this.element_type_id
         });
+      };
+    })(fabric.Object.prototype.toObject);
 
-      });
+    loadedObject.set({
+          left: <%= element.left %>,
+          top: <%= element.top %>,
+          height: <%= element.height %>,
+          width: <%= element.width %>,
+          scaleX: <%= element.scaleX %>,
+          scaleY: <%= element.scaleY %>,
+          opacity: <%= element.opacity %>,
+          angle: <%= element.angle %>,
+          fill: 0,
+          id: <%= element.id %>,
+          floor: 1,
+          element_type_id: <%= element.element_type_id %>
+        })
+        .setCoords();
+
+
+    console.log(loadedObject.toJSON());
+
+    canvas.add(loadedObject);
+  });
+  <% end %>
 
   function saveCanvas(){
     var obj = canvas.getObjects();
