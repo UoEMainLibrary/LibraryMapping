@@ -11,7 +11,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20160223125117) do
+ActiveRecord::Schema.define(version: 20160224100015) do
 
   create_table "element_types", force: :cascade do |t|
     t.string   "name",       limit: 255, null: false
@@ -27,7 +27,7 @@ ActiveRecord::Schema.define(version: 20160223125117) do
     t.integer  "width",           limit: 4,                 null: false
     t.integer  "height",          limit: 4,                 null: false
     t.float    "angle",           limit: 24,  default: 0.0, null: false
-    t.string   "fill",            limit: 255
+    t.string   "fill",            limit: 255, default: "0"
     t.float    "opacity",         limit: 24,  default: 1.0, null: false
     t.datetime "created_at",                                null: false
     t.datetime "updated_at",                                null: false
