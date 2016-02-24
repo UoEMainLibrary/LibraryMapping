@@ -530,7 +530,8 @@
         return fabric.util.object.extend(toObject.call(this), {
           id: this.id,
           floor: this.floor,
-          element_type_id: this.element_type_id
+          element_type_id: this.element_type_id,
+          modified: this.modified
         });
       };
     })(fabric.Object.prototype.toObject);
@@ -544,10 +545,11 @@
           scaleY: <%= element.scaleY %>,
           opacity: <%= element.opacity %>,
           angle: <%= element.angle %>,
-          fill: 0,
+          fill: <%= element.fill %>,
           id: <%= element.id %>,
-          floor: 1,
-          element_type_id: <%= element.element_type_id %>
+          floor: 1, // TODO UPDATE THIS
+          element_type_id: <%= element.element_type_id %>,
+          modified: false
         })
         .setCoords();
 
@@ -559,7 +561,7 @@
   <% end %>
 
   function saveCanvas(){
-    var obj = canvas.getObjects();
+    var obj = canvas.getObjects().filter(o => o.modified == true);
 
     console.log(JSON.stringify(obj));
 
@@ -569,4 +571,9 @@
       data : { elements: JSON.stringify(obj) }
     });
   }
+
+  canvas.on('object:modified', function(options) {
+    options.target.modified = true;
+  });
+
 </script>
