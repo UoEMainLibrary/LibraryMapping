@@ -146,7 +146,7 @@
         <p>Add <strong>SVG shapes</strong> to canvas:</p>
 
         <ul class="svg-shapes">
-          <li><button class="btn btn-small shape" id="shape25"><strong>36</strong> paths</button></li>
+          <li><button class="btn btn-small shape" id="1"><strong>36</strong> paths</button></li>
           <li><button class="btn btn-small shape" id="shape36"><strong>41</strong> paths</button></li>
           <li><button class="btn btn-small shape" id="shape58"><strong>54</strong> paths</button></li>
           <li><button class="btn btn-small shape" id="shape59"><strong>57</strong> paths</button></li>
@@ -574,6 +574,14 @@
 
   canvas.on('object:modified', function(options) {
     options.target.modified = true;
+  });
+
+  canvas.on('object:removed', function(options){
+    $.ajax({
+      url : "/admin",
+      type : "delete",
+      data : { element_id: options.target.id }
+    });
   });
 
 </script>

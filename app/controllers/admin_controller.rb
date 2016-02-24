@@ -26,14 +26,20 @@ class AdminController < ApplicationController
               :angle => element["angle"],
               :fill => element["fill"],
               :scaleX => element["scaleX"],
-              :scaleY => element["scaleY"]
+              :scaleY => element["scaleY"],
+              :element_type_id => element["element_type_id"]
           )
         end
-
       end
-
     end
   end
 
+  def destroy
+    if params[:element_id]
+      Element.destroy(params[:element_id])
+    end
+
+    head :ok
+  end
 
 end
