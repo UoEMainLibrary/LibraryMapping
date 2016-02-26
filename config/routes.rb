@@ -7,6 +7,7 @@ Rails.application.routes.draw do
 
   post '/admin' => 'admin#index'
   delete '/admin' => 'admin#destroy'
+  post '/admin/element' => 'admin#save_element'
 
   # Example of regular route:
   #   get 'products/:id' => 'catalog#view'

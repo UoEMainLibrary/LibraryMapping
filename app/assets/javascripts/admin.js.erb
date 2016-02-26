@@ -392,7 +392,12 @@ function addAccessors($scope) {
           loadedObject.toObject = (function (toObject) {
             return function () {
               return fabric.util.object.extend(toObject.call(this), {
-                element_type_id: this.element_type_id
+                element_type_id: this.element_type_id,
+                range_up: this.range_up,
+                range_down: this.range_down,
+                classification: this.classification,
+                identifier: this.identifier,
+                modified: this.modified
               });
             };
           })(fabric.Object.prototype.toObject);
@@ -401,7 +406,12 @@ function addAccessors($scope) {
                     left: coord.left,
                     top: coord.top,
                     angle: getRandomInt(-10, 10),
-                    element_type_id: parseInt(shapeName)
+                    range_up: 0,
+                    range_down: 0,
+                    classification: "",
+                    identifier: "",
+                    element_type_id: parseInt(shapeName),
+                    modified: true
                 })
                 .setCoords();
 
