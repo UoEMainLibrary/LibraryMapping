@@ -5,7 +5,7 @@
 # below each fixture, per the syntax in the comments below
 #
 
-<% 50.times do |n| %>
+<% 100.times do |n| %>
 element_<%= n %>:
   height: 100,
   width: 100,
@@ -16,5 +16,5 @@ element_<%= n %>:
   scaleX: 1
   scaleY: 1
   element_type_id: 1
-  fill: "null"
+  fill: 0
 <% end %>

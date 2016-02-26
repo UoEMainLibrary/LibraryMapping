@@ -329,6 +329,13 @@
             </button>
           </p>
           <p>
+            <button class="btn btn-success" id="zoomIn">Zoom +</button>
+            <button class="btn btn-success" id="zoomOut">Zoom -</button>
+            <a href="#" class="btn btn-primary edit"><i class="fa fa-edit"></i> Edit mode</a>
+            <a href="#" class="btn btn-primary grab"><i class="fa fa-arrows"></i> Grab mode</a>
+
+          </p>
+          <p>
             <button class="btn btn-danger clear" ng-click="confirmClear()">Clear canvas</button>
           </p>
           <p>
@@ -515,11 +522,15 @@
 </div>
 
 <script>
-  var canvas = new fabric.Canvas('canvas');
+  var canvas = new fabric.CanvasWithViewport('canvas');
+
+  canvas.svgViewportTransformation = false;
 
   <% Element.all.each do |element| %>
 
   var shape = "<%= asset_path(element.element_type.svg_path + ".svg") %>"
+
+  console.log(shape);
 
   fabric.loadSVGFromURL(shape, function(objects, options) {
 
@@ -573,7 +584,15 @@
   }
 
   canvas.on('object:modified', function(options) {
-    options.target.modified = true;
+    if (options.target._objects) {
+      options.target._objects.forEach(function(o) {
+        o.modified = true;
+      })
+      console.log(options.target._objects);
+    } else {
+      options.target.modified = true;
+    }
+
   });
 
   canvas.on('object:removed', function(options){
@@ -584,4 +603,69 @@
     });
   });
 
+  canvas.on("object:moving", function(e) {
+    var obj = e.target;
+    var top = obj.top;
+    var left = obj.left;
+    var zoom = canvas.viewport.zoom;
+
+    // width & height we are constraining to must be calculated by applying the inverse of the current viewportTransform
+    var c_width = canvas.width / zoom;
+    var c_height = canvas.height / zoom;
+
+    var w = obj.width * obj.scaleX;
+    var h = obj.height * obj.scaleY;
+
+    var top_bound = boundingBox.top;
+    var bottom_bound = boundingBox.top + boundingBox.height - h;
+    var left_bound = boundingBox.left;
+    var right_bound = boundingBox.left + boundingBox.width - w;
+
+    if( w > c_width ) {
+      obj.setLeft(left_bound);
+    } else {
+      obj.setLeft(Math.min(Math.max(left, left_bound), right_bound));
+    }
+
+    if( h > c_height ) {
+      obj.setTop(top_bound);
+    } else {
+      obj.setTop(Math.min(Math.max(top, top_bound), bottom_bound));
+    }
+  });
+
+  $('#zoomIn').click(function(){
+    canvas.setZoom(canvas.viewport.zoom * 1.1 ) ;
+    return false;
+  });
+
+  $('#zoomOut').click(function(){
+    canvas.setZoom(canvas.viewport.zoom / 1.1 ) ;
+    return false;
+  });
+
+  $('.edit').click(function(){
+    canvas.isGrabMode = false;
+    return false;
+  });
+
+  $('.grab').click(function(){
+    canvas.isGrabMode = true;
+    return false;
+  });
+
+
+  var boundingBox = new fabric.Rect({
+    fill: "grey",
+    width: 600,
+    height: 400,
+    hasBorders: false,
+    hasControls: false,
+    lockMovementX: true,
+    lockMovementY: true,
+    evented: false,
+    stroke: "red"
+  });
+
+  canvas.add(boundingBox);
 </script>
