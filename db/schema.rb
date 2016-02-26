@@ -11,7 +11,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20160224100015) do
+ActiveRecord::Schema.define(version: 20160224132222) do
 
   create_table "element_types", force: :cascade do |t|
     t.string   "name",       limit: 255, null: false
@@ -34,6 +34,10 @@ ActiveRecord::Schema.define(version: 20160224100015) do
     t.integer  "floor",           limit: 4
     t.float    "scaleX",          limit: 24
     t.float    "scaleY",          limit: 24
+    t.float    "range_up",        limit: 24
+    t.float    "range_down",      limit: 24
+    t.string   "classification",  limit: 255
+    t.string   "identifier",      limit: 255
   end
 
   add_index "elements", ["element_type_id"], name: "index_elements_on_element_type_id", using: :btree

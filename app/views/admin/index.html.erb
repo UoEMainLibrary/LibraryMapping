@@ -333,10 +333,6 @@
             <button class="btn btn-success" id="zoomOut">Zoom -</button>
             <a href="#" class="btn btn-primary edit"><i class="fa fa-edit"></i> Edit mode</a>
             <a href="#" class="btn btn-primary grab"><i class="fa fa-arrows"></i> Grab mode</a>
-
-          </p>
-          <p>
-            <button class="btn btn-danger clear" ng-click="confirmClear()">Clear canvas</button>
           </p>
           <p>
             <button class="btn btn-default clear" onclick="saveCanvas()">Save elements</button>
@@ -353,138 +349,29 @@
               </button>
             </p>
 
-            <button class="btn btn-lock btn-object-action"
-                    ng-click="setHorizontalLock(!getHorizontalLock())"
-                    ng-class="{'btn-inverse': getHorizontalLock()}">
-              {[ getHorizontalLock() ? 'Unlock horizontal movement' : 'Lock horizontal movement' ]}
-            </button>
-            <br>
-            <button class="btn btn-lock btn-object-action"
-                    ng-click="setVerticalLock(!getVerticalLock())"
-                    ng-class="{'btn-inverse': getVerticalLock()}">
-              {[ getVerticalLock() ? 'Unlock vertical movement' : 'Lock vertical movement' ]}
-            </button>
-            <br>
-            <button class="btn btn-lock btn-object-action"
-                    ng-click="setScaleLockX(!getScaleLockX())"
-                    ng-class="{'btn-inverse': getScaleLockX()}">
-              {[ getScaleLockX() ? 'Unlock horizontal scaling' : 'Lock horizontal scaling' ]}
-            </button>
-            <br>
-            <button class="btn btn-lock btn-object-action"
-                    ng-click="setScaleLockY(!getScaleLockY())"
-                    ng-class="{'btn-inverse': getScaleLockY()}">
-              {[ getScaleLockY() ? 'Unlock vertical scaling' : 'Lock vertical scaling' ]}
-            </button>
-            <br>
-            <button class="btn btn-lock btn-object-action"
-                    ng-click="setRotationLock(!getRotationLock())"
-                    ng-class="{'btn-inverse': getRotationLock()}">
-              {[ getRotationLock() ? 'Unlock rotation' : 'Lock rotation' ]}
-            </button>
-          </div>
-
-          <div style="margin-top:10px">
-            <p>
-              <span style="margin-right: 10px">Origin X: </span>
-              <label>
-                Left
-                <input type="radio" name="origin-x" class="origin-x btn-object-action" value="left"
-                       bind-value-to="originX">
-              </label>
-              <label>
-                Center
-                <input type="radio" name="origin-x" class="origin-x btn-object-action" value="center"
-                       bind-value-to="originX">
-              </label>
-              <label>
-                Right
-                <input type="radio" name="origin-x" class="origin-x btn-object-action" value="right"
-                       bind-value-to="originX">
-              </label>
-            </p>
-            <p>
-              <span style="margin-right: 10px">Origin Y: </span>
-              <label>
-                Top
-                <input type="radio" name="origin-y" class="origin-y btn-object-action" value="top"
-                       bind-value-to="originY">
-              </label>
-              <label>
-                Center
-                <input type="radio" name="origin-y" class="origin-y btn-object-action" value="center"
-                       bind-value-to="originY">
-              </label>
-              <label>
-                Bottom
-                <input type="radio" name="origin-y" class="origin-y btn-object-action" value="bottom"
-                       bind-value-to="originY">
-              </label>
-            </p>
-          </div>
-
-          <div style="margin-top:10px;">
-            <button id="send-backwards" class="btn btn-object-action"
-                    ng-click="sendBackwards()">Send backwards</button>
-            <button id="send-to-back" class="btn btn-object-action"
-                    ng-click="sendToBack()">Send to back</button>
-          </div>
-
-          <div style="margin-top:4px;">
-            <button id="bring-forward" class="btn btn-object-action"
-                    ng-click="bringForward()">Bring forwards</button>
-            <button id="bring-to-front" class="btn btn-object-action"
-                    ng-click="bringToFront()">Bring to front</button>
-          </div>
-
-          <div style="margin-top:10px;">
-            <button id="gradientify" class="btn btn-object-action" ng-click="gradientify()">
-              Gradientify
-            </button>
-            <button id="shadowify" class="btn btn-object-action" ng-click="shadowify()">
-              Shadowify
-            </button>
-            <button id="patternify" class="btn btn-object-action" ng-click="patternify()">
-              Patternify
-            </button>
-            <button id="clip" class="btn btn-object-action" ng-click="clip()">
-              Clip
-            </button>
           </div>
         </div>
-        <div style="margin-top:10px;" id="drawing-mode-wrapper">
 
-          <button id="drawing-mode" class="btn btn-info"
-                  ng-click="setFreeDrawingMode(!getFreeDrawingMode())"
-                  ng-class="{'btn-inverse': getFreeDrawingMode()}">
-            {[ getFreeDrawingMode() ? 'Exit free drawing mode' : 'Enter free drawing mode' ]}
-          </button>
-
-          <div id="drawing-mode-options" ng-show="getFreeDrawingMode()">
-            <label for="drawing-mode-selector">Mode:</label>
-            <select id="drawing-mode-selector" bind-value-to="drawingMode">
-              <option>Pencil</option>
-              <option>Circle</option>
-              <option>Spray</option>
-              <option>Pattern</option>
-
-              <option>hline</option>
-              <option>vline</option>
-              <option>square</option>
-              <option>diamond</option>
-              <option>texture</option>
-            </select>
-            <br>
-            <label for="drawing-line-width">Line width:</label>
-            <input type="range" value="30" min="0" max="150" bind-value-to="drawingLineWidth">
-            <br>
-            <label for="drawing-color">Line color:</label>
-            <input type="color" value="#005E7A" bind-value-to="drawingLineColor">
-            <br>
-            <label for="drawing-shadow-width">Line shadow width:</label>
-            <input type="range" value="0" min="0" max="50" bind-value-to="drawingLineShadowWidth">
-          </div>
-        </div>
+        <br>
+        <label for="rangeUp" style> Range Up: </label>
+        <input class="elementData" type="text" id="rangeUp" name="rangeUp" disabled>
+        <br>
+        <label for="rangeUpSmall"> Range Up Small: </label>
+        <input class="elementData" type="text" id="rangeUpSmall" name="rangeUpSmall" disabled>
+        <br>
+        <label for="rangeDown"> Range Down: </label>
+        <input class="elementData" type="text" id="rangeDown" name="rangeDown" disabled>
+        <br>
+        <label for="rangeDownSmall"> Range Down Small: </label>
+        <input class="elementData" type="text" id="rangeDownSmall" name="rangeDownSmall" disabled>
+        <br>
+        <label for="classification"> Classification: </label>
+        <input class="elementData" type="text" id="classification" name="classification" disabled>
+        <br>
+        <label for="identifier"> Identifier: </label>
+        <input class="elementData" type="text" id="identifier" name="identifier" disabled>
+        <br>
+        <button class="btn elementData" onclick="saveElementData()" disabled>Save Element Data</button>
       </div>
 
       <div class="tab-pane" id="load-svg-pane">
@@ -542,6 +429,10 @@
           id: this.id,
           floor: this.floor,
           element_type_id: this.element_type_id,
+          range_up: this.range_up,
+          range_down: this.range_down,
+          classification: this.classification,
+          identifier: this.identifier,
           modified: this.modified
         });
       };
@@ -556,10 +447,14 @@
           scaleY: <%= element.scaleY %>,
           opacity: <%= element.opacity %>,
           angle: <%= element.angle %>,
-          fill: <%= element.fill %>,
+          fill: "<%= element.fill %>",
           id: <%= element.id %>,
           floor: 1, // TODO UPDATE THIS
           element_type_id: <%= element.element_type_id %>,
+          range_up: <%= element.range_up %>,
+          range_down: <%= element.range_down %>,
+          classification: "<%= element.classification %>",
+          identifier: "<%= element.identifier %>",
           modified: false
         })
         .setCoords();
@@ -583,6 +478,23 @@
     });
   }
 
+  function saveElementData(){
+    var obj = canvas.getActiveObject();
+
+    obj.range_up =  $("#rangeUp").val();
+    obj.range_down = $("#rangeDown").val();
+    obj.classification =  $("#classification").val();
+    obj.identifier = $("#identifier").val();
+
+    console.log(obj);
+
+    $.ajax({
+      url : "/admin/element",
+      type : "post",
+      data : { element: JSON.stringify(obj) }
+    });
+  }
+
   canvas.on('object:modified', function(options) {
     if (options.target._objects) {
       options.target._objects.forEach(function(o) {
@@ -601,6 +513,22 @@
       type : "delete",
       data : { element_id: options.target.id }
     });
+  });
+
+  canvas.on('object:selected', function(options){
+    $(".elementData").attr("disabled", false);
+
+    $("#rangeUp").val(options.target.range_up);
+    $("#rangeUpSmall").val(options.target.range_up);
+    $("#rangeDown").val(options.target.range_down);
+    $("#rangeDownSmall").val(options.target.range_down);
+    $("#classification").val(options.target.classification);
+    $("#identifier").val(options.target.identifier);
+  });
+
+  canvas.on('selection:cleared', function(options){
+    $(".elementData").attr("disabled", true);
+    $(".elementData").val('');
   });
 
   canvas.on("object:moving", function(e) {
