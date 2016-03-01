@@ -144,6 +144,7 @@
 
       <div class="tab-pane" id="svg-shapes">
         <p>Add <strong>SVG shapes</strong> to canvas:</p>
+
         <ul class="svg-shapes">
           <% ElementType.all.each do |type| %>
               <li>
@@ -152,20 +153,6 @@
                 </button>
               </li>
           <% end %>
-
-          <!--
-            some elements are positioned incorrectly
-            <li><button class="shape" id="shape137"><strong>xxx</strong> paths</button></li> -->
-
-          <!--
-            wrong position of ellipses
-            <li><button class="shape" id="shape127"><strong>xxx</strong> paths</button></li> -->
-
-          <!--
-            bezier curve doesn't seem to be rendered correctly
-            <li><button class="shape" id="shape117"><strong>xxx</strong> paths</button></li> -->
-
-          <!-- <li><button class="shape" id="shape111"><strong>18229</strong> paths</button></li> -->
         </ul>
       </div>
 
@@ -253,8 +240,15 @@
           </div>
         </div>
 
+        <label> Floors: </label>
+        <%= link_to "1", {controller: "admin", action: "map", floor: 1}, class: "btn btn-default", data: { no_turbolink: true } %>
+        <%= link_to "2", {controller: "admin", action: "map", floor: 2}, class: "btn btn-default", data: { no_turbolink: true } %>
+        <%= link_to "3", {controller: "admin", action: "map", floor: 3}, class: "btn btn-default", data: { no_turbolink: true } %>
+        <%= link_to "4", {controller: "admin", action: "map", floor: 4}, class: "btn btn-default", data: { no_turbolink: true } %>
+
         <br>
-        <label for="rangeUp" style> Range Up: </label>
+        <br>
+        <label for="rangeUp"> Range Up: </label>
         <input class="elementData" type="text" id="rangeUp" name="rangeUp" disabled>
         <br>
         <label for="rangeUpSmall"> Range Up Small: </label>
@@ -314,7 +308,7 @@
 
   canvas.svgViewportTransformation = false;
 
-  <% Element.all.each do |element| %>
+  <% Element.where(floor: @floor).each do |element| %>
 
   var shape = "<%= asset_path(element.element_type.svg_path + ".svg") %>"
 
@@ -350,7 +344,7 @@
           angle: <%= element.angle %>,
           fill: "<%= element.fill %>",
           id: <%= element.id %>,
-          floor: 1, // TODO UPDATE THIS
+          floor: <%= element.floor %>, // TODO UPDATE THIS
           element_type_id: <%= element.element_type_id %>,
           range_up: <%= element.range_up %>,
           range_down: <%= element.range_down %>,
@@ -373,7 +367,7 @@
     console.log(JSON.stringify(obj));
 
     $.ajax({
-      url : "/admin",
+      url : "/admin/"+<%= @floor %>,
       type : "post",
       data : { elements: JSON.stringify(obj) }
     });
@@ -388,52 +382,11 @@
     obj.identifier = $("#identifier").val();
 
     console.log(obj);
+
     $.ajax({
-      url : "/admin/element",
+      url : "/admin/" + <%= @floor %> + "/element",
       type : "post",
       data : { element: JSON.stringify(obj) }
-    });
-  }
-
-  function addShape(assetId, assetPath) {
-    console.log("adding asset #" + assetId + ", in path \"" + assetPath + "\"");
-
-    var coord = getRandomLeftTop();
-
-    fabric.loadSVGFromURL(assetPath, function(objects, options) {
-
-      var loadedObject = fabric.util.groupSVGElements(objects, options);
-
-      loadedObject.toObject = (function (toObject) {
-        return function () {
-          return fabric.util.object.extend(toObject.call(this), {
-            element_type_id: this.element_type_id,
-            range_up: this.range_up,
-            range_down: this.range_down,
-            classification: this.classification,
-            identifier: this.identifier,
-            modified: this.modified
-          });
-        };
-      })(fabric.Object.prototype.toObject);
-
-      loadedObject.set({
-            left: coord.left,
-            top: coord.top,
-            angle: 0,
-            range_up: 0,
-            range_down: 0,
-            classification: "",
-            identifier: "",
-            element_type_id: parseInt(assetId),
-            modified: true
-          })
-          .setCoords();
-
-
-      console.log(loadedObject.toJSON());
-
-      canvas.add(loadedObject);
     });
   }
 
@@ -451,7 +404,7 @@
 
   canvas.on('object:removed', function(options){
     $.ajax({
-      url : "/admin",
+      url : "/admin/"+<%= @floor %>,
       type : "delete",
       data : { element_id: options.target.id }
     });
@@ -524,6 +477,50 @@
     return false;
   });
 
+  function addShape(assetId, assetPath) {
+    console.log("adding asset #" + assetId + ", in path \"" + assetPath + "\"");
+
+    var coord = getRandomLeftTop();
+
+    fabric.loadSVGFromURL(assetPath, function(objects, options) {
+
+      var loadedObject = fabric.util.groupSVGElements(objects, options);
+
+      loadedObject.toObject = (function (toObject) {
+        return function () {
+          return fabric.util.object.extend(toObject.call(this), {
+            element_type_id: this.element_type_id,
+            range_up: this.range_up,
+            range_down: this.range_down,
+            classification: this.classification,
+            identifier: this.identifier,
+            modified: this.modified,
+            floor: this.floor
+          });
+        };
+      })(fabric.Object.prototype.toObject);
+
+      loadedObject.set({
+            left: coord.left,
+            top: coord.top,
+            angle: 0,
+            range_up: 0,
+            range_down: 0,
+            classification: "",
+            identifier: "",
+            floor: <%= @floor %>,
+            element_type_id: parseInt(assetId),
+            modified: true
+          })
+          .setCoords();
+
+
+      console.log(loadedObject.toJSON());
+
+      canvas.add(loadedObject);
+    });
+  }
+
 
   var boundingBox = new fabric.Rect({
     fill: "grey",
@@ -537,6 +534,5 @@
     stroke: "red"
   });
 
-    //canvas.add(boundingBox);
-
+  //canvas.add(boundingBox);
 </script>

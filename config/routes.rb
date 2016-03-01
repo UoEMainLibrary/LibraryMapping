@@ -3,11 +3,12 @@ Rails.application.routes.draw do
   # See how all your routes lay out with "rake routes".
 
   # You can have the root of your site routed with "root"
-  root 'admin#index'
+  root to: 'admin#index'
 
-  post '/admin' => 'admin#index'
-  delete '/admin' => 'admin#destroy'
-  post '/admin/element' => 'admin#save_element'
+  post '/admin/:floor' => 'admin#map'
+  delete '/admin/:floor' => 'admin#destroy'
+  post '/admin/:floor/element' => 'admin#save_element'
+  get '/admin/:floor', to: 'admin#map'
 
   # Example of regular route:
   #   get 'products/:id' => 'catalog#view'
