@@ -422,15 +422,7 @@ function addAccessors($scope) {
         });
     };
 
-    $scope.maybeLoadShape = function(e) {
-        var $el = $(e.target).closest('button.shape');
-        if (!$el[0]) return;
 
-        var id = $el.prop('id'), match;
-        if (match = /\d+$/.exec(id)) {
-            addShape(match[0]);
-        }
-    };
 
     function addImage(imageName, minScale, maxScale) {
         var coord = getRandomLeftTop();
