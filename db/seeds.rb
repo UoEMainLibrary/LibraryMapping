@@ -5,3 +5,5 @@
 #
 #   cities = City.create([{ name: 'Chicago' }, { name: 'Copenhagen' }])
 #   Mayor.create(name: 'Emanuel', city: cities.first)
+
+ElementType.create([{name: "Trash can", svg_path: "basura"}, {name: "Study table", svg_path: "studytable"}, {name: "Computer Table", svg_path: "computerTable"}, {name: "Shelf", svg_path: "shelf"} ]);
