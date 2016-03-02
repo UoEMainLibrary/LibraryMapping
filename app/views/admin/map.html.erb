@@ -241,6 +241,9 @@
           </div>
         </div>
 
+        <br>
+        <br>
+
         <label> Floors: </label>
         <%= link_to "1", {controller: "admin", action: "map", floor: 1}, class: "btn btn-default", data: { no_turbolink: true } %>
         <%= link_to "2", {controller: "admin", action: "map", floor: 2}, class: "btn btn-default", data: { no_turbolink: true } %>
@@ -396,6 +399,64 @@
       data : { elements: JSON.stringify(obj) }
     });
   }
+
+  var clipboardObj, clipboardGroup;
+  $(document).on("keydown", function(e){
+    if (e.keyCode == 67 && (e.ctrlKey || e.metaKey)){
+      var obj = canvas.getActiveObject(), group = canvas.getActiveGroup();
+      if(obj){
+        clipboardObj = obj;
+      }else if(group){
+        clipboardGroup = group;
+      }
+    }else if(e.keyCode == 86 && (e.ctrlKey || e.metaKey)){
+      if(clipboardObj) {
+        var clone = fabric.util.object.clone(clipboardObj);
+        clone.set({
+          left: clipboardObj.left + 30,
+          top: clipboardObj.top + 30,
+        });
+
+        clone.id = null;
+        clone.modified = true;
+
+        canvas.add(clone);
+        canvas.deactivateAll().renderAll();
+        canvas.setActiveObject(clone);
+
+      }else if(clipboardGroup){
+        canvas.deactivateAll();
+
+        clipboardGroup.forEachObject(function(o) {
+          var clone = fabric.util.object.clone(o);
+          clone.set({
+            left: o.left + 30,
+            top: o.top + 30,
+          }).setCoords();
+
+          clone.id = null;
+          clone.modified = true;
+          canvas.add(clone);
+        });
+
+        canvas.renderAll();
+
+      }
+    }
+
+  });
+
+  document.body.addEventListener('keydown', function(e) {
+    if(e.keyCode==18) {
+      canvas.isGrabMode = true;
+    }
+  });
+
+  document.body.addEventListener('keyup', function(e) {
+    if(e.keyCode==18) {
+      canvas.isGrabMode = false;
+    }
+  });
 
   function saveElementData(){
     var obj = canvas.getActiveObject();
