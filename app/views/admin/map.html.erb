@@ -423,9 +423,19 @@
       }
     }
 
-
   });
 
+  document.body.addEventListener('keydown', function(e) {
+    if(e.keyCode==18) {
+      canvas.isGrabMode = true;
+    }
+  });
+
+  document.body.addEventListener('keyup', function(e) {
+    if(e.keyCode==18) {
+      canvas.isGrabMode = false;
+    }
+  });
 
   function saveElementData(){
     var obj = canvas.getActiveObject();
