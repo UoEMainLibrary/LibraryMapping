@@ -307,12 +307,13 @@
   var canvas = new fabric.CanvasWithViewport('canvas');
 
   canvas.svgViewportTransformation = false;
+  canvas.renderOnAddRemove = false;
 
-  <% Element.where(floor: @floor).each do |element| %>
+  <%
+  elements = Element.where(floor: @floor)
+  elements.each_with_index do |element, index| %>
 
   var shape = "<%= asset_path(element.element_type.svg_path + ".svg") %>"
-
-  console.log(shape);
 
   fabric.loadSVGFromURL(shape, function(objects, options) {
 
@@ -354,10 +355,11 @@
         })
         .setCoords();
 
-
-    console.log(loadedObject.toJSON());
-
     canvas.add(loadedObject);
+
+    <% if index == elements.size - 1 %>
+      canvas.renderAll();
+    <% end %>
   });
   <% end %>
 
@@ -381,8 +383,6 @@
     obj.classification =  $("#classification").val();
     obj.identifier = $("#identifier").val();
 
-    console.log(obj);
-
     $.ajax({
       url : "/admin/" + <%= @floor %> + "/element",
       type : "post",
@@ -395,7 +395,6 @@
       options.target._objects.forEach(function(o) {
         o.modified = true;
       })
-      console.log(options.target._objects);
     } else {
       options.target.modified = true;
     }
@@ -447,13 +446,13 @@
     if( w > c_width ) {
       obj.setLeft(left_bound);
     } else {
-      obj.setLeft(Math.min(Math.max(left, left_bound), right_bound));
+      obj.setLeft(Math.min(Math.max(Math.round(left / grid) * grid, left_bound), right_bound));
     }
 
     if( h > c_height ) {
       obj.setTop(top_bound);
     } else {
-      obj.setTop(Math.min(Math.max(top, top_bound), bottom_bound));
+      obj.setTop(Math.min(Math.max(Math.round(top / grid) * grid, top_bound), bottom_bound));
     }
   });
 
@@ -478,7 +477,6 @@
   });
 
   function addShape(assetId, assetPath) {
-    console.log("adding asset #" + assetId + ", in path \"" + assetPath + "\"");
 
     var coord = getRandomLeftTop();
 
@@ -514,13 +512,24 @@
           })
           .setCoords();
 
-
-      console.log(loadedObject.toJSON());
-
       canvas.add(loadedObject);
     });
   }
 
+
+  var grid = 20;
+
+  // create grid
+
+  var lines = [];
+  for (var i = 0; i < (6000 / grid); i++) {
+    lines.push(new fabric.Line([ i * grid, 0, i * grid, 4000], { stroke: '#ccc', selectable: false })); // vertical lines
+    lines.push(new fabric.Line([ 0, i * grid, 6000, i * grid], { stroke: '#ccc', selectable: false })) // horizontal lines
+  }
+
+  lines.forEach(function(line) {
+    canvas.add(line);
+  });
 
   var boundingBox = new fabric.Rect({
     fill: "transparent",
@@ -531,6 +540,7 @@
     lockMovementX: true,
     lockMovementY: true,
     evented: false,
+    selectable: false,
     stroke: "#333"
   });
 
