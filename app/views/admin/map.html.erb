@@ -217,7 +217,7 @@
             </button>
           </p>
           <p>
-            <input type="range" step="0.05" min="0.1" max="1" id="zoomSlider"/>
+            <input type="range" value="0.3" step="0.05" min="0.1" max="1" id="zoomSlider"/>
             <button class="btn btn-success" id="zoomIn">Zoom +</button>
             <button class="btn btn-success" id="zoomOut">Zoom -</button>
             <a href="#" class="btn btn-primary edit"><i class="fa fa-edit"></i> Edit mode</a>
@@ -307,8 +307,29 @@
 <script>
   var canvas = new fabric.CanvasWithViewport('canvas');
 
+  var boundingBox = new fabric.Rect({
+    fill: "transparent",
+    width: 6000,
+    height: 4000,
+    hasBorders: false,
+    hasControls: false,
+    lockMovementX: true,
+    lockMovementY: true,
+    evented: false,
+    selectable: false,
+    stroke: "#333"
+  });
+
+  canvas.add(boundingBox);
+
   canvas.svgViewportTransformation = false;
   canvas.renderOnAddRemove = false;
+
+  var minZoom = canvas.width / boundingBox.width
+  canvas.viewport.zoom = minZoom;
+  $("#zoomSlider").attr("min", minZoom);
+  $("#zoomSlider").val(minZoom);
+
 
   <%
   elements = Element.where(floor: @floor)
@@ -346,7 +367,7 @@
           angle: <%= element.angle %>,
           fill: "<%= element.fill %>",
           id: <%= element.id %>,
-          floor: <%= element.floor %>, // TODO UPDATE THIS
+          floor: <%= element.floor %>,
           element_type_id: <%= element.element_type_id %>,
           range_up: <%= element.range_up %>,
           range_down: <%= element.range_down %>,
@@ -458,18 +479,32 @@
   });
 
   $('#zoomIn').click(function(){
-    canvas.setZoom(canvas.viewport.zoom * 1.1 ) ;
+    var newZoom = canvas.viewport.zoom * 1.1;
+    if (newZoom <= 1) {
+      canvas.setZoom(newZoom);
+      $("#zoomSlider").val(newZoom);
+    }
     return false;
   });
 
   $('#zoomOut').click(function(){
-    canvas.setZoom(canvas.viewport.zoom / 1.1 ) ;
+    var newZoom = canvas.viewport.zoom / 1.1;
+    if (newZoom >= minZoom) {
+      canvas.setZoom(newZoom);
+      $("#zoomSlider").val(newZoom);
+    }
     return false;
   });
 
   $('#zoomSlider').on('input', function () {
-    console.log(canvas.setZoom($(this).val()));
-    console.log(canvas.viewport.zoom);
+    canvas.setZoom($(this).val());
+    if (canvas.viewport.position.x > 0) {
+      canvas.viewport.position.x = 0;
+    }
+    if (canvas.viewport.position.y > 0) {
+      canvas.viewport.position.y = 0;
+    }
+    canvas.renderAll();
   });
 
   $('.edit').click(function(){
@@ -484,7 +519,10 @@
 
   function addShape(assetId, assetPath) {
 
-    var coord = getRandomLeftTop();
+    var coord = {
+      left: (- canvas.viewport.position.x / canvas.viewport.zoom) + ( canvas.width / canvas.viewport.zoom / 2),
+      top: (- canvas.viewport.position.y / canvas.viewport.zoom) + ( canvas.height / canvas.viewport.zoom / 2)
+    };
 
     fabric.loadSVGFromURL(assetPath, function(objects, options) {
 
@@ -537,18 +575,6 @@
     canvas.add(line);
   });
 
-  var boundingBox = new fabric.Rect({
-    fill: "transparent",
-    width: 6000,
-    height: 4000,
-    hasBorders: false,
-    hasControls: false,
-    lockMovementX: true,
-    lockMovementY: true,
-    evented: false,
-    selectable: false,
-    stroke: "#333"
-  });
-
-  canvas.add(boundingBox);
+  canvas.renderAll();
+  canvas.renderOnAddRemove = true;
 </script>
