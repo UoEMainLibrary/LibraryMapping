@@ -27,8 +27,9 @@
       </div>
     </div>
 
-    <canvas id="canvas" width="700" height="600"></canvas>
-
+    <div id="canvas-container">
+      <canvas id="canvas" width="700" height="600"></canvas>
+    </div>
     <div id="color-opacity-controls" ng-show="canvas.getActiveObject()">
 
       <label for="opacity">Opacity: </label>
@@ -638,4 +639,26 @@
 
   canvas.renderAll();
   canvas.renderOnAddRemove = true;
+
+  function handleScroll(evt){
+    var delta = evt.wheelDelta ? evt.wheelDelta/40 : evt.detail ? -evt.detail : 0;
+    if (delta > 0) {
+      var newZoom = canvas.viewport.zoom / 1.1;
+      if (newZoom >= minZoom) {
+        canvas.setZoom(newZoom);
+        $("#zoomSlider").val(newZoom);
+      }
+    } else if (delta < 0) {
+      var newZoom = canvas.viewport.zoom * 1.1;
+      if (newZoom <= 1) {
+        canvas.setZoom(newZoom);
+        $("#zoomSlider").val(newZoom);
+      }
+    }
+    return evt.preventDefault() && false;
+  };
+
+  var canvas_container = document.getElementById('canvas-container');
+  canvas_container.addEventListener('DOMMouseScroll',handleScroll,false);
+  canvas_container.addEventListener('mousewheel',handleScroll,false);
 </script>
