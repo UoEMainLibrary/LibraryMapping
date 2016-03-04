@@ -447,10 +447,69 @@
 
   });
 
-  document.body.addEventListener('keydown', function(e) {
-    if(e.keyCode==18) {
+  document.body.addEventListener('keydown', function(evt) {
+    if(evt.keyCode==18) {
       canvas.isGrabMode = true;
     }
+
+    var movementDelta = 5;
+
+    var activeObject = canvas.getActiveObject();
+    var activeGroup = canvas.getActiveGroup();
+
+    if (evt.keyCode === 37) {
+      evt.preventDefault(); // Prevent the default action
+      if (activeObject) {
+        var a = activeObject.get('left') - movementDelta;
+        activeObject.set('left', a);
+      }
+      else if (activeGroup) {
+        var a = activeGroup.get('left') - movementDelta;
+        activeGroup.set('left', a);
+      }
+
+    } else if (evt.keyCode === 39) {
+      evt.preventDefault(); // Prevent the default action
+      if (activeObject) {
+        var a = activeObject.get('left') + movementDelta;
+        activeObject.set('left', a);
+      }
+      else if (activeGroup) {
+        var a = activeGroup.get('left') + movementDelta;
+        activeGroup.set('left', a);
+      }
+
+    } else if (evt.keyCode === 38) {
+      evt.preventDefault(); // Prevent the default action
+      if (activeObject) {
+        var a = activeObject.get('top') - movementDelta;
+        activeObject.set('top', a);
+      }
+      else if (activeGroup) {
+        var a = activeGroup.get('top') - movementDelta;
+        activeGroup.set('top', a);
+      }
+
+    } else if (evt.keyCode === 40) {
+      evt.preventDefault(); // Prevent the default action
+      if (activeObject) {
+        var a = activeObject.get('top') + movementDelta;
+        activeObject.set('top', a);
+      }
+      else if (activeGroup) {
+        var a = activeGroup.get('top') + movementDelta;
+        activeGroup.set('top', a);
+      }
+    }
+
+    if (activeObject) {
+      activeObject.setCoords();
+      canvas.renderAll();
+    } else if (activeGroup) {
+      activeGroup.setCoords();
+      canvas.renderAll();
+    }
+
   });
 
   document.body.addEventListener('keyup', function(e) {
@@ -599,7 +658,8 @@
             classification: this.classification,
             identifier: this.identifier,
             modified: this.modified,
-            floor: this.floor
+            floor: this.floor,
+            id: this.id
           });
         };
       })(fabric.Object.prototype.toObject);
@@ -614,7 +674,8 @@
             identifier: "",
             floor: <%= @floor %>,
             element_type_id: parseInt(assetId),
-            modified: true
+            modified: true,
+            id: null
           })
           .setCoords();
 
