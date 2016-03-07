@@ -4,8 +4,10 @@
 <svg version="1.1" id="图层_1" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" x="0px" y="0px"
 	 width="90px" height="90px" viewBox="0 0 90 90" enable-background="new 0 0 90 90" xml:space="preserve">
 <path fill="#00325F" d="M90,80.955C90,85.698,86.738,90,82.348,90H8.525C4.134,90,0,85.698,0,80.955V8.587C0,3.844,4.134,0,8.525,0
-	h73.822C86.738,0,90,3.844,90,8.587V80.955z"/>
-<circle fill="#FFFFFF" cx="45" cy="17.685" r="13.998"/>
-<path fill="#FFFFFF" d="M25.067,35.647c1.446-1.708,37.96-2.213,39.833,0c1.59,1.877-16.313,50.666-19.917,50.666
-	C41.853,86.313,23.763,37.187,25.067,35.647z"/>
+	h73.823C86.738,0,90,3.844,90,8.587V80.955z"/>
+<circle fill="#FFFFFF" cx="45" cy="15.165" r="10.165"/>
+<path fill="#FFFFFF" d="M30.525,28.208c1.05-1.24,27.565-1.606,28.926,0C60.605,29.571,47.604,65,44.988,65
+	C42.715,65,29.579,29.326,30.525,28.208z"/>
+<text transform="matrix(1 0 0 1 3.4531 266.3379)" fill="#FFFFFA" font-family="'Roboto-Light'" font-size="8">Music Listening Service</text>
+<text transform="matrix(1 0 0 1 22.8945 77.3379)" fill="#FFFFFA" font-family="'Roboto-Light'" font-size="8">Men’s Room</text>
 </svg>

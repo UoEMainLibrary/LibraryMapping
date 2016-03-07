@@ -1,0 +1,18 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!-- Generator: Adobe Illustrator 16.0.0, SVG Export Plug-In . SVG Version: 6.00 Build 0)  -->
+<!DOCTYPE svg PUBLIC "-//W3C//DTD SVG 1.1//EN" "http://www.w3.org/Graphics/SVG/1.1/DTD/svg11.dtd">
+<svg version="1.1" id="图层_1" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" x="0px" y="0px"
+	 width="90px" height="90px" viewBox="0 0 90 90" enable-background="new 0 0 90 90" xml:space="preserve">
+<path fill="#00325F" d="M90,80.955C90,85.698,86.738,90,82.348,90H8.525C4.134,90,0,85.698,0,80.955V8.587C0,3.844,4.134,0,8.525,0
+	h73.823C86.738,0,90,3.844,90,8.587V80.955z"/>
+<rect x="15" y="5" fill="#FFFFFA" width="60" height="60"/>
+<rect x="43" y="7" display="none" fill="#00325F" width="3" height="57"/>
+<g id="fire">
+	<path fill="#BE3E43" d="M52.093,48.269c0.682,5.368-5.261,8.789-9.769,8.789c-4.917,0-15.366-3.522-11.473-15.407
+		c4.773-14.572,8.298-18.645,8.298-18.645s1.229,8.195,6.285,14.772C48.463,41.718,51.527,43.8,52.093,48.269z"/>
+	<path fill="#BE3E43" d="M59.284,40.729c3.773,11.478-8.605,16.329-8.605,16.329s10.655-6.597,0.323-17.046
+		c-2.549-2.577-8.181-11.386-8.181-16.816c0-7.174,1.17-11.097,1.17-11.097s0.241,9.162,4.741,16.029
+		C52.626,34.07,56.949,33.624,59.284,40.729z"/>
+</g>
+<text transform="matrix(1 0 0 1 31.7324 77.3379)" fill="#FFFFFA" font-family="'Roboto-Light'" font-size="8">Fire Lift</text>
+</svg>

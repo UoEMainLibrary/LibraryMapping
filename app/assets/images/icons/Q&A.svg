@@ -5,10 +5,12 @@
 	 width="90px" height="90px" viewBox="0 0 90 90" enable-background="new 0 0 90 90" xml:space="preserve">
 <path fill="#00325F" d="M90,80.955C90,85.698,86.738,90,82.348,90H8.525C4.134,90,0,85.698,0,80.955V8.587C0,3.844,4.134,0,8.525,0
 	h73.823C86.738,0,90,3.844,90,8.587V80.955z"/>
-<path fill="#FFFFFA" d="M79.081,9.887H64.73v16.86c-0.111,0.965,0,0.965-1.121,1.078H46.794v16.592
-	c-0.088,0.396-0.337,1.233-1.071,1.347H28.856v16.329c-0.076,1.056-0.076,1.234-0.972,1.607H10.919c0,0-1.794-0.15-1.794-1.794
-	c0-1.494,1.794-1.795,1.794-1.795h14.35V43.252c0.149-0.748,0.403-1.077,1.413-1.077h16.525V25.674
-	c0.112-0.808,0.516-1.437,1.412-1.437h16.525V7.435c0.447-1.045,0.447-0.687,1.25-1.135h16.688c0,0,1.794,0.448,1.794,1.794
-	C80.875,9.737,79.081,9.887,79.081,9.887z"/>
-<text transform="matrix(1 0 0 1 36.8477 77.3379)" fill="#FFFFFA" font-family="'Roboto-Light'" font-size="8">Stair</text>
+<g>
+	<circle fill="#FFFFFA" cx="45" cy="35" r="30"/>
+	<path fill="none" stroke="#00325F" stroke-width="3" stroke-linecap="round" stroke-miterlimit="10" d="M34.8,25.1
+		c0-15,22.756-16.199,22.756,0c0,4.801-1.243,11.913-9.365,16.718c-3.604,2.134-3.461,2.83-3.628,7.72"/>
+	
+		<line fill="none" stroke="#00325F" stroke-width="3" stroke-linecap="round" stroke-miterlimit="10" x1="44.7" y1="54.801" x2="44.7" y2="59"/>
+</g>
+<text transform="matrix(1 0 0 1 27.3164 77.3379)" fill="#FFFFFA" font-family="'Roboto-Light'" font-size="8">Help Desk</text>
 </svg>
