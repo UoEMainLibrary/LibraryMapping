@@ -218,6 +218,7 @@
             </button>
           </p>
           <p>
+            Enable grid: <input id="gridCheckbox" type="checkbox" checked/>
             <input type="range" value="0.3" step="0.05" min="0.1" max="1" id="zoomSlider"/>
             <button class="btn btn-success" id="zoomIn">Zoom +</button>
             <button class="btn btn-success" id="zoomOut">Zoom -</button>
@@ -538,6 +539,18 @@
     });
   }
 
+  var gridSize = 20;
+
+  var gridEnabled = true;
+  var lines = [];
+  for (var i = 0; i < (boundingBox.width / gridSize); i++) {
+    lines.push(new fabric.Line([ i * gridSize, 0, i * gridSize, boundingBox.height], { stroke: '#ccc'})); // vertical lines
+    lines.push(new fabric.Line([ 0, i * gridSize, boundingBox.width, i * gridSize], { stroke: '#ccc'})) // horizontal lines
+  }
+
+  var grid = new fabric.Group(lines, {selectable: false, evented: false});
+
+
   canvas.on('object:modified', function(options) {
     if (options.target._objects) {
       options.target._objects.forEach(function(o) {
@@ -593,13 +606,21 @@
     if( w > c_width ) {
       obj.setLeft(left_bound);
     } else {
-      obj.setLeft(Math.min(Math.max(Math.round(left / grid) * grid, left_bound), right_bound));
+      if (gridEnabled) {
+        obj.setLeft(Math.min(Math.max(Math.round(left / gridSize) * gridSize, left_bound), right_bound));
+      } else {
+        obj.setLeft(Math.min(Math.max(left, left_bound), right_bound));
+      }
     }
 
     if( h > c_height ) {
       obj.setTop(top_bound);
     } else {
-      obj.setTop(Math.min(Math.max(Math.round(top / grid) * grid, top_bound), bottom_bound));
+      if (gridEnabled) {
+        obj.setTop(Math.min(Math.max(Math.round(top / gridSize) * gridSize, top_bound), bottom_bound));
+      } else {
+        obj.setTop(Math.min(Math.max(top, top_bound), bottom_bound));
+      }
     }
   });
 
@@ -637,9 +658,15 @@
     return false;
   });
 
-  $('.grab').click(function(){
-    canvas.isGrabMode = true;
-    return false;
+  $('#gridCheckbox').click(function(){
+    if ($(this).prop('checked')) {
+      canvas.add(grid);
+      canvas.sendToBack(grid);
+      gridEnabled = true;
+    } else {
+      canvas.remove(grid);
+      gridEnabled = false;
+    }
   });
 
   function addShape(assetId, assetPath) {
@@ -687,20 +714,7 @@
     });
   }
 
-
-  var grid = 20;
-
-  // create grid
-
-  var lines = [];
-  for (var i = 0; i < (6000 / grid); i++) {
-    lines.push(new fabric.Line([ i * grid, 0, i * grid, 4000], { stroke: '#ccc', selectable: false })); // vertical lines
-    lines.push(new fabric.Line([ 0, i * grid, 6000, i * grid], { stroke: '#ccc', selectable: false })) // horizontal lines
-  }
-
-  lines.forEach(function(line) {
-    canvas.add(line);
-  });
+  canvas.add(grid);
 
   canvas.renderAll();
   canvas.renderOnAddRemove = true;
