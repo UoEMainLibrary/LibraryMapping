@@ -8,13 +8,13 @@
 <g id="icon">
 	<ellipse fill="#FFFFFF" cx="45.001" cy="61.26" rx="29.621" ry="3.74"/>
 	<path fill="#FFFFFA" stroke="#00325F" stroke-miterlimit="10" d="M50.331,60.585H39.699c-18.875,0-19.67-30.105-19.67-30.105
-		c0-1.805-0.112-3.159,1.062-3.159h47.847c1.176,0,1.063,1.354,1.063,3.159C70.001,30.48,68.141,60.585,50.331,60.585z"/>
+		c0-1.805-0.112-3.159,1.062-3.159h47.847c1.177,0,1.063,1.354,1.063,3.159C70.001,30.48,68.141,60.585,50.331,60.585z"/>
 	<path fill="none" stroke="#FFFFFA" stroke-width="2" stroke-linecap="round" stroke-miterlimit="10" d="M33.191,5.241
 		c4.102,4.265-1.989,7.327-1.989,10.388c0,2.187,1.492,5.248,5.221,6.452"/>
 	<path fill="none" stroke="#FFFFFA" stroke-width="2" stroke-linecap="round" stroke-miterlimit="10" d="M44.379,5
 		c4.102,4.265-1.99,7.327-1.99,10.388c0,2.188,1.491,5.249,5.222,6.453"/>
 	<path fill="none" stroke="#FFFFFA" stroke-width="2" stroke-linecap="round" stroke-miterlimit="10" d="M55.566,5
-		c4.102,4.265-1.989,7.327-1.989,10.388c0,2.188,1.492,5.249,5.221,6.453"/>
+		c4.102,4.265-1.989,7.327-1.989,10.388c0,2.188,1.491,5.249,5.221,6.453"/>
 </g>
-<text transform="matrix(1 0 0 1 36.9102 77.3379)" fill="#FFFFFA" font-family="'Roboto-Light'" font-size="8">Cafe</text>
+<text transform="matrix(1 0 0 1 36.5508 77.1338)" fill="#FFFFFA" font-family="'ArialMT'" font-size="8">Cafe</text>
 </svg>

@@ -35,5 +35,5 @@
 	<rect x="62" y="16" fill="#044D84" width="6" height="42"/>
 	<rect x="62" y="14" fill="#00325F" width="6" height="42"/>
 </g>
-<text transform="matrix(1 0 0 1 3.4883 77.3379)" fill="#FFFFFA" font-family="'Roboto-Light'" font-size="8">Music Listening Service</text>
+<text transform="matrix(1 0 0 1 2.9824 77.3379)" fill="#FFFFFA" font-family="'ArialMT'" font-size="8">Music Listening Service</text>
 </svg>

@@ -19,5 +19,5 @@
 	
 		<line fill="none" stroke="#00325F" stroke-width="2" stroke-linecap="round" stroke-miterlimit="10" x1="23.102" y1="61.273" x2="66.835" y2="61.213"/>
 </g>
-<text transform="matrix(1 0 0 1 24.9902 77.3379)" fill="#FFFFFA" font-family="'ArialMT'" font-size="8">Self Return</text>
+<text transform="matrix(1 0 0 1 27.4355 77.1338)" fill="#FFFFFA" font-family="'ArialMT'" font-size="8">Self Issue</text>
 </svg>
