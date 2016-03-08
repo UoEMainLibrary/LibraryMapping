@@ -15,29 +15,25 @@
 
   <div style="position:relative;width:100%;float:left;" id="canvas-wrapper">
 
-    <div id="canvas-controls">
+   <!-- <div id="canvas-controls">
       <div id="complexity">
         Canvas complexity (number of paths):
         <strong>{[ canvas.complexity() ]}</strong>
       </div>
 
-      <div id="canvas-background">
-        <label for="canvas-background-picker">Canvas background:</label>
-        <input type="color" bind-value-to="canvasBgColor">
-      </div>
-    </div>
+    </div>-->
 
     <div id="canvas-container" style="width: 1300px;margin-left: auto;margin-right: auto;">
       <canvas id="canvas" width="1300px" height="650px"></canvas>
     </div>
-    <div id="color-opacity-controls" ng-show="canvas.getActiveObject()">
+    <!--<div id="color-opacity-controls" ng-show="canvas.getActiveObject()">
 
       <label for="opacity">Opacity: </label>
       <input value="100" type="range" bind-value-to="opacity">
 
       <label for="color" style="margin-left:10px">Color: </label>
       <input type="color" style="width:40px" bind-value-to="fill">
-    </div>
+    </div> -->
 
     <div id="text-wrapper" style="margin-top: 10px" ng-show="getText()">
 
@@ -141,7 +137,7 @@
       <li><a href="#json-inout" data-toggle="tab">JSON</a></li>
     </ul>
 
-    <div class="tab-content">
+    <div class="tab-content" style="margin: 20px;">
 
       <div class="tab-pane" id="svg-shapes">
         <p>Add <strong>SVG shapes</strong> to canvas:</p>
@@ -272,7 +268,7 @@
         <label for="identifier"> Identifier: </label>
         <input class="elementData" type="text" id="identifier" name="identifier" disabled>
         <br>
-        <button class="btn elementData" onclick="saveElementData()" disabled>Save Element Data</button>
+        <button class="btn elementData" id="saveElems" onclick="saveElementData()" disabled>Save Element Data</button>
       </div>
 
       <div class="tab-pane" id="load-svg-pane">
@@ -402,6 +398,14 @@
       data : { elements: JSON.stringify(obj) }
     });
   }
+
+  $( "#commands" )
+    .mouseover(function() {
+      $( "#commands").css( "right", 0 );
+    })
+    .mouseout(function() {
+      $( "#commands").css( "right", -490 );
+    });
 
   var clipboardObj, clipboardGroup;
   $(document).on("keydown", function(e){
@@ -571,6 +575,8 @@
 
   canvas.on('object:selected', function(options){
     $(".elementData").attr("disabled", false);
+    $("#saveElems").css("display", "initial");
+    $("#remove-selected").css("display", "initial");
 
     $("#rangeUp").val(options.target.range_up);
     $("#rangeUpSmall").val(options.target.range_up);
@@ -582,6 +588,8 @@
 
   canvas.on('selection:cleared', function(options){
     $(".elementData").attr("disabled", true);
+    $("#saveElems").css("display", "none");
+    $("#remove-selected").css("display", "none");
     $(".elementData").val('');
   });
 

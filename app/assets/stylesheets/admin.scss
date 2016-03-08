@@ -5,6 +5,24 @@
 ul {
   margin-left: 0;
 }
+
+#saveElems{
+  display: none;
+}
+
+#remove-selected{
+  display: none;
+}
+
+#commands{
+  float: right;
+  position: absolute;
+  right: -490px;
+  border-left: 40px solid #2ecc71;
+  -webkit-transition: right 0.4s; /* Safari */
+  transition: right 0.4s;
+  height: 1000px
+}
 label {
   display: inline-block;
   margin-right: 8px;
