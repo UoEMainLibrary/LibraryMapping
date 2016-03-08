@@ -8,25 +8,25 @@
 <g id="icon">
 	<g id="legs">
 		
-			<line fill="none" stroke="#FFFFFA" stroke-width="2" stroke-linecap="round" stroke-miterlimit="10" x1="37.833" y1="43.39" x2="28.258" y2="65"/>
+			<line fill="none" stroke="#FFFFFA" stroke-width="2" stroke-linecap="round" stroke-miterlimit="10" x1="37.833" y1="46.271" x2="28.258" y2="65"/>
 		
-			<line fill="none" stroke="#FFFFFA" stroke-width="2" stroke-linecap="round" stroke-miterlimit="10" x1="44.095" y1="43.021" x2="44.095" y2="65"/>
+			<line fill="none" stroke="#FFFFFA" stroke-width="2" stroke-linecap="round" stroke-miterlimit="10" x1="44.095" y1="45.951" x2="44.095" y2="65"/>
 		
-			<line fill="none" stroke="#FFFFFA" stroke-width="2" stroke-linecap="round" stroke-miterlimit="10" x1="51.461" y1="43.083" x2="60.667" y2="65"/>
+			<line fill="none" stroke="#FFFFFA" stroke-width="2" stroke-linecap="round" stroke-miterlimit="10" x1="51.461" y1="46.005" x2="60.667" y2="65"/>
 	</g>
-	<path fill="#FFFFFA" d="M74.058,41.742c0,2.605-1.469,5.147-4.201,5.147H21.634c-2.731,0-5.691-2.542-5.691-5.147V9.292
-		C15.942,6.686,18.902,5,21.634,5h48.223c2.732,0,4.201,1.686,4.201,4.292V41.742z"/>
+	<path fill="#FFFFFA" d="M74.059,44.843c0,2.257-1.47,4.46-4.201,4.46H21.634c-2.731,0-5.691-2.203-5.691-4.46V16.72
+		C15.942,14.461,18.902,13,21.634,13h48.224c2.731,0,4.201,1.461,4.201,3.72V44.843z"/>
 	
-		<line fill="none" stroke="#00325F" stroke-width="2" stroke-linecap="round" stroke-miterlimit="10" x1="22.991" y1="13.548" x2="38.624" y2="13.548"/>
+		<line fill="none" stroke="#00325F" stroke-width="2" stroke-linecap="round" stroke-miterlimit="10" x1="22.991" y1="20.408" x2="38.624" y2="20.408"/>
 	
-		<line fill="none" stroke="#00325F" stroke-width="2" stroke-linecap="round" stroke-miterlimit="10" x1="22.991" y1="21.243" x2="38.624" y2="21.243"/>
+		<line fill="none" stroke="#00325F" stroke-width="2" stroke-linecap="round" stroke-miterlimit="10" x1="22.991" y1="27.078" x2="38.624" y2="27.078"/>
 	
-		<line fill="none" stroke="#00325F" stroke-width="2" stroke-linecap="round" stroke-miterlimit="10" x1="22.991" y1="29.793" x2="38.624" y2="29.793"/>
+		<line fill="none" stroke="#00325F" stroke-width="2" stroke-linecap="round" stroke-miterlimit="10" x1="22.991" y1="34.487" x2="38.624" y2="34.487"/>
 	
-		<line fill="none" stroke="#00325F" stroke-width="2" stroke-linecap="round" stroke-miterlimit="10" x1="22.991" y1="38.34" x2="38.624" y2="38.34"/>
-	<path fill="none" stroke="#00325F" stroke-width="2" stroke-linecap="round" stroke-miterlimit="10" d="M67.009,38.34
-		c0,0.473-0.37,0.856-0.824,0.856H46.438c-0.453,0-0.822-0.381-0.822-0.856V13.548c0-0.472,0.369-0.855,0.822-0.855h19.745
-		c0.455,0,0.825,0.384,0.825,0.855V38.34L67.009,38.34z"/>
+		<line fill="none" stroke="#00325F" stroke-width="2" stroke-linecap="round" stroke-miterlimit="10" x1="22.991" y1="41.895" x2="38.624" y2="41.895"/>
+	<path fill="none" stroke="#00325F" stroke-width="2" stroke-linecap="round" stroke-miterlimit="10" d="M67.009,41.895
+		c0,0.41-0.37,0.742-0.823,0.742H46.438c-0.453,0-0.821-0.33-0.821-0.742V20.408c0-0.409,0.368-0.741,0.821-0.741h19.746
+		c0.455,0,0.824,0.333,0.824,0.741L67.009,41.895L67.009,41.895z"/>
 </g>
-<text transform="matrix(1 0 0 1 20.8203 77.3379)" fill="#FFFFFA" font-family="'Roboto-Light'" font-size="8">Meeting Suite</text>
+<text transform="matrix(1 0 0 1 20.541 77.3379)" fill="#FFFFFA" font-family="'ArialMT'" font-size="8">Meeting Suite</text>
 </svg>
