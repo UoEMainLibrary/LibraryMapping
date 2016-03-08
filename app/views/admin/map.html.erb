@@ -390,6 +390,7 @@
   <% end %>
 
   function saveCanvas(){
+    canvas.deactivateAll();
     var obj = canvas.getObjects().filter(o => o.modified == true);
 
     console.log(JSON.stringify(obj));
@@ -504,9 +505,13 @@
 
     if (activeObject) {
       activeObject.setCoords();
+      activeObject.modified = true;
       canvas.renderAll();
     } else if (activeGroup) {
       activeGroup.setCoords();
+      activeGroup.forEachObject(function(o) {
+        o.modified = true;
+      });
       canvas.renderAll();
     }
 
