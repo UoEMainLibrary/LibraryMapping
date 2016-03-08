@@ -13,7 +13,7 @@
   <link href='http://fonts.googleapis.com/css?family=Plaster' rel='stylesheet' type='text/css'>
   <link href='http://fonts.googleapis.com/css?family=Engagement' rel='stylesheet' type='text/css'>
 
-  <div style="position:relative;width:704px;float:left;" id="canvas-wrapper">
+  <div style="position:relative;width:100%;float:left;" id="canvas-wrapper">
 
     <div id="canvas-controls">
       <div id="complexity">
@@ -27,8 +27,8 @@
       </div>
     </div>
 
-    <div id="canvas-container">
-      <canvas id="canvas" width="700" height="600"></canvas>
+    <div id="canvas-container" style="width: 1300px;margin-left: auto;margin-right: auto;">
+      <canvas id="canvas" width="1300px" height="650px"></canvas>
     </div>
     <div id="color-opacity-controls" ng-show="canvas.getActiveObject()">
 
@@ -541,7 +541,6 @@
     } else {
       options.target.modified = true;
     }
-
   });
 
   canvas.on('object:removed', function(options){
