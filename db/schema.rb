@@ -48,4 +48,7 @@ ActiveRecord::Schema.define(version: 20160308121440) do
     t.string  "name",    limit: 255, null: false
   end
 
+  add_index "lc_sections", ["letters"], name: "index_lc_sections_on_letters", unique: true, using: :btree
+  add_index "lc_sections", ["token"], name: "index_lc_sections_on_token", unique: true, using: :btree
+
 end
