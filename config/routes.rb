@@ -9,6 +9,7 @@ Rails.application.routes.draw do
   delete '/admin/:floor' => 'admin#destroy'
   post '/admin/:floor/element' => 'admin#save_element'
   get '/admin/:floor', to: 'admin#map'
+  get '/:shelfmark', to: 'map_display#map', :constraints => { :shelfmark => /.*/}
 
   # Example of regular route:
   #   get 'products/:id' => 'catalog#view'

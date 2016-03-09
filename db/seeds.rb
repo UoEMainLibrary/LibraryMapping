@@ -386,3 +386,4 @@ CLASS_HASH.each do |key, klas|
     i = i + 1;
   end
 end
+
