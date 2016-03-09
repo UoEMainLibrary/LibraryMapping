@@ -375,8 +375,10 @@ CLASS_HASH = {
 
 i = 1;
 CLASS_HASH.each do |key, klas|
-  LcSection.create({letters: "Pamph. " + key, token: i, name: "Pamphet - " + klas[:name]})
-  i = i + 1
+  klas[:subclasses].each do |letter, body|
+    LcSection.create({letters: "Pamph. " + letter, token: i, name: "Pamphlet - " + body[:name]})
+    i = i + 1;
+  end
   klas[:subclasses].each do |letter, body|
     LcSection.create({letters: "Folio " + letter, token: i, name: "Folio - " + body[:name]})
     i = i + 1;

@@ -250,17 +250,31 @@
 
         <br>
         <br>
-        <label for="rangeUp"> Range Up: </label>
-        <input class="elementData" type="text" id="rangeUp" name="rangeUp" disabled>
+
+        <label for="rangeUp"> Range Up: </label><br>
+
+        <select id="range_up_opt">
+          <option value=""></option>
+          <option value="Folio ">Folio</option>
+          <option value="Pham. ">Pham.</option>
+          <option value="Ref. ">Ref.</option>
+        </select>
+        <input class="elementData" type="text" id="range_up_letters" name="rangeUp" placeholder="e.g. QA">
+        <input class="elementData" type="text" id="range_up_digits" name="rangeUp" placeholder="e.g. 273">
+
         <br>
-        <label for="rangeUpSmall"> Range Up Small: </label>
-        <input class="elementData" type="text" id="rangeUpSmall" name="rangeUpSmall" disabled>
-        <br>
-        <label for="rangeDown"> Range Down: </label>
-        <input class="elementData" type="text" id="rangeDown" name="rangeDown" disabled>
-        <br>
-        <label for="rangeDownSmall"> Range Down Small: </label>
-        <input class="elementData" type="text" id="rangeDownSmall" name="rangeDownSmall" disabled>
+
+        <label for="rangeDown"> Range Down: </label><br>
+
+        <select id="range_down_opt">
+          <option value=""></option>
+          <option value="Folio ">Folio</option>
+          <option value="Pham. ">Pham.</option>
+          <option value="Ref. ">Ref.</option>
+        </select>
+        <input class="elementData" type="text" id="range_down_letters" name="rangeDown" placeholder="e.g. QA">
+        <input class="elementData" type="text" id="range_down_digits" name="rangeDown" placeholder="e.g. 273">
+
         <br>
         <label for="classification"> Classification: </label>
         <input class="elementData" type="text" id="classification" name="classification" disabled>
@@ -348,11 +362,15 @@
           id: this.id,
           floor: this.floor,
           element_type_id: this.element_type_id,
-          range_up: this.range_up,
-          range_down: this.range_down,
           classification: this.classification,
           identifier: this.identifier,
-          modified: this.modified
+          modified: this.modified,
+          range_up_opt: this.range_up_opt,
+          range_up_digits: this.range_up_digits,
+          range_up_letters:this.range_up_letters,
+          range_down_opt: this.range_down_opt,
+          range_down_digits: this.range_down_digits,
+          range_down_letters: this.range_down_letters,
         });
       };
     })(fabric.Object.prototype.toObject);
@@ -370,8 +388,12 @@
           id: <%= element.id %>,
           floor: <%= element.floor %>,
           element_type_id: <%= element.element_type_id %>,
-          range_up: <%= element.range_up %>,
-          range_down: <%= element.range_down %>,
+          range_up_opt: "<%= element.range_up_opt %>",
+          range_up_digits: "<%= element.range_up_digits %>",
+          range_up_letters: "<%= element.range_up_letters %>",
+          range_down_opt: "<%= element.range_down_opt %>",
+          range_down_digits: "<%= element.range_down_digits %>",
+          range_down_letters: "<%= element.range_down_letters %>",
           classification: "<%= element.classification %>",
           identifier: "<%= element.identifier %>",
           modified: false
@@ -531,8 +553,14 @@
   function saveElementData(){
     var obj = canvas.getActiveObject();
 
-    obj.range_up =  $("#rangeUp").val();
-    obj.range_down = $("#rangeDown").val();
+    obj.range_up_opt =  $("#range_up_opt").val();
+    obj.range_up_digits =  $("#range_up_digits").val();
+    obj.range_up_letters = $("#range_up_letters").val();
+
+    obj.range_down_opt =  $("#range_down_opt").val();
+    obj.range_down_digits =  $("#range_down_digits").val();
+    obj.range_down_letters = $("#range_down_letters").val();
+
     obj.classification =  $("#classification").val();
     obj.identifier = $("#identifier").val();
 
@@ -578,19 +606,24 @@
     $("#saveElems").css("display", "initial");
     $("#remove-selected").css("display", "initial");
 
-    $("#rangeUp").val(options.target.range_up);
-    $("#rangeUpSmall").val(options.target.range_up);
-    $("#rangeDown").val(options.target.range_down);
-    $("#rangeDownSmall").val(options.target.range_down);
+
+    $("#range_up_opt").val(options.target.range_up_opt);
+    $("#range_up_letters").val(options.target.range_up_letters);
+    $("#range_up_digits").val(options.target.range_up_digits);
+
+    $("#range_down_opt").val(options.target.range_down_opt);
+    $("#range_down_letters").val(options.target.range_down_letters);
+    $("#range_down_digits").val(options.target.range_down_digits);
+
     $("#classification").val(options.target.classification);
     $("#identifier").val(options.target.identifier);
   });
 
   canvas.on('selection:cleared', function(options){
-    $(".elementData").attr("disabled", true);
-    $("#saveElems").css("display", "none");
-    $("#remove-selected").css("display", "none");
-    $(".elementData").val('');
+//    $(".elementData").attr("disabled", true);
+//    $("#saveElems").css("display", "none");
+//    $("#remove-selected").css("display", "none");
+//    $(".elementData").val('');
   });
 
   canvas.on("object:moving", function(e) {
@@ -692,13 +725,17 @@
         return function () {
           return fabric.util.object.extend(toObject.call(this), {
             element_type_id: this.element_type_id,
-            range_up: this.range_up,
-            range_down: this.range_down,
             classification: this.classification,
             identifier: this.identifier,
             modified: this.modified,
             floor: this.floor,
-            id: this.id
+            id: this.id,
+            range_up_opt: this.range_up_opt,
+            range_up_digits: this.range_up_digits,
+            range_up_letters:this.range_up_letters,
+            range_down_opt: this.range_down_opt,
+            range_down_digits: this.range_down_digits,
+            range_down_letters: this.range_down_letters,
           });
         };
       })(fabric.Object.prototype.toObject);
@@ -707,14 +744,18 @@
             left: coord.left,
             top: coord.top,
             angle: 0,
-            range_up: 0,
-            range_down: 0,
             classification: "",
             identifier: "",
             floor: <%= @floor %>,
             element_type_id: parseInt(assetId),
             modified: true,
-            id: null
+            id: null,
+            range_up_opt: "",
+            range_up_digits: "",
+            range_up_letters: "",
+            range_down_opt: "",
+            range_down_digits: "",
+            range_down_letters: "",
           })
           .setCoords();
 
