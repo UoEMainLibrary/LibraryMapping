@@ -2,31 +2,57 @@
 <!-- Generator: Adobe Illustrator 16.0.0, SVG Export Plug-In . SVG Version: 6.00 Build 0)  -->
 <!DOCTYPE svg PUBLIC "-//W3C//DTD SVG 1.1//EN" "http://www.w3.org/Graphics/SVG/1.1/DTD/svg11.dtd">
 <svg version="1.1" id="图层_1" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" x="0px" y="0px"
-	 width="50px" height="117.875px" viewBox="225 191.25 50 117.875" enable-background="new 225 191.25 50 117.875"
-	 xml:space="preserve">
-<path fill="#E5DCD1" stroke="#4D4D4D" stroke-width="2" stroke-miterlimit="10" d="M274,287.935
-	c0,10.735-8.771,19.439-19.588,19.439h-8.826c-10.817,0-19.586-8.704-19.586-19.439v-76.12c0-10.737,8.769-19.44,19.586-19.44h8.826
-	c10.816,0,19.588,8.703,19.588,19.44V287.935z"/>
+	 width="50px" height="117.875px" viewBox="0 0 50 117.875" enable-background="new 0 0 50 117.875" xml:space="preserve">
 <g>
 	<g>
-		<defs>
-			<path id="SVGID_2_" d="M274,288.22c0,10.816-8.52,19.837-19.336,19.837h-8.828c-10.816,0-19.836-9.021-19.836-19.837v-76.69
-				c0-10.817,9.02-19.334,19.836-19.334h8.828c10.816,0,19.336,8.517,19.336,19.334V288.22z"/>
-		</defs>
-		<clipPath id="SVGID_3_">
-			<use xlink:href="#SVGID_2_"  overflow="visible"/>
-		</clipPath>
-		<rect x="220.472" y="246.384" clip-path="url(#SVGID_3_)" fill="#D1B274" width="54.031" height="7.288"/>
-		<rect x="220.472" y="229.509" clip-path="url(#SVGID_3_)" fill="#D1B274" width="54.031" height="7.288"/>
-		<rect x="220.472" y="211.509" clip-path="url(#SVGID_3_)" fill="#D1B274" width="54.031" height="7.288"/>
-	</g>
-	<g>
-		<path id="SVGID_1_" fill="none" stroke="#666666" stroke-width="2" stroke-miterlimit="10" d="M274,288.22
-			c0,10.816-8.52,19.837-19.336,19.837h-8.828c-10.816,0-19.836-9.021-19.836-19.837v-76.69c0-10.817,9.02-19.334,19.836-19.334
-			h8.828c10.816,0,19.336,8.517,19.336,19.334V288.22z"/>
+		<g>
+			<path id="SVGID_1_" fill="#E5DCD1" d="M49,97.025c0,10.813-8.52,19.836-19.336,19.836h-8.828C10.02,116.861,1,107.841,1,97.025
+				V20.334C1,9.518,10.02,1,20.836,1h8.828C40.48,1,49,9.518,49,20.334V97.025z"/>
+		</g>
+		<g>
+			<g>
+				<defs>
+					<path id="SVGID_3_" d="M49,97.025c0,10.813-8.52,19.836-19.336,19.836h-8.828C10.02,116.861,1,107.841,1,97.025V20.334
+						C1,9.518,10.02,1,20.836,1h8.828C40.48,1,49,9.518,49,20.334V97.025z"/>
+				</defs>
+				<clipPath id="SVGID_4_">
+					<use xlink:href="#SVGID_3_"  overflow="visible"/>
+				</clipPath>
+				<rect x="1.64" y="55.188" clip-path="url(#SVGID_4_)" fill="#D1B274" width="47.863" height="7.289"/>
+			</g>
+		</g>
+		<g>
+			<g>
+				<defs>
+					<path id="SVGID_5_" d="M49,97.025c0,10.813-8.52,19.836-19.336,19.836h-8.828C10.02,116.861,1,107.841,1,97.025V20.334
+						C1,9.518,10.02,1,20.836,1h8.828C40.48,1,49,9.518,49,20.334V97.025z"/>
+				</defs>
+				<clipPath id="SVGID_6_">
+					<use xlink:href="#SVGID_5_"  overflow="visible"/>
+				</clipPath>
+				<rect x="1.64" y="38.313" clip-path="url(#SVGID_6_)" fill="#D1B274" width="47.863" height="7.288"/>
+			</g>
+		</g>
+		<g>
+			<g>
+				<defs>
+					<path id="SVGID_7_" d="M49,97.025c0,10.813-8.52,19.836-19.336,19.836h-8.828C10.02,116.861,1,107.841,1,97.025V20.334
+						C1,9.518,10.02,1,20.836,1h8.828C40.48,1,49,9.518,49,20.334V97.025z"/>
+				</defs>
+				<clipPath id="SVGID_8_">
+					<use xlink:href="#SVGID_7_"  overflow="visible"/>
+				</clipPath>
+				<rect x="1.64" y="20.313" clip-path="url(#SVGID_8_)" fill="#D1B274" width="47.863" height="7.288"/>
+			</g>
+		</g>
+		<g>
+			<path id="SVGID_2_" fill="none" stroke="#4D4D4D" stroke-width="2" stroke-miterlimit="10" d="M49,97.025
+				c0,10.813-8.52,19.836-19.336,19.836h-8.828C10.02,116.861,1,107.841,1,97.025V20.334C1,9.518,10.02,1,20.836,1h8.828
+				C40.48,1,49,9.518,49,20.334V97.025z"/>
+		</g>
 	</g>
 </g>
-<rect x="235.801" y="265.836" fill="#736357" width="28.901" height="33.928"/>
-<text transform="matrix(1 0 0 1 243.6914 294.7803)" fill="#32F4D2" font-family="'Roboto-Light'" font-size="13.0336">IN</text>
-<text transform="matrix(1 0 0 1 244.7002 280.8516)" fill="#32F4D2" font-family="'HiraginoSansGB-W3-GBpc-EUC-H'" font-size="11.2406">↑</text>
+<rect x="10.801" y="74.641" fill="#736357" width="28.901" height="33.928"/>
+<text transform="matrix(1 0 0 1 18.6914 103.585)" fill="#32F4D2" font-family="'ArialMT'" font-size="13.0336">IN</text>
+<text transform="matrix(1 0 0 1 19.7002 89.6563)" fill="#32F4D2" font-family="'HiraginoSansGB-W3-GBpc-EUC-H'" font-size="11.2406">↑</text>
 </svg>
