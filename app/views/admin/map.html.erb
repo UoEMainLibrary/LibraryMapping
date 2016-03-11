@@ -358,20 +358,26 @@
 
     loadedObject.toObject = (function (toObject) {
       return function () {
-        return fabric.util.object.extend(toObject.call(this), {
+        var opts = {
           id: this.id,
           floor: this.floor,
           element_type_id: this.element_type_id,
-          classification: this.classification,
-          identifier: this.identifier,
-          modified: this.modified,
-          range_up_opt: this.range_up_opt,
-          range_up_digits: this.range_up_digits,
-          range_up_letters:this.range_up_letters,
-          range_down_opt: this.range_down_opt,
-          range_down_digits: this.range_down_digits,
-          range_down_letters: this.range_down_letters,
-        });
+          modified: this.modified
+        }
+
+        if (this.element_type_id == 11) {
+          $.extend(opts, {
+            classification: this.classification,
+            identifier: this.identifier,
+            range_up_opt: this.range_up_opt,
+            range_up_digits: this.range_up_digits,
+            range_up_letters:this.range_up_letters,
+            range_down_opt: this.range_down_opt,
+            range_down_digits: this.range_down_digits,
+            range_down_letters: this.range_down_letters
+          })
+        }
+        return fabric.util.object.extend(toObject.call(this), opts);
       };
     })(fabric.Object.prototype.toObject);
 
@@ -387,18 +393,23 @@
           fill: "<%= element.fill %>",
           id: <%= element.id %>,
           floor: <%= element.floor %>,
-          element_type_id: <%= element.element_type_id %>,
-          range_up_opt: "<%= element.range_up_opt %>",
-          range_up_digits: "<%= element.range_up_digits %>",
-          range_up_letters: "<%= element.range_up_letters %>",
-          range_down_opt: "<%= element.range_down_opt %>",
-          range_down_digits: "<%= element.range_down_digits %>",
-          range_down_letters: "<%= element.range_down_letters %>",
-          classification: "<%= element.classification %>",
-          identifier: "<%= element.identifier %>",
-          modified: false
+          modified: false,
+          element_type_id: <%= element.element_type_id %>
         })
         .setCoords();
+
+    <% if element.element_type_id == 11 %>
+      loadedObject.set({
+        range_up_opt: "<%= element.range_up_opt %>",
+        range_up_digits: "<%= element.range_up_digits %>",
+        range_up_letters: "<%= element.range_up_letters %>",
+        range_down_opt: "<%= element.range_down_opt %>",
+        range_down_digits: "<%= element.range_down_digits %>",
+        range_down_letters: "<%= element.range_down_letters %>",
+        classification: "<%= element.classification %>",
+        identifier: "<%= element.identifier %>",
+      })
+    <% end %>
 
     canvas.add(loadedObject);
 
@@ -717,26 +728,34 @@
       top: (- canvas.viewport.position.y / canvas.viewport.zoom) + ( canvas.height / canvas.viewport.zoom / 2)
     };
 
+    var element_type_id = parseInt(assetId);
+
     fabric.loadSVGFromURL(assetPath, function(objects, options) {
 
       var loadedObject = fabric.util.groupSVGElements(objects, options);
 
       loadedObject.toObject = (function (toObject) {
         return function () {
-          return fabric.util.object.extend(toObject.call(this), {
-            element_type_id: this.element_type_id,
-            classification: this.classification,
-            identifier: this.identifier,
-            modified: this.modified,
-            floor: this.floor,
+          var opts = {
             id: this.id,
-            range_up_opt: this.range_up_opt,
-            range_up_digits: this.range_up_digits,
-            range_up_letters:this.range_up_letters,
-            range_down_opt: this.range_down_opt,
-            range_down_digits: this.range_down_digits,
-            range_down_letters: this.range_down_letters,
-          });
+            floor: this.floor,
+            element_type_id: this.element_type_id,
+            modified: this.modified
+          }
+
+          if (this.element_type_id == 11) {
+            $.extend(opts, {
+              classification: this.classification,
+              identifier: this.identifier,
+              range_up_opt: this.range_up_opt,
+              range_up_digits: this.range_up_digits,
+              range_up_letters:this.range_up_letters,
+              range_down_opt: this.range_down_opt,
+              range_down_digits: this.range_down_digits,
+              range_down_letters: this.range_down_letters
+            })
+          }
+          return fabric.util.object.extend(toObject.call(this), opts);
         };
       })(fabric.Object.prototype.toObject);
 
@@ -744,20 +763,25 @@
             left: coord.left,
             top: coord.top,
             angle: 0,
-            classification: "",
-            identifier: "",
             floor: <%= @floor %>,
             element_type_id: parseInt(assetId),
             modified: true,
-            id: null,
-            range_up_opt: "",
-            range_up_digits: "",
-            range_up_letters: "",
-            range_down_opt: "",
-            range_down_digits: "",
-            range_down_letters: "",
+            id: null
           })
           .setCoords();
+
+      if (element_type_id == 11) {
+        loadedObject.set({
+          range_up_opt: "",
+          range_up_digits: "",
+          range_up_letters: "",
+          range_down_opt: "",
+          range_down_digits: "",
+          range_down_letters: "",
+          classification: "",
+          identifier: ""
+        })
+      }
 
       canvas.add(loadedObject);
     });
