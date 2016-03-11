@@ -250,39 +250,41 @@
 
         <br>
 
-        <label for="rangeDown"> Range Start: </label><br>
+        <div id="shelfData">
+          <label> Range Start: </label><br>
 
-        <select id="range_down_opt">
-          <option value=""></option>
-          <option value="Folio ">Folio</option>
-          <option value="Pham. ">Pham.</option>
-          <option value="Ref. ">Ref.</option>
-        </select>
-        <input class="elementData" type="text" id="range_down_letters" name="rangeDown" placeholder="e.g. QA">
-        <input class="elementData" type="text" id="range_down_digits" name="rangeDown" placeholder="e.g. 273">
+          <select id="range_down_opt">
+            <option value=""></option>
+            <option value="Folio ">Folio</option>
+            <option value="Pham. ">Pham.</option>
+            <option value="Ref. ">Ref.</option>
+          </select>
+          <input type="text" id="range_down_letters" name="rangeDown" placeholder="e.g. QA">
+          <input type="text" id="range_down_digits" name="rangeDown" placeholder="e.g. 273">
 
-        <br>
+          <br>
 
-        <label for="rangeUp"> Range End: </label><br>
+          <label> Range End: </label><br>
 
-        <select id="range_up_opt">
-          <option value=""></option>
-          <option value="Folio ">Folio</option>
-          <option value="Pham. ">Pham.</option>
-          <option value="Ref. ">Ref.</option>
-        </select>
-        <input class="elementData" type="text" id="range_up_letters" name="rangeUp" placeholder="e.g. QA">
-        <input class="elementData" type="text" id="range_up_digits" name="rangeUp" placeholder="e.g. 273">
+          <select id="range_up_opt">
+            <option value=""></option>
+            <option value="Folio ">Folio</option>
+            <option value="Pham. ">Pham.</option>
+            <option value="Ref. ">Ref.</option>
+          </select>
+          <input type="text" id="range_up_letters" name="rangeUp" placeholder="e.g. QA">
+          <input type="text" id="range_up_digits" name="rangeUp" placeholder="e.g. 273">
 
-        <br>
+          <br>
 
-        <label for="classification"> Classification: </label>
-        <input class="elementData" type="text" id="classification" name="classification" disabled>
-        <br>
-        <label for="identifier"> Identifier: </label>
-        <input class="elementData" type="text" id="identifier" name="identifier" disabled>
-        <br>
-        <button class="btn elementData" id="saveElems" onclick="saveElementData()" disabled>Save Element Data</button>
+          <label for="classification"> Classification: </label>
+          <input type="text" id="classification" name="classification">
+          <br>
+          <label for="identifier"> Identifier: </label>
+          <input type="text" id="identifier" name="identifier">
+          <br>
+          <button class="btn" id="saveElems" onclick="saveElementData()">Save Element Data</button>
+        </div>
       </div>
 
       <div class="tab-pane" id="load-svg-pane">
@@ -491,8 +493,11 @@
       canvas.isGrabMode = true;
     }
 
-    var movementDelta = 5;
+    var movementDelta = 2;
 
+    if(event.shiftKey){
+      movementDelta = 10;
+    }
     var activeObject = canvas.getActiveObject();
     var activeGroup = canvas.getActiveGroup();
 
@@ -613,9 +618,10 @@
   });
 
   canvas.on('object:selected', function(options){
-    $(".elementData").attr("disabled", false);
-    $("#saveElems").css("display", "initial");
     $("#remove-selected").css("display", "initial");
+    if(options.target.element_type_id == 11) {
+      $("#shelfData").css("display", "initial");
+    }
 
 
     $("#range_up_opt").val(options.target.range_up_opt);
@@ -631,10 +637,8 @@
   });
 
   canvas.on('selection:cleared', function(options){
-//    $(".elementData").attr("disabled", true);
-//    $("#saveElems").css("display", "none");
-//    $("#remove-selected").css("display", "none");
-//    $(".elementData").val('');
+    $("#remove-selected").css("display", "none");
+    $("#shelfData").css("display", "none");
   });
 
   canvas.on("object:moving", function(e) {

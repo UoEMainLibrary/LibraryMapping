@@ -1,5 +1,6 @@
-<%= @a %>
-<br>
-<%= @b %>
-<br>
-<%= @finalNum %>
+<%= @shelfmark %>
+<% @elements.each do |element| -%>
+    <p>
+      <%= element.id %>
+    </p>
+<% end %>
