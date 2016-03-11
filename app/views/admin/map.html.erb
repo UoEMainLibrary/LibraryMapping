@@ -721,6 +721,26 @@
     }
   });
 
+  $('#rasterize-svg').click(function(){
+    var w = canvas.width;
+    var h = canvas.height;
+
+    canvas.width = 6003;
+    canvas.height = 4003;
+    canvas.remove(grid);
+
+    canvas.remove()
+    window.open(
+        'data:image/svg+xml;utf8,' +
+        encodeURIComponent(canvas.toSVG()));
+
+    canvas.width = w;
+    canvas.height = h;
+    canvas.add(grid);
+    canvas.sendToBack(grid);
+
+  });
+
   function addShape(assetId, assetPath) {
 
     var coord = {

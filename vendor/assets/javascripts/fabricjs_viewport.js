@@ -114,6 +114,7 @@
       offsetLeft = this.canvas.wrapperEl.getBoundingClientRect().left;
       return {
         which: 1,
+        shiftKey: e.shiftKey,  // *** Note: added the shiftKey event parameter. ***
         clientX: (e.clientX - offsetLeft) / this.zoom + offsetLeft - this.translate().x,
         clientY: (e.clientY - offsetTop) / this.zoom + offsetTop - this.translate().y,
         pageX: e.pageX - this.translate().x,
