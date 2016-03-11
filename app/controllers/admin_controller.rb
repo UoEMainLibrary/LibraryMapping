@@ -69,54 +69,40 @@ class AdminController < ApplicationController
       # return error TODO
     end
 
+    canvasElement = nil
     if Element.exists?(:id => element["id"])
-      Element.update(element["id"],
-                     :left => element["left"],
-                     :top => element["top"],
-                     :height => element["height"],
-                     :width => element["width"],
-                     :opacity => element["opacity"],
-                     :angle => element["angle"],
-                     :fill => element["fill"],
-                     :scaleX => element["scaleX"],
-                     :scaleY => element["scaleY"],
-                     :range_up => shelfmark_up,
-                     :range_down => shelfmark_down,
-                     :classification => element["classification"],
-                     :identifier => element["identifier"],
-                     :range_up_opt => element["range_up_opt"],
-                     :range_up_digits => element["range_up_digits"],
-                     :range_up_letters => element["range_up_letters"],
-                     :range_down_opt => element["range_down_opt"],
-                     :range_down_digits => element["range_down_digits"],
-                     :range_down_letters => element["range_down_letters"],
-                     :floor => element["floor"]
-      )
+      canvasElement = Element.find(element["id"])
     else
-      Element.create(
-          :left => element["left"],
-          :top => element["top"],
-          :height => element["height"],
-          :width => element["width"],
-          :opacity => element["opacity"],
-          :angle => element["angle"],
-          :fill => element["fill"],
-          :scaleX => element["scaleX"],
-          :scaleY => element["scaleY"],
-          :element_type_id => element["element_type_id"],
-          :range_up => shelfmark_up,
-          :range_down => shelfmark_down,
-          :classification => element["classification"],
-          :identifier => element["identifier"],
-          :range_up_opt => element["range_up_opt"],
-          :range_up_digits => element["range_up_digits"],
-          :range_up_letters => element["range_up_letters"],
-          :range_down_opt => element["range_down_opt"],
-          :range_down_digits => element["range_down_digits"],
-          :range_down_letters => element["range_down_letters"],
-          :floor => element["floor"]
-      )
+      canvasElement = Element.new
     end
-  end
+
+      canvasElement.left = element["left"]
+      canvasElement.top = element["top"]
+      canvasElement.height = element["height"]
+      canvasElement.width = element["width"]
+      canvasElement.opacity = element["opacity"]
+      canvasElement.angle = element["angle"]
+      canvasElement.fill = element["fill"]
+      canvasElement.scaleX = element["scaleX"]
+      canvasElement.scaleY = element["scaleY"]
+      canvasElement.element_type_id = element["element_type_id"]
+      canvasElement.floor = element["floor"]
+      canvasElement.range_up = shelfmark_up
+      canvasElement.range_down = shelfmark_down
+
+      if element["element_type_id"] == 11
+        canvasElement.classification = element["classification"]
+        canvasElement.identifier = element["identifier"]
+        canvasElement.range_up_opt = element["range_up_opt"]
+        canvasElement.range_up_digits = element["range_up_digits"]
+        canvasElement.range_up_letters = element["range_up_letters"]
+        canvasElement.range_down_opt = element["range_down_opt"]
+        canvasElement.range_down_digits = element["range_down_digits"]
+        canvasElement.range_down_letters = element["range_down_letters"]
+      end
+
+      canvasElement.save
+
+    end
 
 end
