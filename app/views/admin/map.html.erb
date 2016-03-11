@@ -249,9 +249,21 @@
         <%= link_to "4", {controller: "admin", action: "map", floor: 4}, class: "btn btn-default", data: { no_turbolink: true } %>
 
         <br>
+
+        <label for="rangeDown"> Range Start: </label><br>
+
+        <select id="range_down_opt">
+          <option value=""></option>
+          <option value="Folio ">Folio</option>
+          <option value="Pham. ">Pham.</option>
+          <option value="Ref. ">Ref.</option>
+        </select>
+        <input class="elementData" type="text" id="range_down_letters" name="rangeDown" placeholder="e.g. QA">
+        <input class="elementData" type="text" id="range_down_digits" name="rangeDown" placeholder="e.g. 273">
+
         <br>
 
-        <label for="rangeUp"> Range Up: </label><br>
+        <label for="rangeUp"> Range End: </label><br>
 
         <select id="range_up_opt">
           <option value=""></option>
@@ -264,18 +276,6 @@
 
         <br>
 
-        <label for="rangeDown"> Range Down: </label><br>
-
-        <select id="range_down_opt">
-          <option value=""></option>
-          <option value="Folio ">Folio</option>
-          <option value="Pham. ">Pham.</option>
-          <option value="Ref. ">Ref.</option>
-        </select>
-        <input class="elementData" type="text" id="range_down_letters" name="rangeDown" placeholder="e.g. QA">
-        <input class="elementData" type="text" id="range_down_digits" name="rangeDown" placeholder="e.g. 273">
-
-        <br>
         <label for="classification"> Classification: </label>
         <input class="elementData" type="text" id="classification" name="classification" disabled>
         <br>

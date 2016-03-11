@@ -37,45 +37,13 @@ class AdminController < ApplicationController
   private
   def save_single_element(element)
 
-    shelfmark_up = ""
-    if (element["range_up_opt"] == "Ref. ")
-      shelfmark_up = element["range_up_letters"] + element["range_up_digits"]
-    else
-      shelfmark_up = element["range_up_opt"] + element["range_up_letters"] + element["range_up_digits"]
-    end
-
-    shelfmark_down = ""
-    if (element["range_down_opt"] == "Ref. ")
-      shelfmark_down = element["range_down_letters"] + element["range_down_digits"]
-    else
-      shelfmark_down = element["range_down_opt"] + element["range_down_letters"] + element["range_down_digits"]
-    end
-
-    if shelfmark_up != ""
-      shelfmark_up = shelfmarkToOrder(shelfmark_up)
-      if shelfmark_up == -1
-        #return error
-      end
-    end
-
-    if shelfmark_down != ""
-      shelfmark_down = shelfmarkToOrder(shelfmark_down)
-      if shelfmark_down == -1
-        #return error
-      end
-    end
-
-    if shelfmark_down >= shelfmark_up
-      # return error TODO
-    end
-
-    canvasElement = nil
     if Element.exists?(:id => element["id"])
       canvasElement = Element.find(element["id"])
     else
       canvasElement = Element.new
     end
 
+      # Set element general attributes
       canvasElement.left = element["left"]
       canvasElement.top = element["top"]
       canvasElement.height = element["height"]
@@ -87,10 +55,43 @@ class AdminController < ApplicationController
       canvasElement.scaleY = element["scaleY"]
       canvasElement.element_type_id = element["element_type_id"]
       canvasElement.floor = element["floor"]
-      canvasElement.range_up = shelfmark_up
-      canvasElement.range_down = shelfmark_down
 
       if element["element_type_id"] == 11
+
+        # Validate shelfmark
+        if (element["range_up_opt"] == "Ref. ")
+          shelfmark_up = element["range_up_letters"] + element["range_up_digits"]
+        else
+          shelfmark_up = element["range_up_opt"] + element["range_up_letters"] + element["range_up_digits"]
+        end
+
+        if (element["range_down_opt"] == "Ref. ")
+          shelfmark_down = element["range_down_letters"] + element["range_down_digits"]
+        else
+          shelfmark_down = element["range_down_opt"] + element["range_down_letters"] + element["range_down_digits"]
+        end
+
+        if shelfmark_up != ""
+          shelfmark_up = shelfmarkToOrder(shelfmark_up)
+          if shelfmark_up == -1
+            #return error
+          end
+        end
+
+        if shelfmark_down != ""
+          shelfmark_down = shelfmarkToOrder(shelfmark_down)
+          if shelfmark_down == -1
+            #return error
+          end
+        end
+
+        if shelfmark_down >= shelfmark_up
+          # return error TODO
+        end
+
+        # Update shelve's custom attribute
+        canvasElement.range_up = shelfmark_up
+        canvasElement.range_down = shelfmark_down
         canvasElement.classification = element["classification"]
         canvasElement.identifier = element["identifier"]
         canvasElement.range_up_opt = element["range_up_opt"]
