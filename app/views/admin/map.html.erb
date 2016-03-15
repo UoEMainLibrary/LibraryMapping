@@ -206,7 +206,7 @@
             <button class="btn btn-success" id="rasterize" ng-click="rasterize()">
               Image
             </button>
-            <button class="btn btn-success" id="rasterize-svg" ng-click="rasterizeSVG()">
+            <button class="btn btn-success" id="rasterize-svg">
               SVG
             </button>
             <button class="btn btn-success" id="rasterize-json" ng-click="rasterizeJSON()">
@@ -731,12 +731,23 @@
 
     canvas.width = 6003;
     canvas.height = 4003;
-    canvas.remove(grid);
+//    canvas.remove(grid);
 
-    canvas.remove()
-    window.open(
-        'data:image/svg+xml;utf8,' +
-        encodeURIComponent(canvas.toSVG()));
+//    var data = "data:image/svg+xml;utf8," + encodeURIComponent(canvas.toSVG());
+    var data = canvas.toDataURL({format: 'jpeg'})
+    console.log(data);
+    $.ajax({
+      url : "/admin/qwerqwer/"+<%= @floor %>,
+      type : "post",
+      data : { svg_data: data }
+    });
+
+//    uri = URI::Data.new('data:image/svg+xml;utf8,' + encodeURIComponent(canvas.toSVG()));
+//    File.write('upload/file.svg', uri.data);
+
+//    window.open(
+//        'data:image/svg+xml;utf8,' +
+//        encodeURIComponent(canvas.toSVG()));
 
     canvas.width = w;
     canvas.height = h;

@@ -3,7 +3,21 @@ class AdminController < ApplicationController
     redirect_to action: "map", floor: 1
   end
 
+  def save_svg
+    p "hellooooo"
+    if params[:svg_data]
+      uri_s =  params[:svg_data]
+      p uri_s.to_s
+      p "hello"
+      uri = URI::Data.new(uri_s.to_s);
+      File.write('file.jpeg', uri.data);
+    end
+
+    head :ok
+  end
+
   def destroy
+    p "yolo"
     if params[:element_id]
       Element.destroy(params[:element_id])
     end

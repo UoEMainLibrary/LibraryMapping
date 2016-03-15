@@ -5,6 +5,7 @@ Rails.application.routes.draw do
   # You can have the root of your site routed with "root"
   root to: 'admin#index'
 
+  post '/admin/qwerqwer/:floor' => 'admin#save_svg'
   post '/admin/:floor' => 'admin#map'
   delete '/admin/:floor' => 'admin#destroy'
   post '/admin/:floor/element' => 'admin#save_element'
