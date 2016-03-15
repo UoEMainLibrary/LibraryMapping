@@ -4,13 +4,8 @@ class AdminController < ApplicationController
   end
 
   def save_svg
-    p "hellooooo"
     if params[:svg_data]
-      uri_s =  params[:svg_data]
-      p uri_s.to_s
-      p "hello"
-      uri = URI::Data.new(uri_s.to_s);
-      File.write('file.jpeg', uri.data);
+      File.write('app/assets/images/main_1.svg', params[:svg_data]);
     end
 
     head :ok

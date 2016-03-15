@@ -226,12 +226,12 @@
           </p>
         </div>
 
-        <div class="object-controls" object-buttons-enabled="getSelected()">
+        <div class="object-controls">
 
           <div style="margin-top:10px;">
             <p>
               <button class="btn btn-object-action" id="remove-selected"
-                      ng-click="removeSelected()">
+                      onclick="removeSelected()">
                 Remove selected object/group
               </button>
             </p>
@@ -581,7 +581,7 @@
     obj.identifier = $("#identifier").val();
 
     $.ajax({
-      url : "/admin/" + <%= @floor %> + "/element",
+      url : "/admin/save_element/" + <%= @floor %>,
       type : "post",
       data : { element: JSON.stringify(obj) }
     });
@@ -610,12 +610,32 @@
   });
 
   canvas.on('object:removed', function(options){
-    $.ajax({
-      url : "/admin/"+<%= @floor %>,
-      type : "delete",
-      data : { element_id: options.target.id }
-    });
+    if(options.target.id) {
+      $.ajax({
+        url: "/admin/" +<%= @floor %>,
+        type: "delete",
+        data: {element_id: options.target.id}
+      });
+    }
   });
+
+  function removeSelected() {
+    if (confirm('Are you sure?')) {
+      var activeObject = canvas.getActiveObject(),
+          activeGroup = canvas.getActiveGroup();
+
+      if (activeGroup) {
+        var objectsInGroup = activeGroup.getObjects();
+        canvas.discardActiveGroup();
+        objectsInGroup.forEach(function (object) {
+          canvas.remove(object);
+        });
+      }
+      else if (activeObject) {
+        canvas.remove(activeObject);
+      }
+    }
+  }
 
   canvas.on('object:selected', function(options){
     $("#remove-selected").css("display", "initial");
@@ -731,23 +751,14 @@
 
     canvas.width = 6003;
     canvas.height = 4003;
-//    canvas.remove(grid);
+    canvas.remove(grid);
 
-//    var data = "data:image/svg+xml;utf8," + encodeURIComponent(canvas.toSVG());
-    var data = canvas.toDataURL({format: 'jpeg'})
-    console.log(data);
+    var data = canvas.toSVG()
     $.ajax({
-      url : "/admin/qwerqwer/"+<%= @floor %>,
+      url : "/admin/save_svg/"+<%= @floor %>,
       type : "post",
       data : { svg_data: data }
     });
-
-//    uri = URI::Data.new('data:image/svg+xml;utf8,' + encodeURIComponent(canvas.toSVG()));
-//    File.write('upload/file.svg', uri.data);
-
-//    window.open(
-//        'data:image/svg+xml;utf8,' +
-//        encodeURIComponent(canvas.toSVG()));
 
     canvas.width = w;
     canvas.height = h;
