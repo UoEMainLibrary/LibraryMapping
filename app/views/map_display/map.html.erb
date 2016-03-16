@@ -4,3 +4,53 @@
       <%= element.id %>
     </p>
 <% end %>
+
+<link rel="stylesheet" href="http://cdn.leafletjs.com/leaflet/v0.7.7/leaflet.css" />
+<script src="http://cdn.leafletjs.com/leaflet/v0.7.7/leaflet.js"></script>
+
+<style>
+  #image-map {
+    width: 1800px;
+    height: 1200px;
+    border: 1px solid #ccc;
+    margin-bottom: 10px;
+    margin-right:auto;
+    margin-left:auto;
+  }
+</style>
+
+<div id="image-map"></div>
+
+<script>
+  var map = L.map('image-map', {
+    minZoom: 1,
+    maxZoom: 4,
+    center: [0, 0],
+    zoom: 1,
+    crs: L.CRS.Simple
+  });
+
+  // dimensions of the image
+  var w = 6000,
+      h = 4000,
+      url = '<%= asset_path("main_1.svg") %>';
+
+  // calculate the edges of the image, in coordinate space
+  var southWest = map.unproject([0, h], map.getMaxZoom()-1);
+  var northEast = map.unproject([w, 0], map.getMaxZoom()-1);
+  var bounds = new L.LatLngBounds(southWest, northEast);
+
+  // add the image overlay,
+  // so that it covers the entire map
+  L.imageOverlay(url, bounds).addTo(map);
+
+  var m = {
+    x: 3000,
+    y: 2000
+  }
+  var marker = L.marker(map.unproject([m.x, m.y], map.getMaxZoom()-1)).addTo(map);
+
+  // tell leaflet that the map is exactly as big as the image
+  map.setMaxBounds(bounds);
+</script>
+

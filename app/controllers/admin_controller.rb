@@ -12,7 +12,6 @@ class AdminController < ApplicationController
   end
 
   def destroy
-    p "yolo"
     if params[:element_id]
       Element.destroy(params[:element_id])
     end
