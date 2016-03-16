@@ -52,5 +52,36 @@
 
   // tell leaflet that the map is exactly as big as the image
   map.setMaxBounds(bounds);
-</script>
 
+  var se = Vector.create([55.942517, -3.188288]);
+  var sw = Vector.create([55.942326, -3.189546]);
+  var sub = se.subtract(sw);
+//  console.log(sub)
+//
+//  console.log(sub.e(1) * 31413612.5652904)
+//  console.log(sub.e(2) * 3179650.23847381)
+
+  var example = Vector.create([55.942999, -3.188516])
+
+  addPin(se)
+
+//  addPin(example)
+
+//  var example =
+
+
+
+  function addPin(vector) {
+    var proj = vector.reflectionIn(vector)
+
+    console.log(proj)
+    v = proj.subtract(sw);
+
+    var m = {
+      x: v.e(1),
+      y: v.e(2)
+    }
+    console.log(m)
+    var marker = L.marker(map.unproject([m.x, m.y], map.getMaxZoom()-1)).addTo(map);
+  }
+</script>
