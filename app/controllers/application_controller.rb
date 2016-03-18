@@ -5,11 +5,20 @@ class ApplicationController < ActionController::Base
 
   def shelfmarkToOrder(shelfmark)
     letters = shelfmark.match(/^((Folio )|(Pamph. )|(Ref. ))?[A-Z]+/)[0]
+
+    if(letters[0..4] == "Ref. ")
+      letters = letters[5..letters.length]
+    #else if(inHub && letters[0..4] == "Folio. N")
+
+    end
+
     subclass = LcSection.where(:letters => letters).first
 
     if(!subclass)
       return -1
     end
+
+
 
     token = Integer(subclass.token)
 
