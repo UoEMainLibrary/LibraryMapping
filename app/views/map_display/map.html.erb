@@ -27,6 +27,7 @@
     maxZoom: 4,
     center: [0, 0],
     zoom: 1,
+    attributionControl: false,
     crs: L.CRS.Simple
   });
 
@@ -44,44 +45,90 @@
   // so that it covers the entire map
   L.imageOverlay(url, bounds).addTo(map);
 
-  var m = {
-    x: 3000,
-    y: 2000
-  }
-  var marker = L.marker(map.unproject([m.x, m.y], map.getMaxZoom()-1)).addTo(map);
-
   // tell leaflet that the map is exactly as big as the image
   map.setMaxBounds(bounds);
 
-  var se = Vector.create([55.942517, -3.188288]);
-  var sw = Vector.create([55.942326, -3.189546]);
-  var sub = se.subtract(sw);
-//  console.log(sub)
-//
-//  console.log(sub.e(1) * 31413612.5652904)
-//  console.log(sub.e(2) * 3179650.23847381)
+  var _br = fromLatLngToVectorPoint(55.942517,-3.188288);
+  var _bl = fromLatLngToVectorPoint(55.942326,-3.189546);
+  var _tr = fromLatLngToVectorPoint(55.942999,-3.188516);
+  var _tl = fromLatLngToVectorPoint(55.942811,-3.189775);
 
-  var example = Vector.create([55.942999, -3.188516])
+  var br = reflectYaxis(_bl.subtract(_br));
+  var bl = reflectYaxis(_bl.subtract(_bl));
+  var tr = reflectYaxis(_bl.subtract(_tr));
+  var tl = reflectYaxis(_bl.subtract(_tl));
 
-  addPin(se)
-
-//  addPin(example)
-
-//  var example =
-
-
-
-  function addPin(vector) {
-    var proj = vector.reflectionIn(vector)
-
-    console.log(proj)
-    v = proj.subtract(sw);
+  var marker;
+  function addPin(lat, lng, accuracy) {
+    console.log(accuracy / (80/6000));
+    var _newPoint = fromLatLngToVectorPoint(lat, lng);
+    var newPoint = reflectYaxis(_bl.subtract(_newPoint));
 
     var m = {
-      x: v.e(1),
-      y: v.e(2)
+      x: project(newPoint, br).modulus() * 6473394.1008608695,
+      y: 4000 - project(newPoint, tl).modulus() * 6279304.20368495
     }
-    console.log(m)
-    var marker = L.marker(map.unproject([m.x, m.y], map.getMaxZoom()-1)).addTo(map);
+
+    console.log(m);
+    if(marker){
+      marker.setLatLng(map.unproject([m.x, m.y], map.getMaxZoom()-1))
+    }else{
+      marker = L.marker(map.unproject([m.x, m.y], map.getMaxZoom()-1));
+      marker.addTo(map);
+    }
   }
+
+  function project(b, a) {
+    return a.multiply(a.dot(b) / (a.modulus() * a.modulus()))
+  }
+
+  function reflectYaxis(v) {
+    return Vector.create([v.e(1)*-1, v.e(2)]);
+  }
+
+  function fromLatLngToVectorPoint(lat, long) {
+    var x = (long + 180) / 360 * 256;
+    var y = ((1 - Math.log(Math.tan(lat * Math.PI / 180) + 1 / Math.cos(lat * Math.PI / 180)) / Math.PI) / 2 * Math.pow(2, 0)) * 256;
+    return Vector.create([x, y]);
+  }
+
+
+
+  function successCallback(position) {
+    console.log(position.coords.latitude, position.coords.longitude, position.coords.altitude)
+    addPin(position.coords.latitude, position.coords.longitude, position.coords.accuracy);
+  }
+
+  function errorCallback(error){
+    console.log("- It didn't work.\n");
+    switch(error.code){
+      case error.PERMISSION_DENIED:
+        console.log("- Permission denied.\n");
+        break;
+      case error.POSITION_UNAVAILABLE:
+        console.log("- Position unavailable.\n");
+        break;
+      case error.TIMEOUT:
+        console.log("- Timeout.\n");
+        break;
+      case error.UNKNOW_ERROR:
+        console.log("- Unknown error.\n");
+        break;
+    }
+  }
+
+  if (navigator.geolocation) {
+    $('#console').append("- Retrieving position.\n");
+    var options = {
+      enableHighAccuracy : true,
+      timeout : 10000, // 10s
+      maximumAge : 0
+    };
+
+    navigator.geolocation.watchPosition(successCallback, errorCallback, options);
+
+  } else {
+    $('#console').append("- Geo Location is not supported.\n");
+  }
+
 </script>

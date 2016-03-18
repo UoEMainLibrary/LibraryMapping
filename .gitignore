@@ -13,6 +13,7 @@
 /tmp
 
 .idea/
+main_1.svg
 
 *.rbc
 capybara-*.html
