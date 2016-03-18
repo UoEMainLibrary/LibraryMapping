@@ -376,7 +376,7 @@ CLASS_HASH = {
         }
     },
     'W' => {
-        :name => 'Technology',
+        :name => 'Medicine (NLM)',
         :subclasses => {
             'W'  => { :name => 'General Medicine. Health Professions' },
             'WA' => { :name => 'Public Health' },
