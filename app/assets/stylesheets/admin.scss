@@ -1,7 +1,9 @@
 // Place all the styles related to the home controller here.
 // They will automatically be included in application.css.
 // You can use Sass (SCSS) here: http://sass-lang.com/
-
+body{
+  font-size: 62.5%;
+}
 ul {
   margin-left: 0;
 }
@@ -157,4 +159,17 @@ input[type=radio] {
   position: absolute;
   top: 0;
   right: 0;
+}
+
+/*CSS*/
+.bg-blue {
+  background-color: #1B325E;
+  color: #fff;
+  margin-bottom: 5px;
+}
+.navbar-header h2{
+  font-size: 1.125em;
+}
+.white-font{
+  color: #fff;
 }
