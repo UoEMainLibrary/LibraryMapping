@@ -7,7 +7,7 @@
   <nav class="bg-blue">
     <div class="container-fluid">
       <div class="navbar-header">
-        <h2>LibraryMapping&middot; Admin panel</h2>
+       <!-- <img class="floatleft" src="../assets/images/logo-01.png" width:30px>--><h2>LibraryMapping&middot; Admin panel</h2>
       </div>
       <ul class="nav navbar-nav navbar-right ">
           <li><a class="white-font" href="#"><span class="glyphicon glyphicon-user"></span> Sign Up</a></li>
@@ -134,7 +134,9 @@
       </div>
     </div>
   </div>
-
+  <div class="commandcontrol">
+    <span id="switch" class="glyphicon glyphicon-menu-left"></span>
+  </div>
   <div id="commands" ng-click="maybeLoadShape($event)">
 
     <ul class="nav nav-tabs" style="background-color:white">
@@ -154,9 +156,13 @@
         <ul class="svg-shapes">
           <% ElementType.all.each do |type| %>
               <li>
-                <button class="btn btn-small shape" id="<%= type.id %>" onclick="addShape(<%= type.id %>, '<%= asset_path(type.svg_path + ".svg") %>')">
-                  <img src="<%= asset_path(type.svg_path + ".svg") %>" width="150px"> <br> <strong><%= type.name %></strong>
+                <button class="fix-width-btn" id="<%= type.id %>" onclick="addShape(<%= type.id %>, '<%= asset_path(type.svg_path + ".svg") %>')">
+                  <img src="<%= asset_path(type.svg_path + ".svg") %>" width="150px" height="150px"> <br> 
+                  
                 </button>
+                <div class="container-fluid description">
+                    <strong><%= type.name %></strong>
+                  </div>
               </li>
           <% end %>
         </ul>
@@ -445,11 +451,24 @@
 
   $( "#commands" )
     .mouseover(function() {
+      $( "#switch").removeClass( "glyphicon-menu-left");
+      $( "#switch").addClass( "glyphicon-menu-right");
       $( "#commands").css( "right", 0 );
+      $( ".commandcontrol").css( "right", 490);
     })
     .mouseout(function() {
+      $( "#switch").removeClass( "glyphicon-menu-right");
+      $( "#switch").addClass( "glyphicon-menu-left");
       $( "#commands").css( "right", -490 );
+      $( ".commandcontrol").css( "right", 0);
     });
+
+  $( "#switch").click(function(){
+      $( this).removeClass( "glyphicon-menu-left");
+      $( this).addClass( "glyphicon-menu-right");
+      $( "#commands").css( "right", 0);
+      $( ".commandcontrol").css( "right", 490);
+    })
 
   var clipboardObj, clipboardGroup;
   $(document).on("keydown", function(e){

@@ -20,7 +20,7 @@ ul {
   float: right;
   position: absolute;
   right: -490px;
-  border-left: 40px solid #2ecc71;
+  border-left: 30px solid #1ABB9C;
   -webkit-transition: right 0.4s; /* Safari */
   transition: right 0.4s;
   height: 1000px
@@ -60,6 +60,11 @@ input[type=radio] {
   display: inline-block;
   margin-bottom: 5px;
 }
+.description{
+  background-color: #1B325E;
+  color: #fff;
+  text-align: center;
+}
 .tabs li,
 .tabs li a {
   display: inline-block;
@@ -90,6 +95,20 @@ input[type=radio] {
 #commands ul {
   list-style: none;
   padding-left: 0;
+}
+.commandcontrol{
+  color: #FFF;
+  position: absolute;
+  right: 0px;
+  width: 30px;
+  height: 21px;
+  font-size: 18px;
+  text-align: center;
+  z-index: 1000;
+  cursor: pointer;
+}
+.floatright {
+  float: right;
 }
 #complexity {
   clear: both;
@@ -170,6 +189,30 @@ input[type=radio] {
 .navbar-header h2{
   font-size: 1.125em;
 }
+.floatleft {
+  float: left;
+}
 .white-font{
   color: #fff;
+}
+.fix-width-btn{
+  width: 217px;
+  display: inline-block;
+  margin-bottom: 0;
+  font-weight: normal;
+  text-align: center;
+  vertical-align: middle;
+  touch-action: manipulation;
+  cursor: pointer;
+  background-color: #F5F5F5;
+  border: 2px solid #1B325E;
+  white-space: nowrap;
+  padding: 6px 12px;
+  font-size: 14px;
+  line-height: 1.42857143;
+  border-radius: 4px 4px 0 0;
+  -webkit-user-select: none;
+  -moz-user-select: none;
+  -ms-user-select: none;
+  user-select: none;
 }
