@@ -375,6 +375,38 @@ CLASS_HASH = {
             'VM' => { :name => 'Naval architecture. Shipbuilding. Marine engineering' }
         }
     },
+    'W' => {
+        :name => 'Technology',
+        :subclasses => {
+            'W'  => { :name => 'General Medicine. Health Professions' },
+            'WA' => { :name => 'Public Health' },
+            'WB' => { :name => 'Practice of Medicine'},
+            'WC' => { :name => 'Communicable Diseases' },
+            'WD' => { :name => 'Disorders of Systemic, Metabolic or Environmental Origin, etc.' },
+            'WE' => { :name => 'Musculoskeletal System' },
+            'WF' => { :name => 'Respiratory System' },
+            'WG' => { :name => 'Cardiovascular System' },
+            'WH' => { :name => 'Hemic and Lymphatic Systems' },
+            'WI' => { :name => 'Digestive System' },
+            'WJ' => { :name => 'Urogenital System' },
+            'WK' => { :name => 'Endocrine System' },
+            'WL' => { :name => 'Nervous System' },
+            'WM' => { :name => 'Psychiatry' },
+            'WN' => { :name => 'Radiology. Diagnostic Imaging' },
+            'WO' => { :name => 'Surgery' },
+            'WP' => { :name => 'Gynecology' },
+            'WQ' => { :name => 'Obstetrics' },
+            'WR' => { :name => 'Dermatology' },
+            'WS' => { :name => 'Pediatrics' },
+            'WT' => { :name => 'Geriatrics. Chronic Disease' },
+            'WU' => { :name => 'Dentistry. Oral Surgery' },
+            'WV' => { :name => 'Otolaryngology' },
+            'WW' => { :name => 'Ophthalmology' },
+            'WX' => { :name => 'Hospitals and Other Health Facilities' },
+            'WY' => { :name => 'Nursing' },
+            'WZ' => { :name => 'History of Medicine. Medical Miscellany' }
+        }
+    },
     'Z' => {
         :name => 'Bibliography, Library Science',
         :subclasses => {
@@ -400,3 +432,26 @@ CLASS_HASH.each do |key, klas|
   end
 end
 
+
+# Create HUB conversion table
+
+i = 1;
+CLASS_HASH.each do |key, klas|
+  klas[:subclasses].each do |letter, body|
+    HubLcSection.create({letters: 'Pamph. ' + letter, token: i, name: 'Pamphlet - ' + body[:name]})
+    i = i + 1;
+  end
+end
+CLASS_HASH.each do |key, klas|
+  klas[:subclasses].each do |letter, body|
+      HubLcSection.create({letters: 'Folio. ' + letter, token: i, name: 'Folio - ' + body[:name]})
+      i = i + 1;
+  end
+end
+
+CLASS_HASH.each do |key, klas|
+  klas[:subclasses].each do |letter, body|
+    HubLcSection.create({letters: letter, token: i, name: body[:name]})
+    i = i + 1;
+  end
+end
