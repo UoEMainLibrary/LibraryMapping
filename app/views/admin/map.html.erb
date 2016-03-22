@@ -6,13 +6,20 @@
 <div id="bd-wrapper" ng-controller="CanvasControls">
   <nav class="bg-blue">
     <div class="container-fluid">
-      <div class="navbar-header">
-       <!-- <img class="floatleft" src="../assets/images/logo-01.png" width:30px>--><h2>LibraryMapping&middot; Admin panel</h2>
-      </div>
-      <ul class="nav navbar-nav navbar-right ">
-          <li><a class="white-font" href="#"><span class="glyphicon glyphicon-user"></span> Sign Up</a></li>
-          <li><a class="white-font" href="#"><span class="glyphicon glyphicon-log-in"></span> Login</a></li>
-      </ul>
+        <div class="navbar-header center">
+          <button type="button" class="navbar-toggle" data-toggle="collapse" data-target="#myNavbar">
+            <span class="icon-bar"></span>
+            <span class="icon-bar"></span>
+            <span class="icon-bar"></span>
+          </button>
+         <!-- <img class="logo" src="../../assets/images/logo-01.png" width:30px>--><h2>LibraryMapping&middot; Admin panel</h2>
+        </div>
+        <div class="collapse navbar-collapse" id="myNavbar">
+          <ul class="nav navbar-nav navbar-right ">
+              <li><a class="white-font" href="#"><span class="glyphicon glyphicon-user"></span> Sign Up</a></li>
+              <li><a class="white-font" href="#"><span class="glyphicon glyphicon-log-in"></span> Login</a></li>
+          </ul>
+        </div>
    </div>
   </nav>
   <!--[if IE]><script src="http://fabricjs.com/lib/fonts/Delicious.font.js"></script><![endif]-->
@@ -218,36 +225,40 @@
         <div id="global-controls">
           <p>
             Rasterize canvas to
-            <button class="btn btn-success" id="rasterize" ng-click="rasterize()">
+            <button class="btn btn-general" id="rasterize" ng-click="rasterize()">
               Image
             </button>
-            <button class="btn btn-success" id="rasterize-svg">
+            <button class="btn btn-general" id="rasterize-svg">
               SVG
             </button>
-            <button class="btn btn-success" id="rasterize-json" ng-click="rasterizeJSON()">
+            <button class="btn btn-general" id="rasterize-json" ng-click="rasterizeJSON()">
               JSON
             </button>
           </p>
           <p>
             Enable grid: <input id="gridCheckbox" type="checkbox" checked/>
+            <div class="progress-frame">
             <input type="range" value="0.3" step="0.05" min="0.1" max="1" id="zoomSlider"/>
-            <button class="btn btn-success" id="zoomIn">Zoom +</button>
-            <button class="btn btn-success" id="zoomOut">Zoom -</button>
-            <a href="#" class="btn btn-primary edit"><i class="fa fa-edit"></i> Edit mode</a>
-            <a href="#" class="btn btn-primary grab"><i class="fa fa-arrows"></i> Grab mode</a>
+            </div>
+            <div class="text-center">
+            <button class="btn btn-general" id="zoomIn">Zoom +</button>
+            <button class="btn btn-general" id="zoomOut">Zoom -</button>
+            <a href="#" class="btn edit"><i class="fa fa-edit"></i> Edit mode</a>
+            <a href="#" class="btn grab"><i class="fa fa-arrows"></i> Grab mode</a>
+            </div>
           </p>
-          <p>
-            <button class="btn btn-default clear" onclick="saveCanvas()">Save elements</button>
+          <p class="text-center">
+            <button class="btn btn-save clear" onclick="saveCanvas()"><span class="glyphicon glyphicon-floppy-disk"></span> Save elements</button>
           </p>
         </div>
 
-        <div class="object-controls">
+        <div class="object-controls text-center">
 
           <div style="margin-top:10px;">
             <p>
               <button class="btn btn-object-action" id="remove-selected"
                       onclick="removeSelected()">
-                Remove selected object/group
+                <span class="glyphicon glyphicon-trash"></span> Remove selected
               </button>
             </p>
 
@@ -361,7 +372,7 @@
   canvas.viewport.zoom = minZoom;
   $("#zoomSlider").attr("min", minZoom);
   $("#zoomSlider").val(minZoom);
-
+  $(".progress-bar").css("width", $("#zoomSlider").val());
 
   <%
   elements = Element.where(floor: @floor)
