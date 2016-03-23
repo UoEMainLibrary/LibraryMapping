@@ -122,17 +122,6 @@ input[type=radio] {
   list-style: none;
   padding-left: 0;
 }
-.commandcontrol{
-  color: #FFF;
-  position: absolute;
-  right: 0px;
-  width: 30px;
-  height: 21px;
-  font-size: 18px;
-  text-align: center;
-  z-index: 1000;
-  cursor: pointer;
-}
 .floatright {
   float: right;
 }
@@ -210,11 +199,16 @@ input[type=radio] {
 .bg-blue {
   background-color: #1B325E;
   color: #fff;
-  margin-bottom: 5px;
 }
 .navbar-header h2{
   font-size: 1.125em;
   margin-left:15px;
+  float: left;
+}
+.logo{
+  height: 30px;
+  margin-top: 10px;
+  float:left;
 }
 .progress-frame{
   overflow: hidden;
@@ -254,4 +248,19 @@ input[type=radio] {
   -moz-user-select: none;
   -ms-user-select: none;
   user-select: none;
+}
+.shortcut{
+  background-color: #ccc;
+  width: 100%;
+  margin-bottom: 10px;
+}
+.shortcutbtn{
+  color: #fff;
+  margin: 8px;
+}
+.green{
+  background-color: #1ABB9C;
+}
+.orange{
+  background-color: #F36E50;  
 }
