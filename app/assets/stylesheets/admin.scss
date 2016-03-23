@@ -1,0 +1,266 @@
+// Place all the styles related to the home controller here.
+// They will automatically be included in application.css.
+// You can use Sass (SCSS) here: http://sass-lang.com/
+body{
+  font-size: 62.5%;
+}
+ul {
+  margin-left: 0;
+}
+
+#shelfData{
+  display: none;
+}
+
+#remove-selected{
+  display: none;
+}
+
+#commands{
+  float: right;
+  position: absolute;
+  right: -490px;
+  border-left: 30px solid #1ABB9C;
+  -webkit-transition: right 0.4s; /* Safari */
+  transition: right 0.4s;
+  height: 1000px
+}
+label {
+  display: inline-block;
+  margin-right: 8px;
+}
+button.selected {
+  font-weight: bold;
+  vertical-align: top
+}
+textarea {
+  font-family: monospace;
+}
+input[type=color] {
+  width: 40px;
+  padding: 0;
+  margin: 0;
+  height: 20px;
+  position: relative;
+  top: 2px;
+}
+input[type=radio] {
+  margin-top: -3px;
+}
+.canvas-container {
+  margin: 0 auto;
+  border: 1px solid #aaa;
+}
+.svg-shapes {
+  overflow: hidden;
+  width: 450px;
+  margin-left: 0;
+}
+.svg-shapes li {
+  display: inline-block;
+  margin-bottom: 5px;
+}
+.description{
+  background-color: #1B325E;
+  color: #fff;
+  text-align: center;
+}
+.tabs li,
+.tabs li a {
+  display: inline-block;
+}
+.btn-lock {
+  margin-bottom: 3px;
+}
+.btn-object-action{
+  background-color: #F36E50;
+  color: #fff;
+  width: 100%;
+}
+.btn-save{
+  background-color: #1ABB9C;
+  color: #fff;
+  width: 100%;
+}
+.btn-general{
+  color: #fff;
+  background-color: #BFBFBD;
+  border-color: #848481;
+  margin: 0 10px;
+}
+.edit {
+  color: #fff;
+  background-color: #8A98B8;
+  margin: 0 10px;
+}
+.grab {
+  color: #fff;
+  background-color: #8A98B8;
+  margin: 0 10px;
+}
+#object-controls-pane {
+  width: 450px
+}
+#bd-wrapper {
+  overflow: hidden;
+  position: relative;
+}
+#fps {
+  position: absolute;
+  left: 1px;
+  top: 0;
+  background: rgb(200, 200, 200);
+  width: 70px;
+  z-index: 1000;
+}
+#commands {
+  float: left;
+  font-size: 14px;
+  margin-left: 15px;
+}
+#commands ul {
+  list-style: none;
+  padding-left: 0;
+}
+.floatright {
+  float: right;
+}
+#complexity {
+  clear: both;
+  padding-top: 10px;
+}
+#color-opacity-controls {
+  margin-bottom: 5px;
+}
+#text-controls {
+  display: inline-block;
+  vertical-align: top;
+  margin-left: 10px;
+  border: 1px dotted #ccc;
+  padding: 10px;
+  width: 220px;
+}
+#text-controls textarea {
+  float: left;
+  margin-right: 10px;
+}
+#text-controls-additional {
+  display: inline-block;
+  vertical-align: top;
+  border: 1px dotted #ccc;
+  padding: 10px;
+}
+#text-controls-additional button {
+  vertical-align: top;
+  display: block;
+  margin-bottom: 7px;
+}
+#drawing-mode-options {
+  margin-top: 5px;
+  background: #ffc;
+  padding: 5px;
+  border: 1px solid #aaa;
+}
+#text {
+  position: relative;
+  width: 300px;
+  height: 200px;
+}
+#text-cmd-linethrough {
+  text-decoration: line-through;
+}
+#text-cmd-underline {
+  text-decoration: underline;
+}
+#text-cmd-overline {
+  text-decoration: overline;
+}
+#text-cmd-italic {
+  font-style: italic;
+}
+#text-cmd-shadow {
+  text-shadow: rgb(100, 100, 100) 1px 1px 3px;
+}
+#svg-console,
+#canvas-console,
+#json-console {
+  width: 430px;
+  height: 500px;
+  display: block;
+}
+#canvas-background {
+  display: inline-block;
+  position: absolute;
+  top: 0;
+  right: 0;
+}
+
+/*CSS*/
+.bg-blue {
+  background-color: #1B325E;
+  color: #fff;
+}
+.navbar-header h2{
+  font-size: 1.125em;
+  margin-left:15px;
+  float: left;
+}
+.logo{
+  height: 30px;
+  margin-top: 10px;
+  float:left;
+}
+.progress-frame{
+  overflow: hidden;
+  margin-bottom: 20px;
+  border-radius: 4px;
+  -webkit-box-shadow: inset 0 1px 2px rgba(0, 0, 0, 0.1);
+  box-shadow: inset 0 1px 2px rgba(0, 0, 0, 0.1);
+  height: 21px;
+  background-color: #E3DDD8;
+}
+.floatleft {
+  float: left;
+}
+.icon-bar {
+  background-color: #fff;
+}
+.white-font{
+  color: #fff;
+}
+.fix-width-btn{
+  width: 217px;
+  display: inline-block;
+  margin-bottom: 0;
+  font-weight: normal;
+  text-align: center;
+  vertical-align: middle;
+  touch-action: manipulation;
+  cursor: pointer;
+  background-color: #F5F5F5;
+  border: 2px solid #1B325E;
+  white-space: nowrap;
+  padding: 6px 12px;
+  font-size: 14px;
+  line-height: 1.42857143;
+  border-radius: 4px 4px 0 0;
+  -webkit-user-select: none;
+  -moz-user-select: none;
+  -ms-user-select: none;
+  user-select: none;
+}
+.shortcut{
+  background-color: #ccc;
+  width: 100%;
+  margin-bottom: 10px;
+}
+.shortcutbtn{
+  color: #fff;
+  margin: 8px;
+}
+.green{
+  background-color: #1ABB9C;
+}
+.orange{
+  background-color: #F36E50;  
+}
