@@ -449,7 +449,7 @@
 
   function saveCanvas(){
     canvas.deactivateAll();
-    var obj = canvas.getObjects().filter(o => o.modified == true);
+    var obj = canvas.getObjects().filter(function(o) {return o.modified == true} );
 
     console.log(JSON.stringify(obj));
 
