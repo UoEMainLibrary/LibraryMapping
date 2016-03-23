@@ -20,7 +20,7 @@ ul {
   float: right;
   position: absolute;
   right: -490px;
-  border-left: 40px solid #2ecc71;
+  border-left: 30px solid #1ABB9C;
   -webkit-transition: right 0.4s; /* Safari */
   transition: right 0.4s;
   height: 1000px
@@ -60,12 +60,43 @@ input[type=radio] {
   display: inline-block;
   margin-bottom: 5px;
 }
+.description{
+  background-color: #1B325E;
+  color: #fff;
+  text-align: center;
+}
 .tabs li,
 .tabs li a {
   display: inline-block;
 }
 .btn-lock {
   margin-bottom: 3px;
+}
+.btn-object-action{
+  background-color: #F36E50;
+  color: #fff;
+  width: 100%;
+}
+.btn-save{
+  background-color: #1ABB9C;
+  color: #fff;
+  width: 100%;
+}
+.btn-general{
+  color: #fff;
+  background-color: #BFBFBD;
+  border-color: #848481;
+  margin: 0 10px;
+}
+.edit {
+  color: #fff;
+  background-color: #8A98B8;
+  margin: 0 10px;
+}
+.grab {
+  color: #fff;
+  background-color: #8A98B8;
+  margin: 0 10px;
 }
 #object-controls-pane {
   width: 450px
@@ -90,6 +121,20 @@ input[type=radio] {
 #commands ul {
   list-style: none;
   padding-left: 0;
+}
+.commandcontrol{
+  color: #FFF;
+  position: absolute;
+  right: 0px;
+  width: 30px;
+  height: 21px;
+  font-size: 18px;
+  text-align: center;
+  z-index: 1000;
+  cursor: pointer;
+}
+.floatright {
+  float: right;
 }
 #complexity {
   clear: both;
@@ -169,7 +214,44 @@ input[type=radio] {
 }
 .navbar-header h2{
   font-size: 1.125em;
+  margin-left:15px;
+}
+.progress-frame{
+  overflow: hidden;
+  margin-bottom: 20px;
+  border-radius: 4px;
+  -webkit-box-shadow: inset 0 1px 2px rgba(0, 0, 0, 0.1);
+  box-shadow: inset 0 1px 2px rgba(0, 0, 0, 0.1);
+  height: 21px;
+  background-color: #E3DDD8;
+}
+.floatleft {
+  float: left;
+}
+.icon-bar {
+  background-color: #fff;
 }
 .white-font{
   color: #fff;
+}
+.fix-width-btn{
+  width: 217px;
+  display: inline-block;
+  margin-bottom: 0;
+  font-weight: normal;
+  text-align: center;
+  vertical-align: middle;
+  touch-action: manipulation;
+  cursor: pointer;
+  background-color: #F5F5F5;
+  border: 2px solid #1B325E;
+  white-space: nowrap;
+  padding: 6px 12px;
+  font-size: 14px;
+  line-height: 1.42857143;
+  border-radius: 4px 4px 0 0;
+  -webkit-user-select: none;
+  -moz-user-select: none;
+  -ms-user-select: none;
+  user-select: none;
 }
