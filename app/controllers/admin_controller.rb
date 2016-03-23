@@ -5,7 +5,7 @@ class AdminController < ApplicationController
 
   def save_svg
     if params[:svg_data]
-      File.write('app/assets/images/main_1.svg', params[:svg_data]);
+      File.write('public/assets/main_1.svg', params[:svg_data]);
     end
 
     head :ok
