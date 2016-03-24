@@ -377,6 +377,17 @@
   canvas.svgViewportTransformation = false;
   canvas.renderOnAddRemove = false;
 
+  canvas.setBackgroundColor('#fff', function () {
+    canvas.renderAll();
+  });
+
+
+  canvas.setBackgroundImage("<%= asset_path("overlay_ml_1.png") %>", canvas.renderAll.bind(canvas), {
+    width: 6000,
+    height: 4000,
+    opacity: 0.3
+  });
+
   var minZoom = canvas.width / boundingBox.width
   canvas.viewport.zoom = minZoom;
   $("#zoomSlider").attr("min", minZoom);
