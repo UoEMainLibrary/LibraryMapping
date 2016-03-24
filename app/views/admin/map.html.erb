@@ -462,7 +462,8 @@
     canvas.add(loadedObject);
 
     <% if index == elements.size - 1 %>
-      canvas.renderAll();
+    canvas.renderOnAddRemove = true;
+    canvas.renderAll();
     <% end %>
   });
   <% end %>
@@ -884,9 +885,6 @@
   }
 
   canvas.add(grid);
-
-  canvas.renderAll();
-  canvas.renderOnAddRemove = true;
 
   function handleScroll(evt){
     var delta = evt.wheelDelta ? evt.wheelDelta/40 : evt.detail ? -evt.detail : 0;

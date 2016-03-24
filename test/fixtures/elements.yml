@@ -5,20 +5,18 @@
 # below each fixture, per the syntax in the comments below
 #
 
-<% 200.times do |n| %>
+<% 600.times do |n| %>
 element_<%= n %>:
-  height: 100,
-  width: 100,
+  height: 250,
+  width: 44,
   opacity: 1,
   angle: 0,
   left: <%= rand(1..6000) %>,
   top: <%= rand(1..4000) %>,
   scaleX: 1,
   scaleY: 1,
-  element_type_id: <%= rand(1..4)%>,
+  element_type_id: 11,
   fill: 0
-  range_up: <%= rand(1..500) %>
-  range_down: <%= rand(1..500) %>
   classification: "LC"
   identifier: "ML_LC"
   floor: 1
