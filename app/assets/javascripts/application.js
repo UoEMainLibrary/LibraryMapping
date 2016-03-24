@@ -18,4 +18,5 @@
 //= require sylvester
 //= require angular
 //= require bootstrap-sprockets
+//= require leaflet
 //= require_tree .
