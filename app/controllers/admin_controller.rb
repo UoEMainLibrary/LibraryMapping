@@ -54,8 +54,6 @@ class AdminController < ApplicationController
       # Set element general attributes
       canvasElement.left = element["left"]
       canvasElement.top = element["top"]
-      canvasElement.height = element["height"]
-      canvasElement.width = element["width"]
       canvasElement.opacity = element["opacity"]
       canvasElement.angle = element["angle"]
       canvasElement.fill = element["fill"]
@@ -64,7 +62,7 @@ class AdminController < ApplicationController
       canvasElement.element_type_id = element["element_type_id"]
       canvasElement.floor = element["floor"]
 
-      if element["element_type_id"] == 11
+      if element["element_type_id"] == ElementType.find_by(name: "Shelf").id
 
         # Validate shelfmark
         if (element["range_up_opt"] == "Ref. ")
@@ -108,6 +106,12 @@ class AdminController < ApplicationController
         canvasElement.range_down_opt = element["range_down_opt"]
         canvasElement.range_down_digits = element["range_down_digits"]
         canvasElement.range_down_letters = element["range_down_letters"]
+
+      elsif element["element_type_id"] == ElementType.find_by(name: "Wall").id
+
+        canvasElement.right = element["right"]
+        canvasElement.bottom = element["bottom"]
+
       end
 
       canvasElement.save

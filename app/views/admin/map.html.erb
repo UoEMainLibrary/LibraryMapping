@@ -425,10 +425,11 @@
           id: this.id,
           floor: this.floor,
           element_type_id: this.element_type_id,
-          modified: this.modified
+          modified: this.modified,
+          element_type_name: this.element_type_name
         };
 
-        if (this.element_type_id == 11) {
+        <% if element.element_type.name == "Shelf" %>
           $.extend(opts, {
             classification: this.classification,
             identifier: this.identifier,
@@ -439,7 +440,7 @@
             range_down_digits: this.range_down_digits,
             range_down_letters: this.range_down_letters
           })
-        }
+        <% end %>
         return fabric.util.object.extend(toObject.call(this), opts);
       };
     })(fabric.Object.prototype.toObject);
@@ -447,8 +448,6 @@
     loadedObject.set({
           left: <%= element.left %>,
           top: <%= element.top %>,
-          height: <%= element.element_type.height %>,
-          width: <%= element.element_type.width %>,
           scaleX: <%= element.scaleX %>,
           scaleY: <%= element.scaleY %>,
           opacity: <%= element.opacity %>,
@@ -457,7 +456,8 @@
           id: <%= element.id %>,
           floor: <%= element.floor %>,
           modified: false,
-          element_type_id: <%= element.element_type_id %>
+          element_type_id: <%= element.element_type_id %>,
+          element_type_name: '<%= element.element_type.name %>'
         })
         .setCoords();
 
@@ -477,7 +477,7 @@
     canvas.add(loadedObject);
   });
   <% else %>
-    var wall = makeLine([ <%= element.top %>, <%= element.width %>, <%= element.left %>, <%= element.height %>]);
+    var wall = makeLine([ <%= element.top %>, <%= element.right %>, <%= element.left %>, <%= element.bottom %>]);
 
     wall.toObject = (function (toObject) {
       return function () {
@@ -488,8 +488,9 @@
           modified: this.modified,
           top: this.x1,
           left: this.x2,
-          width: this.y1,
-          height: this.y2
+          element_type_name: this.element_type_name,
+          right: this.y1,
+          bottom: this.y2
         }
 
         return fabric.util.object.extend(toObject.call(this), opts);
@@ -500,14 +501,15 @@
           floor: <%= element.floor %>,
           element_type_id: <%= element.element_type_id %>,
           modified: true,
-          id: <%= element.id %>
+          id: <%= element.id %>,
+          element_type_name: "Wall"
         })
         .setCoords();
 
     canvas.add(wall);
 
-    var circle1 = makeCircle(line.get('x1'), line.get('y1'), null, line);
-    var circle2 = makeCircle(line.get('x2'), line.get('y2'), line);
+    var circle1 = makeCircle(wall.get('x1'), wall.get('y1'), null, wall);
+    var circle2 = makeCircle(wall.get('x2'), wall.get('y2'), wall);
 
     wallCircles.push(circle1,circle2);
 
@@ -529,6 +531,8 @@
     var obj = canvas.getObjects().filter(function(o) {
       return o.modified == true
     } );
+
+    console.log(JSON.stringify(obj));
 
     $.ajax({
       url : "/admin/"+<%= @floor %>,
@@ -751,7 +755,8 @@
 
   canvas.on('object:selected', function(options){
     $("#remove-selected").css("display", "initial");
-    if(options.target.element_type_id == 11) {
+    $("#shelfData").css("display", "none");
+    if(options.target.element_type_name == "Shelf") {
       $("#shelfData").css("display", "initial");
     }
 
@@ -768,6 +773,7 @@
   });
 
   canvas.on('selection:cleared', function(options){
+    console.log('')
     $("#remove-selected").css("display", "none");
     $("#shelfData").css("display", "none");
   });
@@ -898,7 +904,8 @@
             id: this.id,
             floor: this.floor,
             element_type_id: this.element_type_id,
-            modified: this.modified
+            modified: this.modified,
+            element_type_name: this.element_type_name
           }
 
           if (assetName == "Shelf") {
@@ -924,7 +931,8 @@
             floor: <%= @floor %>,
             element_type_id: parseInt(assetId),
             modified: true,
-            id: null
+            id: null,
+            element_type_name: assetName
           })
           .setCoords();
 
@@ -1018,8 +1026,8 @@
           modified: this.modified,
           top: this.x1,
           left: this.x2,
-          width: this.y1,
-          height: this.y2
+          right: this.y1,
+          bottom: this.y2
         }
 
         return fabric.util.object.extend(toObject.call(this), opts);
