@@ -1,0 +1,31 @@
+<svg id="图层_1" data-name="图层 1" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 150 200">
+  <defs>
+    <style>
+      .cls-1 {
+        fill: #a1a1d3;
+      }
+
+      .cls-2 {
+        fill: #b1afe6;
+      }
+
+      .cls-3 {
+        fill: #d6cff2;
+      }
+
+      .cls-4 {
+        fill: #e5dbf4;
+      }
+
+      .cls-5 {
+        fill: #ece9f4;
+      }
+    </style>
+  </defs>
+  <title>Stairs</title>
+  <rect class="cls-1" width="150" height="40.31"/>
+  <rect class="cls-2" y="40.31" width="150" height="40.31"/>
+  <rect class="cls-3" y="80.62" width="150" height="40.31"/>
+  <rect class="cls-4" y="120.16" width="150" height="40.31"/>
+  <rect class="cls-5" y="159.69" width="150" height="40.31"/>
+</svg>
