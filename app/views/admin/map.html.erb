@@ -172,8 +172,8 @@
         <ul class="svg-shapes">
           <% ElementType.all.each do |type| %>
               <li>
-                <button class="fix-width-btn" id="<%= type.id %>" onclick="addShape(<%= type.id %>, '<%= asset_path(type.svg_path + ".svg") %>')">
-                  <img src="<%= asset_path(type.svg_path + ".svg") %>" width="150px" height="150px"> <br> 
+                <button class="fix-width-btn" id="<%= type.id %>" onclick="addShape(<%= type.id %>, '<%= asset_path(type.svg_path) %>')">
+                  <img src="<%= asset_path(type.svg_path) %>" width="150px" height="150px"> <br>
                   
                 </button>
                 <div class="container-fluid description">
@@ -398,7 +398,7 @@
   elements = Element.where(floor: @floor)
   elements.each_with_index do |element, index| %>
 
-  var shape = "<%= asset_path(element.element_type.svg_path + ".svg") %>"
+  var shape = "<%= asset_path(element.element_type.svg_path) %>"
 
   fabric.loadSVGFromURL(shape, function(objects, options) {
 
@@ -411,7 +411,7 @@
           floor: this.floor,
           element_type_id: this.element_type_id,
           modified: this.modified
-        }
+        };
 
         if (this.element_type_id == 11) {
           $.extend(opts, {
@@ -753,7 +753,7 @@
 
   $('#zoomIn').click(function(){
     var newZoom = canvas.viewport.zoom * 1.1;
-    if (newZoom <= 1) {
+    if (newZoom <= 1.5) {
       canvas.setZoom(newZoom);
       $("#zoomSlider").val(newZoom);
     }
@@ -830,7 +830,6 @@
     fabric.loadSVGFromURL(assetPath, function(objects, options) {
 
       var loadedObject = fabric.util.groupSVGElements(objects, options);
-
       loadedObject.toObject = (function (toObject) {
         return function () {
           var opts = {
@@ -896,7 +895,7 @@
       }
     } else if (delta < 0) {
       var newZoom = canvas.viewport.zoom * 1.1;
-      if (newZoom <= 1) {
+      if (newZoom <= 1.5) {
         canvas.setZoom(newZoom);
         $("#zoomSlider").val(newZoom);
       }

@@ -11,13 +11,15 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20160318130750) do
+ActiveRecord::Schema.define(version: 20160324132334) do
 
   create_table "element_types", force: :cascade do |t|
     t.string   "name",       limit: 255, null: false
     t.datetime "created_at",             null: false
     t.datetime "updated_at",             null: false
     t.string   "svg_path",   limit: 255
+    t.float    "width",      limit: 24
+    t.float    "height",     limit: 24
   end
 
   create_table "elements", force: :cascade do |t|

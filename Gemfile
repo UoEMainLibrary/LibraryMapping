@@ -29,6 +29,8 @@ gem 'bootstrap-sass'
 
 gem 'leaflet-rails'
 
+gem 'nokogiri'
+
 # Use ActiveModel has_secure_password
 # gem 'bcrypt', '~> 3.1.7'
 
