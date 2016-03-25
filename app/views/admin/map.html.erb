@@ -752,6 +752,12 @@
     }
   }
 
+  canvas.on('object:rotating', function(options) {
+    if (options.e.shiftKey) {
+      options.target.angle = options.target.angle - options.target.angle % 45
+    }
+  });
+
   canvas.on('object:selected', function(options){
     $("#remove-selected").css("display", "initial");
     $("#shelfData").css("display", "none");
