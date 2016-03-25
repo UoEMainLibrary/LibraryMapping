@@ -170,19 +170,10 @@
         <p>Add <strong>SVG shapes</strong> to canvas:</p>
 
         <ul class="svg-shapes">
-          <li>
-            <button class="fix-width-btn" onclick="addWall()">
-              <img src="https://upload.wikimedia.org/wikipedia/commons/thumb/d/d1/Brick_wall_close-up_view.jpg/640px-Brick_wall_close-up_view.jpg" width="150px" height="150px"> <br>
-
-            </button>
-            <div class="container-fluid description">
-              <strong>Wall</strong>
-            </div>
-          </li>
           <% ElementType.all.each do |type| %>
-              <% if type.id < 39 %>
+              <% if type.name != "Wall" %>
               <li>
-                <button class="fix-width-btn" id="<%= type.id %>" onclick="addShape(<%= type.id %>, '<%= asset_path(type.svg_path) %>')">
+                <button class="fix-width-btn" onclick="addShape(<%= type.id %>, '<%= type.name %>', '<%= asset_path(type.svg_path) %>')">
                   <img src="<%= asset_path(type.svg_path) %>" width="150px" height="150px"> <br>
                   
                 </button>
@@ -190,7 +181,16 @@
                     <strong><%= type.name %></strong>
                   </div>
               </li>
-                  <% end %>
+              <% else %>
+                  <li>
+                    <button class="fix-width-btn" onclick="addWall(<%= type.id %>)">
+                      <img src="https://upload.wikimedia.org/wikipedia/commons/thumb/d/d1/Brick_wall_close-up_view.jpg/640px-Brick_wall_close-up_view.jpg" width="150px" height="150px"> <br>
+                    </button>
+                    <div class="container-fluid description">
+                      <strong>Wall</strong>
+                    </div>
+                  </li>
+              <% end %>
           <% end %>
         </ul>
       </div>
@@ -412,11 +412,10 @@
   elements = Element.where(floor: @floor)
   elements.each_with_index do |element, index| %>
 
-  <% if element.element_type_id < 39 %>
+  <% if element.element_type.name != "Wall" %>
   var shape = "<%= asset_path(element.element_type.svg_path) %>"
 
   fabric.loadSVGFromURL(shape, function(objects, options) {
-
     var loadedObject = fabric.util.groupSVGElements(objects, options);
 
     loadedObject.toObject = (function (toObject) {
@@ -447,8 +446,8 @@
     loadedObject.set({
           left: <%= element.left %>,
           top: <%= element.top %>,
-          height: <%= element.height %>,
-          width: <%= element.width %>,
+          height: <%= element.element_type.height %>,
+          width: <%= element.element_type.width %>,
           scaleX: <%= element.scaleX %>,
           scaleY: <%= element.scaleY %>,
           opacity: <%= element.opacity %>,
@@ -461,7 +460,7 @@
         })
         .setCoords();
 
-    <% if element.element_type_id == 11 %>
+    <% if element.element_type.name == "Shelf" %>
       loadedObject.set({
         range_up_opt: "<%= element.range_up_opt %>",
         range_up_digits: "<%= element.range_up_digits %>",
@@ -477,17 +476,15 @@
     canvas.add(loadedObject);
 
     <% if index == elements.size - 1 %>
-    canvas.renderOnAddRemove = true;
-    canvas.renderAll();
+      canvas.renderOnAddRemove = true;
+      canvas.renderAll();
     <% end %>
 
   });
   <% else %>
-    var line = makeLine([ <%= element.top %>, <%= element.width %>, <%= element.left %>, <%= element.height %>]);
+    var wall = makeLine([ <%= element.top %>, <%= element.width %>, <%= element.left %>, <%= element.height %>]);
 
-  console.log(<%= element.top %>, <%= element.left %> ,<%= element.width %>, <%= element.height %>);
-
-    line.toObject = (function (toObject) {
+    wall.toObject = (function (toObject) {
       return function () {
         var opts = {
           id: this.id,
@@ -504,7 +501,7 @@
       }
     })(fabric.Object.prototype.toObject);
 
-    line.set({
+    wall.set({
           floor: <%= element.floor %>,
           element_type_id: <%= element.element_type_id %>,
           modified: true,
@@ -512,32 +509,30 @@
         })
         .setCoords();
 
-  canvas.add(line);
+    canvas.add(wall);
 
-  circle1 = makeCircle(line.get('x1'), line.get('y1'), null, line);
-  circle2 = makeCircle(line.get('x2'), line.get('y2'), line);
+    var circle1 = makeCircle(line.get('x1'), line.get('y1'), null, line);
+    var circle2 = makeCircle(line.get('x2'), line.get('y2'), line);
 
-  wallCircles.push(circle1,circle2);
+    wallCircles.push(circle1,circle2);
 
-  canvas.add(circle1, circle2);
+    canvas.add(circle1, circle2);
 
   <% end %>
 
   <% if index == elements.size - 1 %>
-  canvas.renderAll();
+    canvas.renderAll();
   <% end %>
 
   <% end %>
 
-  function saveCanvas(){
+  function saveCanvas() {
     canvas.deactivateAll();
     removeWallCircles();
 
     var obj = canvas.getObjects().filter(function(o) {
       return o.modified == true
     } );
-
-//    console.log(JSON.stringify(obj));
 
     $.ajax({
       url : "/admin/"+<%= @floor %>,
@@ -603,7 +598,6 @@
 
       }
     }
-
   });
 
   document.body.addEventListener('keydown', function(evt) {
@@ -738,10 +732,10 @@
   });
 
   function removeSelected() {
-    if (confirm('Are you sure?')) {
-      var activeObject = canvas.getActiveObject(),
-          activeGroup = canvas.getActiveGroup();
+    var activeObject = canvas.getActiveObject(),
+        activeGroup = canvas.getActiveGroup();
 
+    if ((activeObject || activeGroup) && confirm('Are you sure?')) {
       if (activeGroup) {
         var objectsInGroup = activeGroup.getObjects();
         canvas.discardActiveGroup();
@@ -760,7 +754,6 @@
     if(options.target.element_type_id == 11) {
       $("#shelfData").css("display", "initial");
     }
-
 
     $("#range_up_opt").val(options.target.range_up_opt);
     $("#range_up_letters").val(options.target.range_up_letters);
@@ -836,7 +829,7 @@
     return false;
   });
 
-  $('#zoomSlider').on('input', function () {
+  $('#zoomSlider').on('input', function() {
     canvas.setZoom($(this).val());
     if (canvas.viewport.position.x > 0) {
       canvas.viewport.position.x = 0;
@@ -887,7 +880,7 @@
 
   });
 
-  function addShape(assetId, assetPath) {
+  function addShape(assetId, assetName, assetPath) {
 
     var coord = {
       left: (- canvas.viewport.position.x / canvas.viewport.zoom) + ( canvas.width / canvas.viewport.zoom / 2),
@@ -908,7 +901,7 @@
             modified: this.modified
           }
 
-          if (this.element_type_id == 11) {
+          if (assetName == "Shelf") {
             $.extend(opts, {
               classification: this.classification,
               identifier: this.identifier,
@@ -935,7 +928,7 @@
           })
           .setCoords();
 
-      if (element_type_id == 11) {
+      if (assetName == "Shelf") {
         loadedObject.set({
           range_up_opt: "",
           range_up_digits: "",
@@ -1005,18 +998,18 @@
   }
 
 
-  function addWall() {
+  function addWall(id) {
 
     var coord = {
       left: (- canvas.viewport.position.x / canvas.viewport.zoom) + ( canvas.width / canvas.viewport.zoom / 2),
       top: (- canvas.viewport.position.y / canvas.viewport.zoom) + ( canvas.height / canvas.viewport.zoom / 2)
     };
 
-    var line = makeLine([ coord.left, coord.top, coord.left + 100, coord.top+100 ]);
+    var wall = makeLine([ coord.left, coord.top, coord.left + 100, coord.top+100 ]);
 
     console.log(coord.left, coord.top, coord.left + 100, coord.top+100 );
 
-    line.toObject = (function (toObject) {
+    wall.toObject = (function (toObject) {
       return function () {
         var opts = {
           id: this.id,
@@ -1034,35 +1027,31 @@
     })(fabric.Object.prototype.toObject);
 
 
-    line.set({
+    wall.set({
           floor: <%= @floor %>,
-          element_type_id: 39,
+          element_type_id: id,
           modified: true,
           id: null,
         })
         .setCoords();
 
+    canvas.add(wall);
 
-
-    canvas.add(line);
-    console.log(line)
-
-
-    circle1 = makeCircle(line.get('x1'), line.get('y1'), null, line);
-    circle2 = makeCircle(line.get('x2'), line.get('y2'), line);
+    var circle1 = makeCircle(wall.get('x1'), wall.get('y1'), null, wall);
+    var circle2 = makeCircle(wall.get('x2'), wall.get('y2'), wall);
 
     wallCircles.push(circle1,circle2);
 
     canvas.add(circle1, circle2);
   }
 
-  function removeWallCircles(){
+  function removeWallCircles() {
     for(var i=0; i < wallCircles.length; i++){
       canvas.remove(wallCircles[i]);
     }
   }
 
-  function restoreWallCircles(){
+  function restoreWallCircles() {
     for(var i=0; i < wallCircles.length; i++){
       canvas.add(wallCircles[i]);
     }

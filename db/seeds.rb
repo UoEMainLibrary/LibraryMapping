@@ -16,6 +16,8 @@ HubLcSection.destroy_all
 LcSection.destroy_all
 
 i = 1
+ElementType.create({id: i, name: "Wall"})
+i = i + 1
 Dir.foreach('app/assets/images') do |item|
   next if item == '.' or item == '..' or not item.end_with? ".svg"
   file = Nokogiri::Slop(File.open("app/assets/images/" + item))
@@ -30,7 +32,6 @@ Dir.foreach('app/assets/images') do |item|
     i = i + 1
   end
 end
-
 
 
 CLASS_HASH = {
