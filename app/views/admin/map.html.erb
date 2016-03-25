@@ -447,8 +447,6 @@
     loadedObject.set({
           left: <%= element.left %>,
           top: <%= element.top %>,
-          height: <%= element.element_type.height %>,
-          width: <%= element.element_type.width %>,
           scaleX: <%= element.scaleX %>,
           scaleY: <%= element.scaleY %>,
           opacity: <%= element.opacity %>,
@@ -478,7 +476,7 @@
     canvas.add(loadedObject);
   });
   <% else %>
-    var wall = makeLine([ <%= element.top %>, <%= element.width %>, <%= element.left %>, <%= element.height %>]);
+    var wall = makeLine([ <%= element.top %>, <%= element.right %>, <%= element.left %>, <%= element.bottom %>]);
 
     wall.toObject = (function (toObject) {
       return function () {
@@ -489,9 +487,9 @@
           modified: this.modified,
           top: this.x1,
           left: this.x2,
-          width: this.y1,
-          height: this.y2,
-          element_type_name: this.element_type_name
+          element_type_name: this.element_type_name,
+          right: this.y1,
+          bottom: this.y2
         }
 
         return fabric.util.object.extend(toObject.call(this), opts);
@@ -509,8 +507,8 @@
 
     canvas.add(wall);
 
-    var circle1 = makeCircle(line.get('x1'), line.get('y1'), null, line);
-    var circle2 = makeCircle(line.get('x2'), line.get('y2'), line);
+    var circle1 = makeCircle(wall.get('x1'), wall.get('y1'), null, wall);
+    var circle2 = makeCircle(wall.get('x2'), wall.get('y2'), wall);
 
     wallCircles.push(circle1,circle2);
 
@@ -1027,9 +1025,9 @@
           modified: this.modified,
           top: this.x1,
           left: this.x2,
-          width: this.y1,
-          height: this.y2
-        };
+          right: this.y1,
+          bottom: this.y2
+        }
 
         return fabric.util.object.extend(toObject.call(this), opts);
       }
