@@ -424,10 +424,11 @@
           id: this.id,
           floor: this.floor,
           element_type_id: this.element_type_id,
-          modified: this.modified
+          modified: this.modified,
+          element_type_name: this.element_type_name
         };
 
-        if (this.element_type_id == 11) {
+        <% if element.element_type.name == "Shelf" %>
           $.extend(opts, {
             classification: this.classification,
             identifier: this.identifier,
@@ -438,7 +439,7 @@
             range_down_digits: this.range_down_digits,
             range_down_letters: this.range_down_letters
           })
-        }
+        <% end %>
         return fabric.util.object.extend(toObject.call(this), opts);
       };
     })(fabric.Object.prototype.toObject);
@@ -456,7 +457,8 @@
           id: <%= element.id %>,
           floor: <%= element.floor %>,
           modified: false,
-          element_type_id: <%= element.element_type_id %>
+          element_type_id: <%= element.element_type_id %>,
+          element_type_name: '<%= element.element_type.name %>'
         })
         .setCoords();
 
@@ -488,7 +490,8 @@
           top: this.x1,
           left: this.x2,
           width: this.y1,
-          height: this.y2
+          height: this.y2,
+          element_type_name: this.element_type_name
         }
 
         return fabric.util.object.extend(toObject.call(this), opts);
@@ -499,7 +502,8 @@
           floor: <%= element.floor %>,
           element_type_id: <%= element.element_type_id %>,
           modified: true,
-          id: <%= element.id %>
+          id: <%= element.id %>,
+          element_type_name: "Wall"
         })
         .setCoords();
 
@@ -528,6 +532,8 @@
     var obj = canvas.getObjects().filter(function(o) {
       return o.modified == true
     } );
+
+    console.log(JSON.stringify(obj));
 
     $.ajax({
       url : "/admin/"+<%= @floor %>,
@@ -750,7 +756,8 @@
 
   canvas.on('object:selected', function(options){
     $("#remove-selected").css("display", "initial");
-    if(options.target.element_type_id == 11) {
+    $("#shelfData").css("display", "none");
+    if(options.target.element_type_name == "Shelf") {
       $("#shelfData").css("display", "initial");
     }
 
@@ -767,6 +774,7 @@
   });
 
   canvas.on('selection:cleared', function(options){
+    console.log('')
     $("#remove-selected").css("display", "none");
     $("#shelfData").css("display", "none");
   });
@@ -897,7 +905,8 @@
             id: this.id,
             floor: this.floor,
             element_type_id: this.element_type_id,
-            modified: this.modified
+            modified: this.modified,
+            element_type_name: this.element_type_name
           }
 
           if (assetName == "Shelf") {
@@ -923,7 +932,8 @@
             floor: <%= @floor %>,
             element_type_id: parseInt(assetId),
             modified: true,
-            id: null
+            id: null,
+            element_type_name: assetName
           })
           .setCoords();
 
@@ -1019,7 +1029,7 @@
           left: this.x2,
           width: this.y1,
           height: this.y2
-        }
+        };
 
         return fabric.util.object.extend(toObject.call(this), opts);
       }
