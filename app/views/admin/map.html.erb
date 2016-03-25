@@ -474,12 +474,6 @@
     <% end %>
 
     canvas.add(loadedObject);
-
-    <% if index == elements.size - 1 %>
-      canvas.renderOnAddRemove = true;
-      canvas.renderAll();
-    <% end %>
-
   });
   <% else %>
     var wall = makeLine([ <%= element.top %>, <%= element.width %>, <%= element.left %>, <%= element.height %>]);
@@ -521,6 +515,7 @@
   <% end %>
 
   <% if index == elements.size - 1 %>
+    canvas.renderOnAddRemove = true;
     canvas.renderAll();
   <% end %>
 
@@ -656,6 +651,10 @@
         var a = activeGroup.get('top') + movementDelta;
         activeGroup.set('top', a);
       }
+    }
+
+    if(evt.keyCode == 46) {
+      removeSelected();
     }
 
     if (activeObject) {
