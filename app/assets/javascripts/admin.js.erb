@@ -501,7 +501,9 @@ $(document).on('admin#map:loaded', function(){
           range_down_digits: "",
           range_down_letters: "",
           classification: "",
-          identifier: ""
+          identifier: "",
+          originX: 'center',
+          originY: 'center'
         })
       }
 
@@ -693,6 +695,8 @@ function loadElementInCanvas(element, element_type, svg_path, last) {
           range_down_letters: element.range_down_letters,
           classification: element.classification,
           identifier: element.identifier,
+          originX: 'center',
+          originY: 'center'
         })
       }
       canvas.add(loadedObject);
