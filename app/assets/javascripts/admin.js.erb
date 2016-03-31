@@ -48,23 +48,28 @@ $(document).on('admin#map:loaded', function(){
     } );
 
     console.log(JSON.stringify(obj));
+    restoreWallCircles();
 
-    $.ajax({
+    return $.ajax({
       url : "/admin/"+floor,
       type : "post",
-      data : { elements: JSON.stringify(obj) }
+      data : { elements: JSON.stringify(obj) },
+      success : function(){
+        location.reload();
+      }
     });
 
-    restoreWallCircles();
   }
 
+
+
   $("#commands")
-    .mouseover(function() {
-      $("#commands").css("right", 0);
-    })
-    .mouseout(function() {
-      $("#commands").css("right", -490);
-    });
+      .mouseover(function() {
+        $("#commands").css("right", 0);
+      })
+      .mouseout(function() {
+        $("#commands").css("right", -490);
+      });
 
   $("#switch").click(function(){
     $("#commands").css("right", 0);
@@ -232,12 +237,24 @@ $(document).on('admin#map:loaded', function(){
   canvas.on('object:modified', function(options) {
     if (options.target._objects) {
       options.target._objects.forEach(function(o) {
-        o.modified = true;
+        setObjectModified(o);
       })
     } else {
-      options.target.modified = true;
+      setObjectModified(options.target);
     }
   });
+
+  setObjectModified = function(o){
+    if(o.type == "circle") {
+      if(o.line1){
+        o.line1.modified = true;
+      }else{
+        o.line2.modified = true;
+      }
+    }else{
+      o.modified = true;
+    }
+  }
 
   canvas.on('object:removed', function(options){
     if(options.target.id) {
@@ -531,7 +548,7 @@ $(document).on('admin#map:loaded', function(){
     return c;
   }
 
-  function makeLine(coords) {
+  makeLine = function(coords) {
     return new fabric.Line(coords, {
       fill: '#333',
       stroke: '#333',
@@ -543,7 +560,7 @@ $(document).on('admin#map:loaded', function(){
   }
 
 
-  addWall = function (id) {
+  addWall = function(id) {
 
     var coord = {
       left: (- canvas.viewport.position.x / canvas.viewport.zoom) + ( canvas.width / canvas.viewport.zoom / 2),
@@ -620,66 +637,66 @@ $(document).on('admin#map:loaded', function(){
 
 function loadElementInCanvas(element, element_type, svg_path, last) {
   if (element_type != "Wall") {
-  var shape = svg_path
+    var shape = svg_path;
 
-  fabric.loadSVGFromURL(shape, function(objects, options) {
-    var loadedObject = fabric.util.groupSVGElements(objects, options);
+    fabric.loadSVGFromURL(shape, function(objects, options) {
+      var loadedObject = fabric.util.groupSVGElements(objects, options);
 
-    loadedObject.toObject = (function (toObject) {
-      return function () {
-        var opts = {
-          id: this.id,
-          floor: this.floor,
-          element_type_id: this.element_type_id,
-          modified: this.modified,
-          element_type_name: this.element_type_name
+      loadedObject.toObject = (function (toObject) {
+        return function () {
+          var opts = {
+            id: this.id,
+            floor: this.floor,
+            element_type_id: this.element_type_id,
+            modified: this.modified,
+            element_type_name: this.element_type_name
+          };
+          if (element_type == "Shelf") {
+            $.extend(opts, {
+              classification: this.classification,
+              identifier: this.identifier,
+              range_up_opt: this.range_up_opt,
+              range_up_digits: this.range_up_digits,
+              range_up_letters:this.range_up_letters,
+              range_down_opt: this.range_down_opt,
+              range_down_digits: this.range_down_digits,
+              range_down_letters: this.range_down_letters
+            })
+          }
+          return fabric.util.object.extend(toObject.call(this), opts);
         };
-        if (element_type == "Shelf") {
-          $.extend(opts, {
-            classification: this.classification,
-            identifier: this.identifier,
-            range_up_opt: this.range_up_opt,
-            range_up_digits: this.range_up_digits,
-            range_up_letters:this.range_up_letters,
-            range_down_opt: this.range_down_opt,
-            range_down_digits: this.range_down_digits,
-            range_down_letters: this.range_down_letters
-          })
-        }
-        return fabric.util.object.extend(toObject.call(this), opts);
-      };
-    })(fabric.Object.prototype.toObject);
+      })(fabric.Object.prototype.toObject);
 
-    loadedObject.set({
-          left: element.left,
-          top: element.top,
-          scaleX: element.scaleX,
-          scaleY: element.scaleY,
-          opacity: element.opacity,
-          angle: element.angle,
-          fill: element.fill,
-          id: element.id,
-          floor: element.floor,
-          modified: false,
-          element_type_id: element.element_type_id,
-          element_type_name: element_type
-        })
-        .setCoords();
-
-    if (element_type == "Shelf") {
       loadedObject.set({
-        range_up_opt: element.range_up_opt,
-        range_up_digits: element.range_up_digits,
-        range_up_letters: element.range_up_letters,
-        range_down_opt: element.range_down_opt,
-        range_down_digits: element.range_down_digits,
-        range_down_letters: element.range_down_letters,
-        classification: element.classification,
-        identifier: element.identifier,
-      })
-    }
-    canvas.add(loadedObject);
-  });
+            left: element.left,
+            top: element.top,
+            scaleX: element.scaleX,
+            scaleY: element.scaleY,
+            opacity: element.opacity,
+            angle: element.angle,
+            fill: element.fill,
+            id: element.id,
+            floor: element.floor,
+            modified: false,
+            element_type_id: element.element_type_id,
+            element_type_name: element_type
+          })
+          .setCoords();
+
+      if (element_type == "Shelf") {
+        loadedObject.set({
+          range_up_opt: element.range_up_opt,
+          range_up_digits: element.range_up_digits,
+          range_up_letters: element.range_up_letters,
+          range_down_opt: element.range_down_opt,
+          range_down_digits: element.range_down_digits,
+          range_down_letters: element.range_down_letters,
+          classification: element.classification,
+          identifier: element.identifier,
+        })
+      }
+      canvas.add(loadedObject);
+    });
   } else {
     var wall = makeLine([element.top, element.right, element.left, element.bottom]);
 
@@ -704,7 +721,7 @@ function loadElementInCanvas(element, element_type, svg_path, last) {
     wall.set({
           floor: element.floor,
           element_type_id: element.element_type_id,
-          modified: true,
+          modified: false,
           id: element.id,
           element_type_name: "Wall"
         })
