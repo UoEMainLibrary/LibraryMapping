@@ -278,7 +278,7 @@
     elements = Element.where(floor: @floor)
     elements.each_with_index do |element, index| %>
 
-    loadElementInCanvas(<%= element.to_json.html_safe %>, "<%= element.element_type.name %>", "<%= asset_path(element.element_type.svg_path) %>", <%= index == elements.size - 1 %>)
+    loadElementInCanvas(<%= element.to_json.html_safe %>, "<%= element.element_type.name %>", "<%= asset_path(element.element_type.svg_path) %>", <%= elements.size %>)
 
     <% end %>
   })

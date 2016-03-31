@@ -634,7 +634,7 @@ $(document).on('admin#map:loaded', function(){
 
 });
 
-
+var counter = 0;
 function loadElementInCanvas(element, element_type, svg_path, last) {
   if (element_type != "Wall") {
     var shape = svg_path;
@@ -696,6 +696,11 @@ function loadElementInCanvas(element, element_type, svg_path, last) {
         })
       }
       canvas.add(loadedObject);
+      counter++
+      if (counter == last) {
+        canvas.renderOnAddRemove = true;
+        canvas.renderAll();
+      }
     });
   } else {
     var wall = makeLine([element.top, element.right, element.left, element.bottom]);
@@ -736,10 +741,5 @@ function loadElementInCanvas(element, element_type, svg_path, last) {
 
     canvas.add(circle1, circle2);
 
-  }
-
-  if (last) {
-    canvas.renderOnAddRemove = true;
-    canvas.renderAll();
   }
 }
