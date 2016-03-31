@@ -696,13 +696,15 @@ function loadElementInCanvas(element, element_type, svg_path, last) {
         })
       }
       canvas.add(loadedObject);
-      counter++
+      counter++;
       if (counter == last) {
         canvas.renderOnAddRemove = true;
         canvas.renderAll();
+        console.log("renderOnAddRemove")
       }
     });
   } else {
+    counter++
     var wall = makeLine([element.top, element.right, element.left, element.bottom]);
 
     wall.toObject = (function (toObject) {
