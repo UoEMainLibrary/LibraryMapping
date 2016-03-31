@@ -744,12 +744,32 @@
         var objectsInGroup = activeGroup.getObjects();
         canvas.discardActiveGroup();
         objectsInGroup.forEach(function (object) {
-          canvas.remove(object);
+          removeObejct(object);
         });
       }
       else if (activeObject) {
-        canvas.remove(activeObject);
+        removeObejct(activeObject);
       }
+    }
+  }
+
+  function removeObejct(activeObject){
+    if(activeObject.type == "circle"){
+      canvas.remove(activeObject.line1);
+      canvas.remove(activeObject.line2);
+      for(var i=0; i < wallCircles.length; i++){
+        if(activeObject.line1){
+          if(wallCircles[i].line1 == activeObject.line1 || wallCircles[i].line2 == activeObject.line1){
+            canvas.remove(wallCircles[i]);
+          }
+        }else if(activeObject.line2){
+          if(wallCircles[i].line1 == activeObject.line2 || wallCircles[i].line2 == activeObject.line2){
+            canvas.remove(wallCircles[i]);
+          }
+        }
+      }
+    }else{
+      canvas.remove(activeObject);
     }
   }
 
@@ -979,7 +999,7 @@
     return evt.preventDefault() && false;
   };
 
-  function makeCircle(left, top, line1, line2, line3, line4) {
+  function makeCircle(left, top, line1, line2) {
     var c = new fabric.Circle({
       left: left,
       top: top,
@@ -994,8 +1014,6 @@
 
     c.line1 = line1;
     c.line2 = line2;
-    c.line3 = line3;
-    c.line4 = line4;
 
     return c;
   }
@@ -1052,7 +1070,7 @@
     canvas.add(wall);
 
     var circle1 = makeCircle(wall.get('x1'), wall.get('y1'), null, wall);
-    var circle2 = makeCircle(wall.get('x2'), wall.get('y2'), wall);
+    var circle2 = makeCircle(wall.get('x2'), wall.get('y2'), wall, null);
 
     wallCircles.push(circle1,circle2);
 
@@ -1075,8 +1093,6 @@
     var p = e.target;
     p.line1 && p.line1.set({ 'x2': p.left, 'y2': p.top });
     p.line2 && p.line2.set({ 'x1': p.left, 'y1': p.top });
-    p.line3 && p.line3.set({ 'x1': p.left, 'y1': p.top });
-    p.line4 && p.line4.set({ 'x1': p.left, 'y1': p.top });
     canvas.renderAll();
   });
 
