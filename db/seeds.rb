@@ -6,30 +6,32 @@
 #   cities = City.create([{ name: 'Chicago' }, { name: 'Copenhagen' }])
 #   Mayor.create(name: 'Emanuel', city: cities.first)
 
-# Dir.foreach('/app/assets/images') do |item|
-#   next if item == '.' or item == '..'
-#   p item
-# end
-
-ElementType.destroy_all
 HubLcSection.destroy_all
 LcSection.destroy_all
 
-i = 1
-ElementType.create({id: i, name: "Wall"})
-i = i + 1
+ids = Array.new()
 Dir.foreach('app/assets/images') do |item|
   next if item == '.' or item == '..' or not item.end_with? ".svg"
   file = Nokogiri::Slop(File.open("app/assets/images/" + item))
-  # File.open("app/assets/images/" + item) { |f| Nokogiri::XML(f) }
 
   viewBox = file.at_css("svg").attr("viewbox").split
   width = viewBox[2]
   height = viewBox[3]
 
   if (width != nil and height != nil)
-    ElementType.create({id: i, name: item[0..-5], svg_path: item, width: width, height: height})
-    i = i + 1
+    type = ElementType.where(name: item[0..-5]).first_or_initialize
+    type.width = width
+    type.height = height
+    type.svg_path = item
+    type.save
+    ids.push(type.id)
+  end
+end
+
+
+ElementType.all.each do |e|
+  unless ids.include? e.id
+    ElementType.find(e.id).destroy
   end
 end
 
