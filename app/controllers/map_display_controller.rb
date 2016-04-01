@@ -4,6 +4,5 @@ class MapDisplayController < ApplicationController
     @shelfmark = shelfmarkToOrder(params[:shelfmark])
     @elements = Element.where("range_up >= :shelfmark AND range_down <= :shelfmark", {shelfmark: @shelfmark})
 
-    p @elements
   end
 end

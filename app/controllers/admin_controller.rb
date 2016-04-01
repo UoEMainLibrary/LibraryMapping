@@ -64,7 +64,31 @@ class AdminController < ApplicationController
 
       if element["element_type_id"] == ElementType.find_by(name: "Shelf").id
 
-        # Validate shelfmark
+      if element["range_up_opt"] == nil
+        element["range_up_opt"] = ''
+      end
+
+      if element["range_up_digits"] == nil
+        element["range_up_digits"] = ''
+      end
+
+      if element["range_up_letters"] == nil
+        element["range_up_letters"] = ''
+      end
+
+      if element["range_down_opt"] == nil
+        element["range_down_opt"] = ''
+      end
+
+      if element["range_down_digits"] == nil
+        element["range_down_digits"] = ''
+      end
+
+      if element["range_down_letters"] == nil
+        element["range_down_letters"] = ''
+      end
+
+      # Validate shelfmark
         if (element["range_up_opt"] == "Ref. ")
           shelfmark_up = element["range_up_letters"] + element["range_up_digits"]
         else

@@ -16,6 +16,7 @@
   }
 </style>
 
+
 <div id="image-map"></div>
 
 <script>
@@ -128,4 +129,7 @@
     $('#console').append("- Geo Location is not supported.\n");
   }
 
+  <% @elements.each do |element| %>
+    L.marker(map.unproject([<%= element.left %>, <%= element.top %>], map.getMaxZoom()-1)).addTo(map).bindPopup("<b>To kill a mockingbird</b><br> Harper Lee").openPopup();
+  <% end %>
 </script>
