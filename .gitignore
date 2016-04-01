@@ -56,3 +56,4 @@ bower.json
 .DS_Store
 Gemfile.lock
 config/database.yml
+public/assets/*

@@ -9,7 +9,13 @@
 HubLcSection.destroy_all
 LcSection.destroy_all
 
+unless ElementType.exists?(:name => "Wall")
+        ElementType.create({id:1, name: "Wall"})
+end
+
 ids = Array.new()
+ids.push(ElementType.find_by(name: "Wall").id)
+
 Dir.foreach('app/assets/images') do |item|
   next if item == '.' or item == '..' or not item.end_with? ".svg"
   file = Nokogiri::Slop(File.open("app/assets/images/" + item))
@@ -20,6 +26,7 @@ Dir.foreach('app/assets/images') do |item|
 
   if (width != nil and height != nil)
     type = ElementType.where(name: item[0..-5]).first_or_initialize
+    type.name = item[0..-5]
     type.width = width
     type.height = height
     type.svg_path = item
