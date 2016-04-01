@@ -59,7 +59,6 @@ $(document).on('admin#map:loaded', function(){
 
         obj.forEach(function(o){
           o.modified = false;
-          console.log(idCount);
           if(!o.id){
             o.id = idCount;
             idCount++;
@@ -340,7 +339,6 @@ $(document).on('admin#map:loaded', function(){
   });
 
   canvas.on('selection:cleared', function(options){
-    console.log('')
     $("#remove-selected").css("display", "none");
     $("#shelfData").css("display", "none");
   });
@@ -581,8 +579,6 @@ $(document).on('admin#map:loaded', function(){
 
     var wall = makeLine([ coord.left, coord.top, coord.left + 100, coord.top+100 ]);
 
-    console.log(coord.left, coord.top, coord.left + 100, coord.top+100 );
-
     wall.toObject = (function (toObject) {
       return function () {
         var opts = {
@@ -621,13 +617,13 @@ $(document).on('admin#map:loaded', function(){
 
   removeWallCircles = function() {
     for(var i=0; i < wallCircles.length; i++){
-      canvas.remove(wallCircles[i]);
+      wallCircles[i].setOpacity(0);
     }
   }
 
   restoreWallCircles = function() {
     for(var i=0; i < wallCircles.length; i++){
-      canvas.add(wallCircles[i]);
+      wallCircles[i].setOpacity(1);
     }
   }
 
@@ -711,7 +707,6 @@ function loadElementInCanvas(element, element_type, svg_path, last) {
       }
       canvas.add(loadedObject);
       counter++;
-//      console.log(last)
       if (counter == last) {
         canvas.renderOnAddRemove = true;
         canvas.renderAll();
