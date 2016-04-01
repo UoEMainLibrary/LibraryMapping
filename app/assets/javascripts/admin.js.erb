@@ -54,8 +54,18 @@ $(document).on('admin#map:loaded', function(){
       url : "/admin/"+floor,
       type : "post",
       data : { elements: JSON.stringify(obj) },
-      success : function(){
-        location.reload();
+      success: function(data, textStatus, xhr) {
+        var idCount = data.next_id;
+
+        obj.forEach(function(o){
+          o.modified = false;
+          console.log(idCount);
+          if(!o.id){
+            o.id = idCount;
+            idCount++;
+          }
+        })
+
       }
     });
 

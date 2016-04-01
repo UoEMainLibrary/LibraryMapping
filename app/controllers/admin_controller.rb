@@ -36,9 +36,17 @@ class AdminController < ApplicationController
     if params[:elements] then
       @elements = JSON.parse params[:elements]
 
+      newElementsCount = 0
       @elements.each do |element|
+        unless Element.exists?(:id => element["id"])
+          newElementsCount += 1
+        end
         save_single_element(element)
       end
+
+      render :json => {
+          :next_id => Element.maximum(:id).to_i.next - newElementsCount
+      }
     end
   end
 
