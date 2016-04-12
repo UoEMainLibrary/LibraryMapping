@@ -1,4 +1,6 @@
 $(document).on('admin#map:loaded', function(){
+
+  /* ------- CANVAS PROPERTIES ------- */
   var floor = $('body').data().floor;
 
   var boundingBox = new fabric.Rect({
@@ -32,204 +34,11 @@ $(document).on('admin#map:loaded', function(){
 
   wallCircles = [];
 
-
-  var minZoom = canvas.width / boundingBox.width
+  var minZoom = canvas.width / boundingBox.width;
   canvas.viewport.zoom = minZoom;
   $("#zoomSlider").attr("min", minZoom);
   $("#zoomSlider").val(minZoom);
   $(".progress-bar").css("width", $("#zoomSlider").val());
-
-  saveCanvas = function() {
-    canvas.deactivateAll();
-    removeWallCircles();
-
-    var obj = canvas.getObjects().filter(function(o) {
-      return o.modified == true
-    } );
-
-    console.log(JSON.stringify(obj));
-    restoreWallCircles();
-
-    return $.ajax({
-      url : "/admin/"+floor,
-      type : "post",
-      data : { elements: JSON.stringify(obj) },
-      success: function(data, textStatus, xhr) {
-        var idCount = data.next_id;
-
-        obj.forEach(function(o){
-          o.modified = false;
-          if(!o.id){
-            o.id = idCount;
-            idCount++;
-          }
-        })
-
-      }
-    });
-
-  }
-
-
-
-  $("#commands")
-      .mouseover(function() {
-        $("#commands").css("right", 0);
-      })
-      .mouseout(function() {
-        $("#commands").css("right", -490);
-      });
-
-  $("#switch").click(function(){
-    $("#commands").css("right", 0);
-  });
-
-  var clipboardObj, clipboardGroup;
-  $(document).on("keydown", function(e){
-    if (e.keyCode == 67 && (e.ctrlKey || e.metaKey)){
-      var obj = canvas.getActiveObject(), group = canvas.getActiveGroup();
-      if(obj){
-        clipboardObj = obj;
-      }else if(group){
-        clipboardGroup = group;
-      }
-    }else if(e.keyCode == 86 && (e.ctrlKey || e.metaKey)){
-      if(clipboardObj) {
-        var clone = fabric.util.object.clone(clipboardObj);
-        clone.set({
-          left: clipboardObj.left + 30,
-          top: clipboardObj.top + 30
-        });
-
-        clone.id = null;
-        clone.modified = true;
-
-        canvas.add(clone);
-        canvas.deactivateAll().renderAll();
-        canvas.setActiveObject(clone);
-
-      }else if(clipboardGroup){
-        canvas.deactivateAll();
-
-        clipboardGroup.forEachObject(function(o) {
-          var clone = fabric.util.object.clone(o);
-          clone.set({
-            left: o.left + 30,
-            top: o.top + 30
-          }).setCoords();
-
-          clone.id = null;
-          clone.modified = true;
-          canvas.add(clone);
-        });
-
-        canvas.renderAll();
-
-      }
-    }
-  });
-
-  document.body.addEventListener('keydown', function(evt) {
-    if(evt.keyCode==18) {
-      canvas.isGrabMode = true;
-    }
-
-    var movementDelta = 2;
-
-    if(event.shiftKey){
-      movementDelta = 10;
-    }
-    var activeObject = canvas.getActiveObject();
-    var activeGroup = canvas.getActiveGroup();
-
-    if (evt.keyCode === 37) {
-      evt.preventDefault(); // Prevent the default action
-      if (activeObject) {
-        var a = activeObject.get('left') - movementDelta;
-        activeObject.set('left', a);
-      }
-      else if (activeGroup) {
-        var a = activeGroup.get('left') - movementDelta;
-        activeGroup.set('left', a);
-      }
-
-    } else if (evt.keyCode === 39) {
-      evt.preventDefault(); // Prevent the default action
-      if (activeObject) {
-        var a = activeObject.get('left') + movementDelta;
-        activeObject.set('left', a);
-      }
-      else if (activeGroup) {
-        var a = activeGroup.get('left') + movementDelta;
-        activeGroup.set('left', a);
-      }
-    } else if (evt.keyCode === 38) {
-      evt.preventDefault(); // Prevent the default action
-      if (activeObject) {
-        var a = activeObject.get('top') - movementDelta;
-        activeObject.set('top', a);
-      }
-      else if (activeGroup) {
-        var a = activeGroup.get('top') - movementDelta;
-        activeGroup.set('top', a);
-      }
-
-    } else if (evt.keyCode === 40) {
-      evt.preventDefault(); // Prevent the default action
-      if (activeObject) {
-        var a = activeObject.get('top') + movementDelta;
-        activeObject.set('top', a);
-      }
-      else if (activeGroup) {
-        var a = activeGroup.get('top') + movementDelta;
-        activeGroup.set('top', a);
-      }
-    }
-
-    if(evt.keyCode == 46) {
-      removeSelected();
-    }
-
-    if (activeObject) {
-      activeObject.setCoords();
-      activeObject.modified = true;
-      canvas.renderAll();
-    } else if (activeGroup) {
-      activeGroup.setCoords();
-      activeGroup.forEachObject(function(o) {
-        o.modified = true;
-      });
-      canvas.renderAll();
-    }
-
-  });
-
-  document.body.addEventListener('keyup', function(e) {
-    if(e.keyCode==18) {
-      canvas.isGrabMode = false;
-    }
-  });
-
-  saveElementData = function (){
-    var obj = canvas.getActiveObject();
-
-    obj.range_up_opt =  $("#range_up_opt").val();
-    obj.range_up_digits =  $("#range_up_digits").val();
-    obj.range_up_letters = $("#range_up_letters").val();
-
-    obj.range_down_opt =  $("#range_down_opt").val();
-    obj.range_down_digits =  $("#range_down_digits").val();
-    obj.range_down_letters = $("#range_down_letters").val();
-
-    obj.classification =  $("#classification").val();
-    obj.identifier = $("#identifier").val();
-
-    $.ajax({
-      url : "/admin/save_element/" + floor,
-      type : "post",
-      data : { element: JSON.stringify(obj) }
-    });
-  }
 
   var gridSize = 20;
 
@@ -242,28 +51,144 @@ $(document).on('admin#map:loaded', function(){
 
   var grid = new fabric.Group(lines, {selectable: false, evented: false});
 
+  /* ------- EVENT LISTENERS ------- */
+  var clipboardObj, clipboardGroup;
+  var movementDelta = 2;
 
-  canvas.on('object:modified', function(options) {
-    if (options.target._objects) {
-      options.target._objects.forEach(function(o) {
-        setObjectModified(o);
-      })
-    } else {
-      setObjectModified(options.target);
+  $(document).on("keydown", function(e) {
+    var activeObject = canvas.getActiveObject();
+    var activeGroup = canvas.getActiveGroup();
+
+    if (e.keyCode == 67 && (e.ctrlKey || e.metaKey)) {
+      // Copy
+      if (activeObject) {
+        clipboardObj = activeObject;
+      } else if (group) {
+        clipboardGroup = activeGroup;
+      }
+    } else if (e.keyCode == 86 && (e.ctrlKey || e.metaKey)) {
+      // Paste
+      if (clipboardObj) {
+        var clone = fabric.util.object.clone(clipboardObj);
+        clone.set({
+          left: clipboardObj.left + 30,
+          top: clipboardObj.top + 30
+        });
+
+        clone.id = null;
+        clone.modified = true;
+
+        canvas.add(clone);
+        canvas.deactivateAll().renderAll();
+        canvas.setActiveObject(clone);
+      } else if (clipboardGroup) {
+        canvas.deactivateAll();
+
+        clipboardGroup.forEach(function(o) {
+          var clone = fabric.util.object.clone(o);
+          clone.set({
+            left: o.left + 30,
+            top: o.top + 30
+          }).setCoords();
+
+          clone.id = null;
+          clone.modified = true;
+          canvas.add(clone);
+        });
+
+        canvas.renderAll();
+      }
+    } else if (e.keyCode == 18) {
+      // Shift
+      canvas.isGrabMode = true;
+    } else if (e.keyCode >= 37 && e.keyCode <= 40) {
+      // Arrow keys
+      if (e.shiftKey) {
+        movementDelta = 20;
+      }
+      e.preventDefault();
+      var target = activeObject || activeGroup;
+      switch(e.keyCode) {
+        case 37:
+          target.set('left', target.get('left') - movementDelta);
+          break;
+        case 38:
+          target.set('top', target.get('top') - movementDelta);
+          break;
+        case 39:
+          target.set('left', target.get('left') + movementDelta);
+          break;
+        case 40:
+          target.set('top', target.get('top') + movementDelta);
+          break;
+        default:
+          break;
+      }
+    } else if(e.keyCode == 46) {
+      // Delete
+      removeSelected()
+    }
+
+    if (activeObject) {
+      activeObject.setCoords();
+      activeObject.modified = true;
+    } else if (activeGroup) {
+      activeGroup.setCoords();
+      activeGroup.forEachObject(function(o) {
+        o.modified = true;
+      });
+    }
+    canvas.renderAll();
+  });
+
+  $(document).on('keyup', function(e) {
+    if(e.keyCode==18) {
+      canvas.isGrabMode = false;
     }
   });
 
-  setObjectModified = function(o){
-    if(o.type == "circle") {
-      if(o.line1){
-        o.line1.modified = true;
-      }else{
-        o.line2.modified = true;
+  var canvas_container = document.getElementById('canvas-container');
+  canvas_container.addEventListener('DOMMouseScroll', handleScroll, false);
+  canvas_container.addEventListener('mousewheel', handleScroll, false);
+
+  function handleScroll(e) {
+    var delta = e.wheelDelta ? e.wheelDelta/40 : e.detail ? -e.detail : 0;
+    if (delta > 0) {
+      var newZoom = canvas.viewport.zoom / 1.1;
+      if (newZoom >= minZoom) {
+        canvas.setZoom(newZoom);
+        $("#zoomSlider").val(newZoom);
       }
-    }else{
-      o.modified = true;
+    } else if (delta < 0) {
+      var newZoom = canvas.viewport.zoom * 1.1;
+      if (newZoom <= 1.5) {
+        canvas.setZoom(newZoom);
+        $("#zoomSlider").val(newZoom);
+      }
     }
+    return e.preventDefault() && false;
   }
+
+  canvas.on('object:modified', function(options) {
+    var toModify = [];
+    if (options.target._objects) {
+      toModify = options.target._objects;
+    } else {
+      toModify.push(options.target);
+    }
+
+    toModify.forEach(function(o) {
+      if (o.type != "circle") {
+        o.modified = true;
+      } else {
+        if (o.line1) {
+          o.line1.modified = true;
+        } else {
+          o.line2.modified = true;
+        }
+      }
+    });
+  });
 
   canvas.on('object:removed', function(options){
     if(options.target.id) {
@@ -275,44 +200,6 @@ $(document).on('admin#map:loaded', function(){
     }
   });
 
-  removeSelected = function() {
-    var activeObject = canvas.getActiveObject(),
-        activeGroup = canvas.getActiveGroup();
-
-    if ((activeObject || activeGroup) && confirm('Are you sure?')) {
-      if (activeGroup) {
-        var objectsInGroup = activeGroup.getObjects();
-        canvas.discardActiveGroup();
-        objectsInGroup.forEach(function (object) {
-          removeObject(object);
-        });
-      }
-      else if (activeObject) {
-        removeObject(activeObject);
-      }
-    }
-  }
-
-  removeObject = function(activeObject){
-    if(activeObject.type == "circle"){
-      canvas.remove(activeObject.line1);
-      canvas.remove(activeObject.line2);
-      for(var i=0; i < wallCircles.length; i++){
-        if(activeObject.line1){
-          if(wallCircles[i].line1 == activeObject.line1 || wallCircles[i].line2 == activeObject.line1){
-            canvas.remove(wallCircles[i]);
-          }
-        }else if(activeObject.line2){
-          if(wallCircles[i].line1 == activeObject.line2 || wallCircles[i].line2 == activeObject.line2){
-            canvas.remove(wallCircles[i]);
-          }
-        }
-      }
-    }else{
-      canvas.remove(activeObject);
-    }
-  }
-
   canvas.on('object:rotating', function(options) {
     if (options.e.shiftKey) {
       options.target.angle = options.target.angle - options.target.angle % 45
@@ -322,20 +209,20 @@ $(document).on('admin#map:loaded', function(){
   canvas.on('object:selected', function(options){
     $("#remove-selected").css("display", "initial");
     $("#shelfData").css("display", "none");
+
     if(options.target.element_type_name == "Shelf") {
       $("#shelfData").css("display", "initial");
+      $("#range_up_opt").val(options.target.range_up_opt);
+      $("#range_up_letters").val(options.target.range_up_letters);
+      $("#range_up_digits").val(options.target.range_up_digits);
+
+      $("#range_down_opt").val(options.target.range_down_opt);
+      $("#range_down_letters").val(options.target.range_down_letters);
+      $("#range_down_digits").val(options.target.range_down_digits);
+
+      $("#classification").val(options.target.classification);
+      $("#identifier").val(options.target.identifier);
     }
-
-    $("#range_up_opt").val(options.target.range_up_opt);
-    $("#range_up_letters").val(options.target.range_up_letters);
-    $("#range_up_digits").val(options.target.range_up_digits);
-
-    $("#range_down_opt").val(options.target.range_down_opt);
-    $("#range_down_letters").val(options.target.range_down_letters);
-    $("#range_down_digits").val(options.target.range_down_digits);
-
-    $("#classification").val(options.target.classification);
-    $("#identifier").val(options.target.identifier);
   });
 
   canvas.on('selection:cleared', function(options){
@@ -382,7 +269,98 @@ $(document).on('admin#map:loaded', function(){
     }
   });
 
-  $('#zoomIn').click(function(){
+
+  /* ------- CANVAS METHODS ------- */
+
+  saveCanvas = function() {
+    canvas.deactivateAll();
+    removeWallCircles();
+
+    var obj = canvas.getObjects().filter(function(o) {
+      return o.modified == true
+    } );
+
+    console.log(JSON.stringify(obj));
+    restoreWallCircles();
+
+    return $.ajax({
+      url : "/admin/"+floor,
+      type : "post",
+      data : { elements: JSON.stringify(obj) },
+      success: function(data, textStatus, xhr) {
+        var idCount = data.next_id;
+        obj.forEach(function(o){
+          o.modified = false;
+          if(!o.id){
+            o.id = idCount;
+            idCount++;
+          }
+        });
+      }
+    });
+  };
+
+  saveElementData = function (){
+    var obj = canvas.getActiveObject();
+
+    obj.range_up_opt =  $("#range_up_opt").val();
+    obj.range_up_digits =  $("#range_up_digits").val();
+    obj.range_up_letters = $("#range_up_letters").val();
+
+    obj.range_down_opt =  $("#range_down_opt").val();
+    obj.range_down_digits =  $("#range_down_digits").val();
+    obj.range_down_letters = $("#range_down_letters").val();
+
+    obj.classification =  $("#classification").val();
+    obj.identifier = $("#identifier").val();
+
+    $.ajax({
+      url : "/admin/save_element/" + floor,
+      type : "post",
+      data : { element: JSON.stringify(obj) }
+    });
+  };
+
+
+  removeSelected = function() {
+    var activeObject = canvas.getActiveObject(),
+        activeGroup = canvas.getActiveGroup();
+
+    if ((activeObject || activeGroup) && confirm('Are you sure?')) {
+      var toRemove = [];
+
+      if (activeGroup) {
+        toRemove = activeGroup.getObjects();
+        canvas.discardActiveGroup();
+      } else if (activeObject) {
+        toRemove.push(activeObject);
+      }
+
+      toRemove.forEach(function(object) {
+        if (object.type != "circle") {
+          canvas.remove(object);
+        } else {
+          // If wall
+          canvas.remove(object.line1);
+          canvas.remove(object.line2);
+          for (var i=0; i < wallCircles.length; i++) {
+            if (object.line1) {
+              if (wallCircles[i].line1 == object.line1 || wallCircles[i].line2 == object.line1) {
+                canvas.remove(wallCircles[i]);
+              }
+            } else if (object.line2) {
+              if (wallCircles[i].line1 == object.line2 || wallCircles[i].line2 == object.line2) {
+                canvas.remove(wallCircles[i]);
+              }
+            }
+          }
+        }
+      });
+
+    }
+  };
+
+  $('#zoomIn').click(function() {
     var newZoom = canvas.viewport.zoom * 1.1;
     if (newZoom <= 1.5) {
       canvas.setZoom(newZoom);
@@ -458,7 +436,6 @@ $(document).on('admin#map:loaded', function(){
       top: (- canvas.viewport.position.y / canvas.viewport.zoom) + ( canvas.height / canvas.viewport.zoom / 2)
     };
 
-
     fabric.loadSVGFromURL(assetPath, function(objects, options) {
 
       var loadedObject = fabric.util.groupSVGElements(objects, options);
@@ -470,7 +447,7 @@ $(document).on('admin#map:loaded', function(){
             element_type_id: this.element_type_id,
             modified: this.modified,
             element_type_name: this.element_type_name
-          }
+          };
 
           if (assetName == "Shelf") {
             $.extend(opts, {
@@ -517,27 +494,9 @@ $(document).on('admin#map:loaded', function(){
 
       canvas.add(loadedObject);
     });
-  }
+  };
 
   canvas.add(grid);
-
-  handleScroll = function(evt){
-    var delta = evt.wheelDelta ? evt.wheelDelta/40 : evt.detail ? -evt.detail : 0;
-    if (delta > 0) {
-      var newZoom = canvas.viewport.zoom / 1.1;
-      if (newZoom >= minZoom) {
-        canvas.setZoom(newZoom);
-        $("#zoomSlider").val(newZoom);
-      }
-    } else if (delta < 0) {
-      var newZoom = canvas.viewport.zoom * 1.1;
-      if (newZoom <= 1.5) {
-        canvas.setZoom(newZoom);
-        $("#zoomSlider").val(newZoom);
-      }
-    }
-    return evt.preventDefault() && false;
-  };
 
   makeCircle = function(left, top, line1, line2) {
     var c = new fabric.Circle({
@@ -613,19 +572,20 @@ $(document).on('admin#map:loaded', function(){
     wallCircles.push(circle1,circle2);
 
     canvas.add(circle1, circle2);
-  }
+  };
+
 
   removeWallCircles = function() {
-    for(var i=0; i < wallCircles.length; i++){
+    for(var i=0; i < wallCircles.length; i++) {
       wallCircles[i].setOpacity(0);
     }
-  }
+  };
 
   restoreWallCircles = function() {
-    for(var i=0; i < wallCircles.length; i++){
+    for(var i=0; i < wallCircles.length; i++) {
       wallCircles[i].setOpacity(1);
     }
-  }
+  };
 
   canvas.on('object:moving', function(e) {
     var p = e.target;
@@ -634,12 +594,7 @@ $(document).on('admin#map:loaded', function(){
     canvas.renderAll();
   });
 
-  var canvas_container = document.getElementById('canvas-container');
-  canvas_container.addEventListener('DOMMouseScroll',handleScroll,false);
-  canvas_container.addEventListener('mousewheel',handleScroll,false);
-
   $(document).trigger('canvas:preloaded');
-
 });
 
 var counter = 1;
@@ -752,6 +707,5 @@ function loadElementInCanvas(element, element_type, svg_path, last) {
     wallCircles.push(circle1, circle2);
 
     canvas.add(circle1, circle2);
-
   }
 }

@@ -269,6 +269,19 @@
 
 
 <script>
+  $("#commands")
+      .mouseover(function() {
+        $("#commands").css("right", 0);
+      })
+      .mouseout(function() {
+        $("#commands").css("right", -490);
+      });
+
+  $("#switch").click(function(){
+    $("#commands").css("right", 0);
+  });
+
+
   var canvas = new fabric.CanvasWithViewport('canvas');
 
   $(document).one("canvas:preloaded", function() {
