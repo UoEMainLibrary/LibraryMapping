@@ -205,12 +205,22 @@ input[type=radio] {
   margin-left:15px;
   float: left;
 }
-.navbar{
-  margin: 0 0 5px 0;
+.nav-bar{
+  position: relative;
+  border-radius: 4px;
+}
+.navbarForm{
+  width: auto;
+  border: 0;
+  margin-left: 0;
+  margin-right: 0;
+  padding-bottom: 0;
+  -webkit-box-shadow: none;
+  box-shadow: none;
 }
 .logo{
   height: 30px;
-  margin-top: 10px;
+  margin: 10px 0 0 10px;
   float:left;
 }
 .progress-frame{
@@ -267,6 +277,12 @@ input[type=radio] {
 .orange{
   background-color: #F36E50;  
 }
+.go{
+  margin: 2px;
+}
+.marginSearch{
+  margin-left: -15px !important;
+}
 .footerHolder{
     background: #1b325e none repeat scroll 0 0;
     color: #fff;
@@ -275,4 +291,4 @@ input[type=radio] {
     width: 100%;
     height: auto;
     margin-top: 5px;
-  }
+}
