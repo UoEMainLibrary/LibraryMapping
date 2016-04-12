@@ -23,7 +23,7 @@ ul {
   border-left: 30px solid #1ABB9C;
   -webkit-transition: right 0.4s; /* Safari */
   transition: right 0.4s;
-  height: 1000px;
+  height: 710px;
 }
 label {
   display: inline-block;
@@ -255,7 +255,7 @@ input[type=radio] {
 .shortcut{
   background-color: #ccc;
   width: 100%;
-  margin-bottom: 10px;
+  margin-bottom: 5px;
 }
 .shortcutbtn{
   color: #fff;
@@ -267,3 +267,12 @@ input[type=radio] {
 .orange{
   background-color: #F36E50;  
 }
+.footerHolder{
+    background: #1b325e none repeat scroll 0 0;
+    color: #fff;
+    text-align: center;
+    display: inline-block;
+    width: 100%;
+    height: auto;
+    margin-top: 5px;
+  }
