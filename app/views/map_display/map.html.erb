@@ -16,9 +16,56 @@
   }
 </style>
 
+<div>
+  <!--nav-->
+ <nav class="bg-blue">
+    <div class="container-fluid">
+        <div class="navbar-header">
+          <button type="button" class="navbar-toggle" data-toggle="collapse" data-target="#myNavbar">
+            <span class="icon-bar"></span>
+            <span class="icon-bar"></span>
+            <span class="icon-bar"></span>
+          </button>
 
+          <img class="logo" src="<%= asset_path("logo-01" + ".png") %>"><h2>LibraryMapping&middot; User map</h2>
+        </div>
+        <div class="collapse navbar-collapse" id="myNavbar">
+          <ul class="nav navbar-nav navbar-right ">
+              <li><a class="white-font" href="#"><span class="glyphicon glyphicon-user"></span> Sign Up</a></li>
+              <li><a class="white-font" href="#"><span class="glyphicon glyphicon-log-in"></span> Login</a></li>
+          </ul>
+        </div>
+   </div>
+  </nav>
+  <!--[if IE]><script src="http://fabricjs.com/lib/fonts/Delicious.font.js"></script><![endif]-->
+
+
+
+  <link href='http://fonts.googleapis.com/css?family=Plaster' rel='stylesheet' type='text/css'>
+  <link href='http://fonts.googleapis.com/css?family=Engagement' rel='stylesheet' type='text/css'>
+
+  <div class="collapse navbar-collapse shortcut">
+    <form class="navbar-form navbar" role="search">
+      <input type="text" id="search" name="search" class="form-control search" placeholder="Search Location">
+      <button type="submit" name="submit" class="btn btn-primary go"><span class="glyphicon glyphicon-map-marker"></span>Go</button>
+    </form>
+  </div>
+<!--Image map canvas-->
 <div id="image-map"></div>
+<!--Footer-->
+<div class="footerHolder">
+  <p>
+      Unless explicitly stated otherwise, all material is copyright © The University of Edinburgh
 
+      <script type="text/javascript">
+      var currentTime = new Date()
+      var year = currentTime.getFullYear()
+      document.write(+ year)
+      </script>
+              
+    </p>
+</div>
+</div>
 <script>
   var map = L.map('image-map', {
     minZoom: 1,
