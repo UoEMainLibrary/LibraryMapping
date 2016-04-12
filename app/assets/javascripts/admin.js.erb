@@ -51,7 +51,210 @@ $(document).on('admin#map:loaded', function(){
 
   var grid = new fabric.Group(lines, {selectable: false, evented: false});
 
+  canvas.add(grid)
+
+  /* ------- CANVAS METHODS ------- */
+
+  saveCanvas = function() {
+    canvas.deactivateAll();
+    removeWallCircles();
+
+    var obj = canvas.getObjects().filter(function(o) {
+      return o.modified == true
+    } );
+
+    console.log(JSON.stringify(obj));
+    restoreWallCircles();
+
+    return $.ajax({
+      url : "/admin/"+floor,
+      type : "post",
+      data : { elements: JSON.stringify(obj) },
+      success: function(data, textStatus, xhr) {
+        var idCount = data.next_id;
+        obj.forEach(function(o){
+          o.modified = false;
+          if(!o.id){
+            o.id = idCount;
+            idCount++;
+          }
+        });
+      }
+    });
+  };
+
+  saveElementData = function () {
+    var obj = canvas.getActiveObject();
+
+    obj.range_up_opt =  $("#range_up_opt").val();
+    obj.range_up_digits =  $("#range_up_digits").val();
+    obj.range_up_letters = $("#range_up_letters").val();
+
+    obj.range_down_opt =  $("#range_down_opt").val();
+    obj.range_down_digits =  $("#range_down_digits").val();
+    obj.range_down_letters = $("#range_down_letters").val();
+
+    obj.classification =  $("#classification").val();
+    obj.identifier = $("#identifier").val();
+
+    $.ajax({
+      url : "/admin/save_element/" + floor,
+      type : "post",
+      data : { element: JSON.stringify(obj) }
+    });
+  };
+
+
+  removeSelected = function() {
+    var activeObject = canvas.getActiveObject(),
+        activeGroup = canvas.getActiveGroup();
+
+    if ((activeObject || activeGroup) && confirm('Are you sure?')) {
+      var toRemove = [];
+
+      if (activeGroup) {
+        toRemove = activeGroup.getObjects();
+        canvas.discardActiveGroup();
+      } else if (activeObject) {
+        toRemove.push(activeObject);
+      }
+
+      toRemove.forEach(function(object) {
+        if (object.type != "circle") {
+          canvas.remove(object);
+        } else {
+          // If wall
+          canvas.remove(object.line1);
+          canvas.remove(object.line2);
+          for (var i=0; i < wallCircles.length; i++) {
+            if (object.line1) {
+              if (wallCircles[i].line1 == object.line1 || wallCircles[i].line2 == object.line1) {
+                canvas.remove(wallCircles[i]);
+              }
+            } else if (object.line2) {
+              if (wallCircles[i].line1 == object.line2 || wallCircles[i].line2 == object.line2) {
+                canvas.remove(wallCircles[i]);
+              }
+            }
+          }
+        }
+      });
+
+    }
+  };
+
+  rasterizeSVG = function() {
+    var w = canvas.width;
+    var h = canvas.height;
+
+    canvas.width = 6003;
+    canvas.height = 4003;
+    canvas.remove(grid);
+    removeWallCircles();
+
+    var data = canvas.toSVG();
+    $.ajax({
+      url : "/admin/save_svg/"+floor,
+      type : "post",
+      data : { svg_data: data }
+    });
+
+    restoreWallCircles();
+    canvas.width = w;
+    canvas.height = h;
+    canvas.add(grid);
+    canvas.sendToBack(grid);
+  };
+
+  addShape = function(assetId, assetName, assetPath) {
+    var coord = {
+      left: (- canvas.viewport.position.x / canvas.viewport.zoom) + ( canvas.width / canvas.viewport.zoom / 2),
+      top: (- canvas.viewport.position.y / canvas.viewport.zoom) + ( canvas.height / canvas.viewport.zoom / 2)
+    };
+
+    fabric.loadSVGFromURL(assetPath, function(objects, options) {
+
+      var loadedObject = fabric.util.groupSVGElements(objects, options);
+      loadedObject.toObject = (function (toObject) {
+        return function () {
+          var opts = {
+            id: this.id,
+            floor: this.floor,
+            element_type_id: this.element_type_id,
+            modified: this.modified,
+            element_type_name: this.element_type_name
+          };
+
+          if (assetName == "Shelf") {
+            $.extend(opts, {
+              classification: this.classification,
+              identifier: this.identifier,
+              range_up_opt: this.range_up_opt,
+              range_up_digits: this.range_up_digits,
+              range_up_letters:this.range_up_letters,
+              range_down_opt: this.range_down_opt,
+              range_down_digits: this.range_down_digits,
+              range_down_letters: this.range_down_letters
+            })
+          }
+          return fabric.util.object.extend(toObject.call(this), opts);
+        };
+      })(fabric.Object.prototype.toObject);
+
+      loadedObject.set({
+            left: coord.left,
+            top: coord.top,
+            angle: 0,
+            floor: floor,
+            element_type_id: parseInt(assetId),
+            modified: true,
+            id: null,
+            element_type_name: assetName
+          })
+          .setCoords();
+
+      if (assetName == "Shelf") {
+        loadedObject.set({
+          range_up_opt: "",
+          range_up_digits: "",
+          range_up_letters: "",
+          range_down_opt: "",
+          range_down_digits: "",
+          range_down_letters: "",
+          classification: "",
+          identifier: "",
+          originX: 'center',
+          originY: 'center'
+        })
+      }
+
+      canvas.add(loadedObject);
+    });
+  };
+
+  addWall = function(element_type_id) {
+    var left = (- canvas.viewport.position.x / canvas.viewport.zoom) + ( canvas.width / canvas.viewport.zoom / 2)
+    var top = (- canvas.viewport.position.y / canvas.viewport.zoom) + ( canvas.height / canvas.viewport.zoom / 2)
+    var wall = new Wall(null, element_type_id, floor, left, top, null, null);
+    wall.addTo(canvas);
+    wallCircles.push(wall.circle1, wall.circle2);
+  };
+
+
+  removeWallCircles = function() {
+    for(var i=0; i < wallCircles.length; i++) {
+      wallCircles[i].setOpacity(0);
+    }
+  };
+
+  restoreWallCircles = function() {
+    for(var i=0; i < wallCircles.length; i++) {
+      wallCircles[i].setOpacity(1);
+    }
+  };
+
   /* ------- EVENT LISTENERS ------- */
+
   var clipboardObj, clipboardGroup;
   var movementDelta = 2;
 
@@ -269,96 +472,14 @@ $(document).on('admin#map:loaded', function(){
     }
   });
 
+  canvas.on('object:moving', function(e) {
+    var p = e.target;
+    p.line1 && p.line1.set({ 'x2': p.left, 'y2': p.top });
+    p.line2 && p.line2.set({ 'x1': p.left, 'y1': p.top });
+    canvas.renderAll();
+  });
 
-  /* ------- CANVAS METHODS ------- */
-
-  saveCanvas = function() {
-    canvas.deactivateAll();
-    removeWallCircles();
-
-    var obj = canvas.getObjects().filter(function(o) {
-      return o.modified == true
-    } );
-
-    console.log(JSON.stringify(obj));
-    restoreWallCircles();
-
-    return $.ajax({
-      url : "/admin/"+floor,
-      type : "post",
-      data : { elements: JSON.stringify(obj) },
-      success: function(data, textStatus, xhr) {
-        var idCount = data.next_id;
-        obj.forEach(function(o){
-          o.modified = false;
-          if(!o.id){
-            o.id = idCount;
-            idCount++;
-          }
-        });
-      }
-    });
-  };
-
-  saveElementData = function (){
-    var obj = canvas.getActiveObject();
-
-    obj.range_up_opt =  $("#range_up_opt").val();
-    obj.range_up_digits =  $("#range_up_digits").val();
-    obj.range_up_letters = $("#range_up_letters").val();
-
-    obj.range_down_opt =  $("#range_down_opt").val();
-    obj.range_down_digits =  $("#range_down_digits").val();
-    obj.range_down_letters = $("#range_down_letters").val();
-
-    obj.classification =  $("#classification").val();
-    obj.identifier = $("#identifier").val();
-
-    $.ajax({
-      url : "/admin/save_element/" + floor,
-      type : "post",
-      data : { element: JSON.stringify(obj) }
-    });
-  };
-
-
-  removeSelected = function() {
-    var activeObject = canvas.getActiveObject(),
-        activeGroup = canvas.getActiveGroup();
-
-    if ((activeObject || activeGroup) && confirm('Are you sure?')) {
-      var toRemove = [];
-
-      if (activeGroup) {
-        toRemove = activeGroup.getObjects();
-        canvas.discardActiveGroup();
-      } else if (activeObject) {
-        toRemove.push(activeObject);
-      }
-
-      toRemove.forEach(function(object) {
-        if (object.type != "circle") {
-          canvas.remove(object);
-        } else {
-          // If wall
-          canvas.remove(object.line1);
-          canvas.remove(object.line2);
-          for (var i=0; i < wallCircles.length; i++) {
-            if (object.line1) {
-              if (wallCircles[i].line1 == object.line1 || wallCircles[i].line2 == object.line1) {
-                canvas.remove(wallCircles[i]);
-              }
-            } else if (object.line2) {
-              if (wallCircles[i].line1 == object.line2 || wallCircles[i].line2 == object.line2) {
-                canvas.remove(wallCircles[i]);
-              }
-            }
-          }
-        }
-      });
-
-    }
-  };
+  /* ------- UI LISTENERS ------- */
 
   $('#zoomIn').click(function() {
     var newZoom = canvas.viewport.zoom * 1.1;
@@ -405,197 +526,11 @@ $(document).on('admin#map:loaded', function(){
     }
   });
 
-  $('#rasterize-svg').click(function(){
-    var w = canvas.width;
-    var h = canvas.height;
-
-    canvas.width = 6003;
-    canvas.height = 4003;
-    canvas.remove(grid);
-    removeWallCircles();
-
-    var data = canvas.toSVG()
-    $.ajax({
-      url : "/admin/save_svg/"+floor,
-      type : "post",
-      data : { svg_data: data }
-    });
-
-    restoreWallCircles();
-    canvas.width = w;
-    canvas.height = h;
-    canvas.add(grid);
-    canvas.sendToBack(grid);
-
-  });
-
-  addShape = function(assetId, assetName, assetPath) {
-
-    var coord = {
-      left: (- canvas.viewport.position.x / canvas.viewport.zoom) + ( canvas.width / canvas.viewport.zoom / 2),
-      top: (- canvas.viewport.position.y / canvas.viewport.zoom) + ( canvas.height / canvas.viewport.zoom / 2)
-    };
-
-    fabric.loadSVGFromURL(assetPath, function(objects, options) {
-
-      var loadedObject = fabric.util.groupSVGElements(objects, options);
-      loadedObject.toObject = (function (toObject) {
-        return function () {
-          var opts = {
-            id: this.id,
-            floor: this.floor,
-            element_type_id: this.element_type_id,
-            modified: this.modified,
-            element_type_name: this.element_type_name
-          };
-
-          if (assetName == "Shelf") {
-            $.extend(opts, {
-              classification: this.classification,
-              identifier: this.identifier,
-              range_up_opt: this.range_up_opt,
-              range_up_digits: this.range_up_digits,
-              range_up_letters:this.range_up_letters,
-              range_down_opt: this.range_down_opt,
-              range_down_digits: this.range_down_digits,
-              range_down_letters: this.range_down_letters
-            })
-          }
-          return fabric.util.object.extend(toObject.call(this), opts);
-        };
-      })(fabric.Object.prototype.toObject);
-
-      loadedObject.set({
-            left: coord.left,
-            top: coord.top,
-            angle: 0,
-            floor: floor,
-            element_type_id: parseInt(assetId),
-            modified: true,
-            id: null,
-            element_type_name: assetName
-          })
-          .setCoords();
-
-      if (assetName == "Shelf") {
-        loadedObject.set({
-          range_up_opt: "",
-          range_up_digits: "",
-          range_up_letters: "",
-          range_down_opt: "",
-          range_down_digits: "",
-          range_down_letters: "",
-          classification: "",
-          identifier: "",
-          originX: 'center',
-          originY: 'center'
-        })
-      }
-
-      canvas.add(loadedObject);
-    });
-  };
-
-  canvas.add(grid);
-
-  makeCircle = function(left, top, line1, line2) {
-    var c = new fabric.Circle({
-      left: left,
-      top: top,
-      strokeWidth: 5,
-      radius: 12,
-      fill: '#fff',
-      stroke: '#666',
-      originX: 'center',
-      originY: 'center'
-    });
-    c.hasControls = c.hasBorders = false;
-
-    c.line1 = line1;
-    c.line2 = line2;
-
-    return c;
-  }
-
-  makeLine = function(coords) {
-    return new fabric.Line(coords, {
-      fill: '#333',
-      stroke: '#333',
-      strokeWidth: 5,
-      selectable: false,
-      originX: 'center',
-      originY: 'center'
-    });
-  }
-
-
-  addWall = function(id) {
-
-    var coord = {
-      left: (- canvas.viewport.position.x / canvas.viewport.zoom) + ( canvas.width / canvas.viewport.zoom / 2),
-      top: (- canvas.viewport.position.y / canvas.viewport.zoom) + ( canvas.height / canvas.viewport.zoom / 2)
-    };
-
-    var wall = makeLine([ coord.left, coord.top, coord.left + 100, coord.top+100 ]);
-
-    wall.toObject = (function (toObject) {
-      return function () {
-        var opts = {
-          id: this.id,
-          floor: this.floor,
-          element_type_id: this.element_type_id,
-          modified: this.modified,
-          top: this.x1,
-          left: this.x2,
-          right: this.y1,
-          bottom: this.y2
-        }
-
-        return fabric.util.object.extend(toObject.call(this), opts);
-      }
-    })(fabric.Object.prototype.toObject);
-
-
-    wall.set({
-          floor: floor,
-          element_type_id: id,
-          modified: true,
-          id: null,
-        })
-        .setCoords();
-
-    canvas.add(wall);
-
-    var circle1 = makeCircle(wall.get('x1'), wall.get('y1'), null, wall);
-    var circle2 = makeCircle(wall.get('x2'), wall.get('y2'), wall, null);
-
-    wallCircles.push(circle1,circle2);
-
-    canvas.add(circle1, circle2);
-  };
-
-
-  removeWallCircles = function() {
-    for(var i=0; i < wallCircles.length; i++) {
-      wallCircles[i].setOpacity(0);
-    }
-  };
-
-  restoreWallCircles = function() {
-    for(var i=0; i < wallCircles.length; i++) {
-      wallCircles[i].setOpacity(1);
-    }
-  };
-
-  canvas.on('object:moving', function(e) {
-    var p = e.target;
-    p.line1 && p.line1.set({ 'x2': p.left, 'y2': p.top });
-    p.line2 && p.line2.set({ 'x1': p.left, 'y1': p.top });
-    canvas.renderAll();
-  });
-
   $(document).trigger('canvas:preloaded');
 });
+
+
+
 
 var counter = 1;
 function loadElementInCanvas(element, element_type, svg_path, last) {
@@ -670,42 +605,92 @@ function loadElementInCanvas(element, element_type, svg_path, last) {
     });
   } else {
     counter++;
-    var wall = makeLine([element.top, element.right, element.left, element.bottom]);
+    var wall = new Wall(element.id, element.element_type_id, element.floor, element.top, element.right, element.left, element.bottom);
+    wall.addTo(canvas);
+    wallCircles.push(wall.circle1, wall.circle2);
 
-    wall.toObject = (function (toObject) {
+  }
+}
+
+
+/* ------- WALL ------- */
+class Wall {
+  constructor(id, element_type_id, floor, left, top, right, bottom) {
+    if (!right || !bottom) {
+      right = left + 100;
+      bottom = top + 100;
+    }
+
+    this.wall = Wall.makeLine([left, top, right, bottom]);
+
+    this.wall.toObject = (function (toObject) {
       return function () {
         var opts = {
           id: this.id,
           floor: this.floor,
           element_type_id: this.element_type_id,
           modified: this.modified,
+          element_type_name: this.element_type_name,
           top: this.x1,
           left: this.x2,
-          element_type_name: this.element_type_name,
           right: this.y1,
           bottom: this.y2
-        }
+        };
 
         return fabric.util.object.extend(toObject.call(this), opts);
       }
     })(fabric.Object.prototype.toObject);
 
-    wall.set({
-          floor: element.floor,
-          element_type_id: element.element_type_id,
-          modified: false,
-          id: element.id,
+
+    this.wall.set({
+          floor: floor,
+          element_type_id: element_type_id,
+          modified: id ? false : true,
+          id: id,
           element_type_name: "Wall"
         })
         .setCoords();
 
-    canvas.add(wall);
+    console.log(this.wall)
+  }
 
-    var circle1 = makeCircle(wall.get('x1'), wall.get('y1'), null, wall);
-    var circle2 = makeCircle(wall.get('x2'), wall.get('y2'), wall);
+  addTo(canvas) {
+    console.log("hellos")
+    canvas.add(this.wall);
 
-    wallCircles.push(circle1, circle2);
+    this.circle1 = Wall.makeCircle(this.wall.get('x1'), this.wall.get('y1'), null, this.wall);
+    this.circle2 = Wall.makeCircle(this.wall.get('x2'), this.wall.get('y2'), this.wall, null);
 
-    canvas.add(circle1, circle2);
+    canvas.add(this.circle1, this.circle2);
+  }
+
+  static makeLine(coords) {
+    return new fabric.Line(coords, {
+      fill: '#333',
+      stroke: '#333',
+      strokeWidth: 5,
+      selectable: false,
+      originX: 'center',
+      originY: 'center'
+    });
+  }
+
+  static makeCircle(left, top, line1, line2) {
+    var c = new fabric.Circle({
+      left: left,
+      top: top,
+      strokeWidth: 5,
+      radius: 12,
+      fill: '#fff',
+      stroke: '#666',
+      originX: 'center',
+      originY: 'center'
+    });
+    c.hasControls = c.hasBorders = false;
+
+    c.line1 = line1;
+    c.line2 = line2;
+
+    return c;
   }
 }
