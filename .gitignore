@@ -57,3 +57,5 @@ bower.json
 Gemfile.lock
 config/database.yml
 public/assets/*
+!public/assets/logo-*
+!public/assets/overlay_*
