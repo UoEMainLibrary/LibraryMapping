@@ -26,7 +26,7 @@ $(document).on('admin#map:loaded', function(){
   });
 
 
-  canvas.setBackgroundImage("<%= asset_path("overlay_ml_1.png") %>", canvas.renderAll.bind(canvas), {
+  canvas.setBackgroundImage("/assets/overlay_ml_1.png", canvas.renderAll.bind(canvas), {
     width: 6000,
     height: 4000,
     opacity: 0.3
@@ -650,12 +650,9 @@ class Wall {
           element_type_name: "Wall"
         })
         .setCoords();
-
-    console.log(this.wall)
   }
 
   addTo(canvas) {
-    console.log("hellos")
     canvas.add(this.wall);
 
     this.circle1 = Wall.makeCircle(this.wall.get('x1'), this.wall.get('y1'), null, this.wall);
