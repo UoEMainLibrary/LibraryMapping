@@ -596,12 +596,12 @@ function loadElementInCanvas(element, element_type, svg_path, last) {
         })
       }
       canvas.add(loadedObject);
-      counter++;
       if (counter == last) {
         canvas.renderOnAddRemove = true;
         canvas.renderAll();
         console.log("renderOnAddRemove")
       }
+      counter++;
     });
   } else {
     counter++;
