@@ -46,6 +46,9 @@ $(document).on('admin#map:loaded', function(){
   var lines = [];
   for (var i = 0; i < (boundingBox.width / gridSize); i++) {
     lines.push(new fabric.Line([ i * gridSize, 0, i * gridSize, boundingBox.height], { stroke: '#ccc'})); // vertical lines
+  }
+
+  for (var i = 0; i < (boundingBox.height / gridSize); i++) {
     lines.push(new fabric.Line([ 0, i * gridSize, boundingBox.width, i * gridSize], { stroke: '#ccc'})) // horizontal lines
   }
 
