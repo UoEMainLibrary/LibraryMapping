@@ -301,7 +301,7 @@ $(document).on('admin#map:loaded', function(){
       // Copy
       if (activeObject) {
         clipboardObj = activeObject;
-      } else if (group) {
+      } else if (activeGroup) {
         clipboardGroup = activeGroup;
       }
     } else if (e.keyCode == 86 && (e.ctrlKey || e.metaKey)) {
@@ -322,7 +322,7 @@ $(document).on('admin#map:loaded', function(){
       } else if (clipboardGroup) {
         canvas.deactivateAll();
 
-        clipboardGroup.forEach(function(o) {
+        clipboardGroup.forEachObject(function(o) {
           var clone = fabric.util.object.clone(o);
           clone.set({
             left: o.left + 30,
