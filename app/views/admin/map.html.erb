@@ -1,24 +1,24 @@
 <body data-controller="<%= controller.controller_name %>" data-action="<%= controller.action_name %>" data-floor="<%= @floor %>">
 
-<div id="bd-wrapper" ng-controller="CanvasControls">
+<div id="bd-wrapper">
   <nav class="bg-blue">
     <div class="container-fluid">
-        <div class="navbar-header">
-          <button type="button" class="navbar-toggle" data-toggle="collapse" data-target="#myNavbar">
-            <span class="icon-bar"></span>
-            <span class="icon-bar"></span>
-            <span class="icon-bar"></span>
-          </button>
+      <div class="navbar-header">
+        <button type="button" class="navbar-toggle" data-toggle="collapse" data-target="#myNavbar">
+          <span class="icon-bar"></span>
+          <span class="icon-bar"></span>
+          <span class="icon-bar"></span>
+        </button>
 
-          <img class="logo" src="/assets/logo-01.png"><h2>LibraryMapping&middot; Admin panel</h2>
-        </div>
-        <div class="collapse navbar-collapse" id="myNavbar">
-          <ul class="nav navbar-nav navbar-right ">
-              <li><a class="white-font" href="#"><span class="glyphicon glyphicon-user"></span> Sign Up</a></li>
-              <li><a class="white-font" href="#"><span class="glyphicon glyphicon-log-in"></span> Login</a></li>
-          </ul>
-        </div>
-   </div>
+        <img class="logo" src="/assets/logo-01.png"><h2>LibraryMapping&middot; Admin panel</h2>
+      </div>
+      <div class="collapse navbar-collapse" id="myNavbar">
+        <ul class="nav navbar-nav navbar-right ">
+          <li><a class="white-font" href="#"><span class="glyphicon glyphicon-user"></span> Sign Up</a></li>
+          <li><a class="white-font" href="#"><span class="glyphicon glyphicon-log-in"></span> Login</a></li>
+        </ul>
+      </div>
+    </div>
   </nav>
   <!--[if IE]><script src="http://fabricjs.com/lib/fonts/Delicious.font.js"></script><![endif]-->
 
@@ -29,27 +29,28 @@
 
   <div style="position:relative;width:100%;float:left;" id="canvas-wrapper">
 
- <div class="collapse navbar-collapse shortcut">
-    <ul class="nav navbar navbar-nav">
-      <li><button class="btn shortcutbtn green" onclick="saveCanvas()"><span class="glyphicon glyphicon-floppy-disk"></span></button></li>
-      <li><button class="btn shortcutbtn orange" onclick="removeSelected()"><span class="glyphicon glyphicon-trash"></span></button></li>
-      <li><button class="btn shortcutbtn btn-primary" onclick="rasterizeSVG()"><span class="glyphicon glyphicon-export"></span> Publish</button></li>
-    </ul>
-  </div>
+    <div class="collapse navbar-collapse shortcut">
+      <ul class="nav navbar navbar-nav">
+        <li><button class="btn shortcutbtn green" onclick="saveCanvas()"><span class="glyphicon glyphicon-floppy-disk"></span></button></li>
+        <li><button class="btn shortcutbtn orange" onclick="removeSelected()"><span class="glyphicon glyphicon-trash"></span></button></li>
+        <li><button class="btn shortcutbtn btn-primary" onclick="rasterizeSVG()"><span class="glyphicon glyphicon-export"></span> Publish</button></li>
+      </ul>
+    </div>
 
-   <!-- <div id="canvas-controls">
-      <div id="complexity">
-        Canvas complexity (number of paths):
-        <strong>{[ canvas.complexity() ]}</strong>
+    <div id="loading-container">
+      <div class="sk-folding-cube">
+        <div class="sk-cube1 sk-cube"></div>
+        <div class="sk-cube2 sk-cube"></div>
+        <div class="sk-cube4 sk-cube"></div>
+        <div class="sk-cube3 sk-cube"></div>
       </div>
+    </div>
 
-    </div>-->
-
-    <div id="canvas-container" style="width: 1300px;margin-left: auto;margin-right: auto;">
+    <div id="canvas-container" style="width: 1300px;margin-left: auto;margin-right: auto;display:none">
       <canvas id="canvas" width="1300px" height="650px"></canvas>
     </div>
   </div>
-  <div id="commands" ng-click="maybeLoadShape($event)">
+  <div id="commands">
 
     <ul class="nav nav-tabs" style="background-color:white">
       <li><a href="#simple-shapes" data-toggle="tab">Simple</a></li>
@@ -72,15 +73,15 @@
         <ul class="svg-shapes">
           <% ElementType.all.each do |type| %>
               <% if type.name != "Wall" %>
-              <li>
-                <button class="fix-width-btn" onclick="addShape(<%= type.id %>, '<%= type.name %>', '<%= asset_path(type.svg_path) %>')">
-                  <img src="<%= asset_path(type.svg_path) %>" width="150px" height="150px"> <br>
-                  
-                </button>
-                <div class="container-fluid description">
-                    <strong><%= type.name %></strong>
-                  </div>
-              </li>
+                  <li>
+                    <button class="fix-width-btn" onclick="addShape(<%= type.id %>, '<%= type.name %>', '<%= asset_path(type.svg_path) %>')">
+                      <img src="<%= asset_path(type.svg_path) %>" width="150px" height="150px"> <br>
+
+                    </button>
+                    <div class="container-fluid description">
+                      <strong><%= type.name %></strong>
+                    </div>
+                  </li>
               <% else %>
                   <li>
                     <button class="fix-width-btn" onclick="addWall(<%= type.id %>)">
@@ -157,15 +158,15 @@
           </p>
           <p>
             Enable grid: <input id="gridCheckbox" type="checkbox" checked/>
-            <div class="progress-frame">
+          <div class="progress-frame">
             <input type="range" value="0.3" step="0.05" min="0.1" max="1" id="zoomSlider"/>
-            </div>
-            <div class="text-center">
+          </div>
+          <div class="text-center">
             <button class="btn btn-general" id="zoomIn">Zoom +</button>
             <button class="btn btn-general" id="zoomOut">Zoom -</button>
             <a href="#" class="btn edit"><i class="fa fa-edit"></i> Edit mode</a>
             <a href="#" class="btn grab"><i class="fa fa-arrows"></i> Grab mode</a>
-            </div>
+          </div>
           </p>
           <p class="text-center">
             <button class="btn btn-save clear" onclick="saveCanvas()"><span class="glyphicon glyphicon-floppy-disk"></span> Save elements</button>
@@ -264,18 +265,6 @@
     </div>
 
   </div>
-<div class="footerHolder">
-  <p>
-      Unless explicitly stated otherwise, all material is copyright © The University of Edinburgh
-
-      <script type="text/javascript">
-      var currentTime = new Date()
-      var year = currentTime.getFullYear()
-      document.write(+ year)
-      </script>
-              
-    </p>
-</div>
 </div>
 
 
@@ -305,8 +294,10 @@
     <% end %>
 
     <% if elements.length == 0 %>
-      canvas.renderOnAddRemove = true;
-      console.log("renderOnAddRemove")
+    canvas.renderOnAddRemove = true;
+    $('#loading-container').hide();
+    $('#canvas-container').fadeIn(500);
+    console.log("renderOnAddRemove");
     <% end %>
 
   })

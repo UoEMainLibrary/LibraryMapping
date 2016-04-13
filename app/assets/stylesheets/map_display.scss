@@ -4,6 +4,7 @@
 body, html {
 	height: 100%;
 }
+
 #image-map {
 	width: 100%;
 	height: 85%;
@@ -14,4 +15,13 @@ body, html {
 
 #main-container{
 	height: 100%;
+}
+
+.footerHolder{
+  background: #1b325e none repeat scroll 0 0;
+  color: #fff;
+  text-align: center;
+  display: inline-block;
+  width: 100%;
+  height: auto;
 }

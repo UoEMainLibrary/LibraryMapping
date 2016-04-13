@@ -436,7 +436,7 @@ $(document).on('admin#map:loaded', function(){
         data: {element_id: options.target.id},
         success: function(){
           $.notify({
-            message: 'Element(s) remove successfully from records!'
+            message: 'Element removed successfully from records!'
           },{
             type: 'success',
             offset: 10
@@ -642,6 +642,8 @@ function loadElementInCanvas(element, element_type, svg_path, last) {
       if (counter == last) {
         canvas.renderOnAddRemove = true;
         canvas.renderAll();
+        $('#loading-container').hide();
+        $('#canvas-container').fadeIn(500);
         console.log("renderOnAddRemove")
       }
       counter++;
