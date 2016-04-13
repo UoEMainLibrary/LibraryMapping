@@ -72,12 +72,18 @@ $(document).on('admin#map:loaded', function(){
       data : { elements: JSON.stringify(obj) },
       success: function(data, textStatus, xhr) {
         var idCount = data.next_id;
-        obj.forEach(function(o){
+        obj.forEach(function(o) {
           o.modified = false;
-          if(!o.id){
+          if (!o.id) {
             o.id = idCount;
             idCount++;
           }
+        });
+        $.notify({
+          message: 'The canvas has been saved successfully!',
+        },{
+          type: 'success',
+          offset: 10
         });
       }
     });
@@ -100,7 +106,15 @@ $(document).on('admin#map:loaded', function(){
     $.ajax({
       url : "/admin/save_element/" + floor,
       type : "post",
-      data : { element: JSON.stringify(obj) }
+      data : { element: JSON.stringify(obj) },
+      success: function() {
+        $.notify({
+          message: 'Shelf attributes saved successfully!'
+        },{
+          type: 'success',
+          offset: 10
+        });
+      }
     });
   };
 
@@ -156,7 +170,18 @@ $(document).on('admin#map:loaded', function(){
     $.ajax({
       url : "/admin/save_svg/"+floor,
       type : "post",
-      data : { svg_data: data }
+      data : { svg_data: data },
+      success: function() {
+        //TODO: update url
+        $.notify({
+          message: 'The canvas has been published successfully! <br> Check the live version by clicking on this notification.',
+          url: "/QA1231",
+          target: "_self"
+        },{
+          type: 'success',
+          offset: 10
+        });
+      }
     });
 
     restoreWallCircles();
@@ -398,7 +423,15 @@ $(document).on('admin#map:loaded', function(){
       $.ajax({
         url: "/admin/" + floor,
         type: "delete",
-        data: {element_id: options.target.id}
+        data: {element_id: options.target.id},
+        success: function(){
+          $.notify({
+            message: 'Element(s) remove successfully from records!'
+          },{
+            type: 'success',
+            offset: 10
+          });
+          }
       });
     }
   });
