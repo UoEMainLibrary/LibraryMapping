@@ -16,7 +16,7 @@
 //= require fabric.min.js
 //= require fabricjs_viewport
 //= require sylvester
-//= require angular
 //= require bootstrap-sprockets
+//= require bootstrap-notify
 //= require leaflet
 //= require_tree .
