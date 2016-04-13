@@ -194,9 +194,7 @@ $(document).on('admin#map:loaded', function(){
             data : { svg_data: data },
             success: function() {
                 progress.update('type', 'success');
-                progress.update('message', 'The canvas has been published successfully! <br> Check the live version by clicking on this notification.');
-                progress.update('url', '/QA1231');
-                progress.update('target', '_self');
+                progress.update('message', 'The canvas has been published successfully! <br> Check the live version by clicking <a href="/QA1234">here</a>.');
 
                 setTimeout(function() {
                     progress.close();
