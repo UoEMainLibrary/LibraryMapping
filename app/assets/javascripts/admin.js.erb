@@ -114,6 +114,16 @@ $(document).on('admin#map:loaded', function(){
           type: 'success',
           offset: 10
         });
+      },
+      error: function(xhr) {
+
+        var errors = $.parseJSON(xhr.responseText).errors;
+        $.notify({
+          message: errors
+        },{
+          type: 'danger',
+          offset: 10
+        });
       }
     });
   };
