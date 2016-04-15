@@ -24,9 +24,10 @@ class ApplicationController < ActionController::Base
     token = Integer(subclass.token)
 
     digits = Integer(shelfmark.match(/(\d+)/)[0])
-    digitsLength = Integer((Math.log10(digits)+1))
+    digits = digits.to_s.rjust(4, "0") # add prepending 0s
 
-    return token + Float(digits)/Float((10 ** digitsLength))
+    res = Float(token.to_s + '.' + digits)
+    return res;
   end
 
 end
