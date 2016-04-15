@@ -24,7 +24,7 @@ class ApplicationController < ActionController::Base
     token = Integer(subclass.token)
 
     digits = Integer(shelfmark.match(/(\d+)/)[0])
-    digits = digits.to_s.rjust(4, "0") # add prepending 0s
+    digits = digits.to_s.rjust(5, "0") # add prepending 0s
 
     res = Float(token.to_s + '.' + digits)
     return res;
