@@ -712,7 +712,7 @@ CLASS_HASH.each do |key, klas|
 end
 CLASS_HASH.each do |key, klas|
   klas[:subclasses].each do |letter, body|
-    HubLcSection.create({letters: 'Folio. ' + letter, token: i, name: 'Folio - ' + body[:name]})
+    HubLcSection.create({letters: 'Folio ' + letter, token: i, name: 'Folio - ' + body[:name]})
     i = i + 1
   end
 end
