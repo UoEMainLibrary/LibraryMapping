@@ -12,7 +12,8 @@ class ApplicationController < ActionController::Base
 
     end
 
-    subclass = LcSection.where(:letters => letters).first
+    #TODO: if hub, lcSection, etc
+    subclass = HubLcSection.where(:letters => letters).first
 
     if(!subclass)
       return -1
