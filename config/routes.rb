@@ -3,7 +3,7 @@ Rails.application.routes.draw do
   # See how all your routes lay out with "rake routes".
 
   # You can have the root of your site routed with "root"
-  root to: 'admin#index'
+  root to: 'map_display#map'
 
   post '/admin/save_svg/:floor' => 'admin#save_svg'
   post '/admin/:floor' => 'admin#map'
