@@ -667,80 +667,78 @@ function loadElementInCanvas(element, element_type, svg_path, last) {
 
 
 /* ------- WALL ------- */
-class Wall {
-    constructor(id, element_type_id, floor, left, top, right, bottom) {
-        if (!right || !bottom) {
-            right = left + 100;
-            bottom = top + 100;
-        }
-
-        this.wall = Wall.makeLine([left, top, right, bottom]);
-
-        this.wall.toObject = (function (toObject) {
-            return function () {
-                var opts = {
-                    id: this.id,
-                    floor: this.floor,
-                    element_type_id: this.element_type_id,
-                    modified: this.modified,
-                    element_type_name: this.element_type_name,
-                    top: this.x1,
-                    left: this.x2,
-                    right: this.y1,
-                    bottom: this.y2
-                };
-
-                return fabric.util.object.extend(toObject.call(this), opts);
-            }
-        })(fabric.Object.prototype.toObject);
-
-
-        this.wall.set({
-                floor: floor,
-                element_type_id: element_type_id,
-                modified: id ? false : true,
-                id: id,
-                element_type_name: "Wall"
-            })
-            .setCoords();
+function Wall(id, element_type_id, floor, left, top, right, bottom) {
+    if (!right || !bottom) {
+        right = left + 100;
+        bottom = top + 100;
     }
 
-    addTo(canvas) {
+    this.wall = makeLine([left, top, right, bottom]);
+
+    this.wall.toObject = (function (toObject) {
+        return function () {
+            var opts = {
+                id: this.id,
+                floor: this.floor,
+                element_type_id: this.element_type_id,
+                modified: this.modified,
+                element_type_name: this.element_type_name,
+                top: this.x1,
+                left: this.x2,
+                right: this.y1,
+                bottom: this.y2
+            };
+
+            return fabric.util.object.extend(toObject.call(this), opts);
+        }
+    })(fabric.Object.prototype.toObject);
+
+
+    this.wall.set({
+            floor: floor,
+            element_type_id: element_type_id,
+            modified: id ? false : true,
+            id: id,
+            element_type_name: "Wall"
+        })
+        .setCoords();
+
+    this.addTo = function(canvas) {
         canvas.add(this.wall);
 
-        this.circle1 = Wall.makeCircle(this.wall.get('x1'), this.wall.get('y1'), null, this.wall);
-        this.circle2 = Wall.makeCircle(this.wall.get('x2'), this.wall.get('y2'), this.wall, null);
+        this.circle1 = makeCircle(this.wall.get('x1'), this.wall.get('y1'), null, this.wall);
+        this.circle2 = makeCircle(this.wall.get('x2'), this.wall.get('y2'), this.wall, null);
 
         canvas.add(this.circle1, this.circle2);
     }
+}
 
-    static makeLine(coords) {
-        return new fabric.Line(coords, {
-            fill: '#333',
-            stroke: '#333',
-            strokeWidth: 5,
-            selectable: false,
-            originX: 'center',
-            originY: 'center'
-        });
-    }
+function makeLine(coords) {
+    return new fabric.Line(coords, {
+        fill: '#333',
+        stroke: '#333',
+        strokeWidth: 5,
+        selectable: false,
+        originX: 'center',
+        originY: 'center'
+    });
+}
 
-    static makeCircle(left, top, line1, line2) {
-        var c = new fabric.Circle({
-            left: left,
-            top: top,
-            strokeWidth: 5,
-            radius: 12,
-            fill: '#fff',
-            stroke: '#666',
-            originX: 'center',
-            originY: 'center'
-        });
-        c.hasControls = c.hasBorders = false;
+function makeCircle(left, top, line1, line2) {
+    var c = new fabric.Circle({
+        left: left,
+        top: top,
+        strokeWidth: 5,
+        radius: 12,
+        fill: '#fff',
+        stroke: '#666',
+        originX: 'center',
+        originY: 'center'
+    });
+    c.hasControls = c.hasBorders = false;
 
-        c.line1 = line1;
-        c.line2 = line2;
+    c.line1 = line1;
+    c.line2 = line2;
 
-        return c;
-    }
+    return c;
 }
