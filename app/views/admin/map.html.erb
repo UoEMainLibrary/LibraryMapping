@@ -223,13 +223,13 @@
           <input type="text" id="range_up_digits" name="rangeUp" placeholder="e.g. 273">
 
           <br>
-
-          <label for="classification"> Classification: </label>
-          <input type="text" id="classification" name="classification">
-          <br>
           <label for="identifier"> Identifier: </label>
-          <input type="text" id="identifier" name="identifier">
           <br>
+          <select id="identifier" name="identifier">
+            <option value="lc_main">Main Library - General</option>
+            <option value="lc_hub">Main Library - Hub</option>
+          </select>
+          <br><br>
           <button class="btn" id="saveElems" onclick="saveElementData()">Save Element Data</button>
         </div>
       </div>

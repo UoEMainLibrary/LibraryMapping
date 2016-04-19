@@ -103,7 +103,6 @@ $(document).on('admin#map:loaded', function(){
         obj.range_down_digits =  $("#range_down_digits").val();
         obj.range_down_letters = $("#range_down_letters").val();
 
-        obj.classification =  $("#classification").val();
         obj.identifier = $("#identifier").val();
 
         $.ajax({
@@ -230,7 +229,6 @@ $(document).on('admin#map:loaded', function(){
 
                     if (assetName == "Shelf") {
                         $.extend(opts, {
-                            classification: this.classification,
                             identifier: this.identifier,
                             range_up_opt: this.range_up_opt,
                             range_up_digits: this.range_up_digits,
@@ -264,7 +262,6 @@ $(document).on('admin#map:loaded', function(){
                     range_down_opt: "",
                     range_down_digits: "",
                     range_down_letters: "",
-                    classification: "",
                     identifier: "",
                     originX: 'center',
                     originY: 'center'
@@ -474,7 +471,6 @@ $(document).on('admin#map:loaded', function(){
             $("#range_down_letters").val(options.target.range_down_letters);
             $("#range_down_digits").val(options.target.range_down_digits);
 
-            $("#classification").val(options.target.classification);
             $("#identifier").val(options.target.identifier);
         }
     });
@@ -602,7 +598,6 @@ function loadElementInCanvas(element, element_type, svg_path, last) {
                     };
                     if (element_type == "Shelf") {
                         $.extend(opts, {
-                            classification: this.classification,
                             identifier: this.identifier,
                             range_up_opt: this.range_up_opt,
                             range_up_digits: this.range_up_digits,
@@ -640,7 +635,6 @@ function loadElementInCanvas(element, element_type, svg_path, last) {
                     range_down_opt: element.range_down_opt,
                     range_down_digits: element.range_down_digits,
                     range_down_letters: element.range_down_letters,
-                    classification: element.classification,
                     identifier: element.identifier,
                     originX: 'center',
                     originY: 'center'

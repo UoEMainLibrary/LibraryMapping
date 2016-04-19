@@ -11,7 +11,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20160325111841) do
+ActiveRecord::Schema.define(version: 20160419095732) do
 
   create_table "element_types", force: :cascade do |t|
     t.string   "name",       limit: 255, null: false
@@ -38,7 +38,6 @@ ActiveRecord::Schema.define(version: 20160325111841) do
     t.float    "scaleY",             limit: 24
     t.decimal  "range_up",                       precision: 9, scale: 5
     t.decimal  "range_down",                     precision: 9, scale: 5
-    t.string   "classification",     limit: 255
     t.string   "identifier",         limit: 255
     t.string   "range_up_opt",       limit: 255
     t.string   "range_up_letters",   limit: 255

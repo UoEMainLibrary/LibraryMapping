@@ -141,7 +141,6 @@ class AdminController < ApplicationController
       # Update shelve's custom attribute
       canvasElement.range_up = shelfmark_up
       canvasElement.range_down = shelfmark_down
-      canvasElement.classification = element["classification"]
       canvasElement.identifier = element["identifier"]
       canvasElement.range_up_opt = element["range_up_opt"]
       canvasElement.range_up_digits = element["range_up_digits"]
