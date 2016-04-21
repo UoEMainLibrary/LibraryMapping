@@ -31,11 +31,20 @@
   <link href='http://fonts.googleapis.com/css?family=Plaster' rel='stylesheet' type='text/css'>
   <link href='http://fonts.googleapis.com/css?family=Engagement' rel='stylesheet' type='text/css'>
 
-  <div class="navbar-collapse shortcut">
-    <form class="navbar-form nav-bar" role="search">
-      <input type="text" id="search" name="search" class="form-control search" placeholder="Search Location">
-      <button type="submit" name="submit" class="btn btn-primary go"><span class="glyphicon glyphicon-map-marker"></span>Go</button>
-    </form>
+  <div class="navbar-collapse optionsTopBar">
+    <label> Library: </label>
+
+    <select id="library_option">
+      <option value="main">Main Library</option>
+      <option value="murray">Murray Library</option>
+    </select>
+
+    <label> Floors: </label>
+    <%= link_to "Lower Ground", {controller: "map_display", action: "map", floor: 0, library: @library}, class: "btn btn-default btn-sm btn-floor", data: { no_turbolink: true, floor: 0 } %>
+    <%= link_to "Ground", {controller: "map_display", action: "map", floor: 1, library: @library}, class: "btn btn-default btn-sm btn-floor", data: { no_turbolink: true, floor: 1 } %>
+    <%= link_to "First", {controller: "map_display", action: "map", floor: 2, library: @library}, class: "btn btn-default btn-sm btn-floor", data: { no_turbolink: true, floor: 2 } %>
+    <%= link_to "Second", {controller: "map_display", action: "map", floor: 3, library: @library}, class: "btn btn-default btn-sm btn-floor", data: { no_turbolink: true, floor: 3  } %>
+    <%= link_to "Third", {controller: "map_display", action: "map", floor: 4, library: @library}, class: "btn btn-default btn-sm btn-floor", data: { no_turbolink: true, floor: 4  } %>
   </div>
 <!--Image map canvas-->
 <div id="image-map"></div>
@@ -66,7 +75,7 @@
   // dimensions of the image
   var w = 6000,
       h = 4000,
-      url = '/assets/main_1.svg';
+      url = '/assets/' + '<%= @library %>' + '_' + '<%= @floor %>' + '.svg';
 
   // calculate the edges of the image, in coordinate space
   var southWest = map.unproject([0, h], map.getMaxZoom()-1);
@@ -168,4 +177,12 @@
         L.marker(map.unproject([<%= element.left %>, <%= element.top %>], map.getMaxZoom()-1)).addTo(map).bindPopup("<b>To kill a mockingbird</b><br> Harper Lee").openPopup();
   <%  end
      end %>
+
+
+  $('.btn-floor[data-floor="<%= @floor %>"]').addClass("currentButton");
+
+  $('#library_option').val("<%= @library %>");
+  $('#library_option').on('change', function() {
+    window.location.replace(document.location.origin + "?library=" + this.value);
+  });
 </script>

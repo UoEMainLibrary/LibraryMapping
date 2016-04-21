@@ -3,6 +3,12 @@ class MapDisplayController < ApplicationController
     shelfmark = params[:shelfmark]
     @library = params[:library]
     @floor = params[:floor]
+    @title = params[:title]
+    @author = params[:author]
+
+    unless @floor
+      @floor = 1
+    end
 
     if shelfmark and @library and @floor
         shelfmarkNumber = shelfmarkToOrder(shelfmark)
