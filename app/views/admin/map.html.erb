@@ -35,6 +35,20 @@
         <li><button class="btn shortcutbtn orange" onclick="removeSelected()"><span class="glyphicon glyphicon-trash"></span></button></li>
         <li><button class="btn shortcutbtn btn-primary" onclick="rasterizeSVG()"><span class="glyphicon glyphicon-export"></span> Publish</button></li>
       </ul>
+
+      <label class="optionsTopBarAdmin"> Library: </label>
+      <select id="library_option">
+        <option value="main">Main Library</option>
+        <option value="murray">Murray Library</option>
+      </select>
+
+      <label class="optionsTopBarAdmin"> Floors: </label>
+      <%= link_to "Lower Ground", {controller: "admin", action: "map", floor: 0, library: @library}, class: "btn btn-default btn-floor", data: { no_turbolink: true, floor: 0 } %>
+      <%= link_to "Ground", {controller: "admin", action: "map", floor: 1, library: @library}, class: "btn btn-default btn-floor", data: { no_turbolink: true, floor: 1 } %>
+      <%= link_to "First", {controller: "admin", action: "map", floor: 2, library: @library}, class: "btn btn-default btn-floor", data: { no_turbolink: true, floor: 2 } %>
+      <%= link_to "Second", {controller: "admin", action: "map", floor: 3, library: @library}, class: "btn btn-default btn-floor", data: { no_turbolink: true, floor: 3 } %>
+      <%= link_to "Third", {controller: "admin", action: "map", floor: 4, library: @library}, class: "btn btn-default btn-floor", data: { no_turbolink: true, floor: 4 } %>
+      <%= link_to "Fourth", {controller: "admin", action: "map", floor: 5, library: @library}, class: "btn btn-default btn-floor", data: { no_turbolink: true, floor: 5 } %>
     </div>
 
     <div id="loading-container">
@@ -189,15 +203,6 @@
         </div>
 
         <br>
-        <br>
-
-        <label> Floors: </label>
-        <%= link_to "Lower Ground", {controller: "admin", action: "map", floor: 0, library: @library}, class: "btn btn-default", data: { no_turbolink: true } %>
-        <%= link_to "Ground", {controller: "admin", action: "map", floor: 1, library: @library}, class: "btn btn-default", data: { no_turbolink: true } %>
-        <%= link_to "First", {controller: "admin", action: "map", floor: 2, library: @library}, class: "btn btn-default", data: { no_turbolink: true } %>
-        <%= link_to "Second", {controller: "admin", action: "map", floor: 3, library: @library}, class: "btn btn-default", data: { no_turbolink: true } %>
-        <%= link_to "Third", {controller: "admin", action: "map", floor: 4, library: @library}, class: "btn btn-default", data: { no_turbolink: true } %>
-
         <br>
 
         <div id="shelfData">

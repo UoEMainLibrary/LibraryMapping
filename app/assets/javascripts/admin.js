@@ -3,8 +3,12 @@ $(document).on('admin#map:loaded', function(){
     /* ------- CANVAS PROPERTIES ------- */
     var floor = $('body').data().floor;
     var library = $('body').data().library;
+    $('.btn-floor[data-floor='+floor+']').addClass("currentButton");
 
-    console.log(library)
+    $('#library_option').val(library);
+    $('#library_option').on('change', function() {
+        window.location.replace(document.location.origin + "/admin/" + this.value + "/" + floor);
+    });
 
     var boundingBox = new fabric.Rect({
         fill: "transparent",

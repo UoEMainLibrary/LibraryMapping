@@ -33,7 +33,6 @@
 
   <div class="navbar-collapse optionsTopBar">
     <label> Library: </label>
-
     <select id="library_option">
       <option value="main">Main Library</option>
       <option value="murray">Murray Library</option>
@@ -45,6 +44,13 @@
     <%= link_to "First", {controller: "map_display", action: "map", floor: 2, library: @library}, class: "btn btn-default btn-sm btn-floor", data: { no_turbolink: true, floor: 2 } %>
     <%= link_to "Second", {controller: "map_display", action: "map", floor: 3, library: @library}, class: "btn btn-default btn-sm btn-floor", data: { no_turbolink: true, floor: 3  } %>
     <%= link_to "Third", {controller: "map_display", action: "map", floor: 4, library: @library}, class: "btn btn-default btn-sm btn-floor", data: { no_turbolink: true, floor: 4  } %>
+    <%= link_to "Fourth", {controller: "map_display", action: "map", floor: 5, library: @library}, class: "btn btn-default btn-sm btn-floor", data: { no_turbolink: true, floor: 5  } %>
+
+    <label> Title: </label>
+    <span><%= @title %></span>
+
+    <label> Author: </label>
+    <span><%= @author %></span>
   </div>
 <!--Image map canvas-->
 <div id="image-map"></div>
@@ -174,7 +180,7 @@
 
   <% if @elements
       @elements.each do |element| %>
-        L.marker(map.unproject([<%= element.left %>, <%= element.top %>], map.getMaxZoom()-1)).addTo(map).bindPopup("<b>To kill a mockingbird</b><br> Harper Lee").openPopup();
+        L.marker(map.unproject([<%= element.left %>, <%= element.top %>], map.getMaxZoom()-1)).addTo(map).bindPopup("<b><%= @title %></b><br> <%= @author %>").openPopup();
   <%  end
      end %>
 
