@@ -11,7 +11,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20160419095732) do
+ActiveRecord::Schema.define(version: 20160421084619) do
 
   create_table "element_types", force: :cascade do |t|
     t.string   "name",       limit: 255, null: false
@@ -45,6 +45,7 @@ ActiveRecord::Schema.define(version: 20160419095732) do
     t.string   "range_down_opt",     limit: 255
     t.string   "range_down_letters", limit: 255
     t.string   "range_down_digits",  limit: 255
+    t.string   "library",            limit: 255
   end
 
   add_index "elements", ["element_type_id"], name: "index_elements_on_element_type_id", using: :btree

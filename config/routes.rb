@@ -5,12 +5,13 @@ Rails.application.routes.draw do
   # You can have the root of your site routed with "root"
   root to: 'map_display#map'
 
-  post '/admin/save_svg/:floor' => 'admin#save_svg'
-  post '/admin/:floor' => 'admin#map'
-  delete '/admin/:floor' => 'admin#destroy'
-  post '/admin/save_element/:floor' => 'admin#save_element'
-  get '/admin/:floor', to: 'admin#map'
-  get '/:shelfmark', to: 'map_display#map', :constraints => { :shelfmark => /.*/}
+  post '/admin/save_svg/:library/:floor' => 'admin#save_svg'
+  post '/admin/:library/:floor' => 'admin#map'
+  delete '/admin/:library/:floor' => 'admin#destroy'
+  post '/admin/save_element/:library/:floor' => 'admin#save_element'
+  get '/admin/:library/:floor', to: 'admin#map'
+  get '/', to: 'map_display#map'
+  get '/admin', to: 'admin#index'
 
   # Example of regular route:
   #   get 'products/:id' => 'catalog#view'

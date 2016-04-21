@@ -1,6 +1,6 @@
 class AdminController < ApplicationController
   def index
-    redirect_to action: "map", floor: 1
+    redirect_to action: "map", floor: 1, library: "main"
   end
 
   def save_svg
@@ -40,6 +40,8 @@ class AdminController < ApplicationController
 
   def map
     @floor = params[:floor]
+    @library = params[:library]
+
     if params[:elements] then
       @elements = JSON.parse params[:elements]
 
@@ -76,6 +78,7 @@ class AdminController < ApplicationController
     canvasElement.scaleY = element["scaleY"]
     canvasElement.element_type_id = element["element_type_id"]
     canvasElement.floor = element["floor"]
+    canvasElement.library = element["library"]
 
     if element["element_type_id"] == ElementType.find_by(name: "Shelf").id
 

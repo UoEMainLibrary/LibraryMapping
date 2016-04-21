@@ -1,4 +1,4 @@
-<body data-controller="<%= controller.controller_name %>" data-action="<%= controller.action_name %>" data-floor="<%= @floor %>">
+<body data-controller="<%= controller.controller_name %>" data-action="<%= controller.action_name %>" data-floor="<%= @floor %>" data-library="<%= @library %>">
 
 <div id="bd-wrapper">
   <nav class="bg-blue">
@@ -192,10 +192,11 @@
         <br>
 
         <label> Floors: </label>
-        <%= link_to "1", {controller: "admin", action: "map", floor: 1}, class: "btn btn-default", data: { no_turbolink: true } %>
-        <%= link_to "2", {controller: "admin", action: "map", floor: 2}, class: "btn btn-default", data: { no_turbolink: true } %>
-        <%= link_to "3", {controller: "admin", action: "map", floor: 3}, class: "btn btn-default", data: { no_turbolink: true } %>
-        <%= link_to "4", {controller: "admin", action: "map", floor: 4}, class: "btn btn-default", data: { no_turbolink: true } %>
+        <%= link_to "Lower Ground", {controller: "admin", action: "map", floor: 0, library: @library}, class: "btn btn-default", data: { no_turbolink: true } %>
+        <%= link_to "Ground", {controller: "admin", action: "map", floor: 1, library: @library}, class: "btn btn-default", data: { no_turbolink: true } %>
+        <%= link_to "First", {controller: "admin", action: "map", floor: 2, library: @library}, class: "btn btn-default", data: { no_turbolink: true } %>
+        <%= link_to "Second", {controller: "admin", action: "map", floor: 3, library: @library}, class: "btn btn-default", data: { no_turbolink: true } %>
+        <%= link_to "Third", {controller: "admin", action: "map", floor: 4, library: @library}, class: "btn btn-default", data: { no_turbolink: true } %>
 
         <br>
 
@@ -228,7 +229,7 @@
           <label for="identifier"> Identifier: </label>
           <br>
           <select id="identifier" name="identifier">
-            <option value="lc_main">Main Library - General</option>
+            <option value="lc_main" selected="selected">Main Library - General</option>
             <option value="lc_hub">Main Library - Hub</option>
           </select>
           <br><br>
@@ -288,7 +289,7 @@
 
   $(document).one("canvas:preloaded", function() {
     <%
-    elements = Element.where(floor: @floor)
+    elements = Element.where("floor = :floor AND library = :library", {floor: @floor, library: @library})
     elements.each_with_index do |element, index| %>
 
     loadElementInCanvas(<%= element.to_json.html_safe %>, "<%= element.element_type.name %>", "<%= asset_path(element.element_type.svg_path) %>", <%= elements.size %>)
