@@ -46,11 +46,15 @@
     <%= link_to "Third", {controller: "map_display", action: "map", floor: 4, library: @library}, class: "btn btn-default btn-sm btn-floor", data: { no_turbolink: true, floor: 4  } %>
     <%= link_to "Fourth", {controller: "map_display", action: "map", floor: 5, library: @library}, class: "btn btn-default btn-sm btn-floor", data: { no_turbolink: true, floor: 5  } %>
 
-    <label> Title: </label>
-    <span><%= @title %></span>
+    <% if @title %>
+      <label> Title: </label>
+      <span><%= @title %></span>
+    <% end %>
 
-    <label> Author: </label>
-    <span><%= @author %></span>
+    <% if @author %>
+      <label> Author: </label>
+      <span><%= @author %></span>
+    <% end %>
   </div>
 <!--Image map canvas-->
 <div id="image-map"></div>
