@@ -396,6 +396,8 @@ $(document).on('admin#map:loaded', function(){
     $(document).on('keyup', function(e) {
         if(e.keyCode==18) {
             canvas.isGrabMode = false;
+        } else if (e.shiftKey) {
+            movementDelta = 2;
         }
     });
 
