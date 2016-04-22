@@ -30,13 +30,36 @@
 
   <link href='http://fonts.googleapis.com/css?family=Plaster' rel='stylesheet' type='text/css'>
   <link href='http://fonts.googleapis.com/css?family=Engagement' rel='stylesheet' type='text/css'>
-
-  <div id="tipbtn" class="hidden">
+<!--   <div id="tipbtn" class="hidden">
     <p class="tip-btn" onclick=showTip();>Tips</p>
   </div>
   <div id="tip-div" class="navbar-collapse tip">
     <p id="i-label">Here is the tip for the users</p>
-    <p id="tip-close" onclick=hideTip();>x</p>
+    <p id="tip-close" onclick=hideTip();>x</p> -->
+  <div class="navbar-collapse optionsTopBar">
+    <label> Library: </label>
+    <select id="library_option">
+      <option value="main">Main Library</option>
+      <option value="murray">Murray Library</option>
+    </select>
+
+    <label> Floors: </label>
+    <%= link_to "Lower Ground", {controller: "map_display", action: "map", floor: 0, library: @library}, class: "btn btn-default btn-sm btn-floor", data: { no_turbolink: true, floor: 0 } %>
+    <%= link_to "Ground", {controller: "map_display", action: "map", floor: 1, library: @library}, class: "btn btn-default btn-sm btn-floor", data: { no_turbolink: true, floor: 1 } %>
+    <%= link_to "First", {controller: "map_display", action: "map", floor: 2, library: @library}, class: "btn btn-default btn-sm btn-floor", data: { no_turbolink: true, floor: 2 } %>
+    <%= link_to "Second", {controller: "map_display", action: "map", floor: 3, library: @library}, class: "btn btn-default btn-sm btn-floor", data: { no_turbolink: true, floor: 3  } %>
+    <%= link_to "Third", {controller: "map_display", action: "map", floor: 4, library: @library}, class: "btn btn-default btn-sm btn-floor", data: { no_turbolink: true, floor: 4  } %>
+    <%= link_to "Fourth", {controller: "map_display", action: "map", floor: 5, library: @library}, class: "btn btn-default btn-sm btn-floor", data: { no_turbolink: true, floor: 5  } %>
+
+    <% if @title %>
+      <label> Title: </label>
+      <span><%= @title %></span>
+    <% end %>
+
+    <% if @author %>
+      <label> Author: </label>
+      <span><%= @author %></span>
+    <% end %>
   </div>
 <!--Image map canvas-->
 <div id="image-map"></div>
@@ -67,7 +90,7 @@
   // dimensions of the image
   var w = 6000,
       h = 4000,
-      url = '/assets/main_1.svg';
+      url = '/assets/' + '<%= @library %>' + '_' + '<%= @floor %>' + '.svg';
 
   // calculate the edges of the image, in coordinate space
   var southWest = map.unproject([0, h], map.getMaxZoom()-1);
@@ -179,4 +202,17 @@
   };
   var h = $('#main-container').height();
   $('#image-map').height() ;
+  <% if @elements
+      @elements.each do |element| %>
+        L.marker(map.unproject([<%= element.left %>, <%= element.top %>], map.getMaxZoom()-1)).addTo(map).bindPopup("<b><%= @title %></b><br> <%= @author %>").openPopup();
+  <%  end
+     end %>
+
+
+  $('.btn-floor[data-floor="<%= @floor %>"]').addClass("currentButton");
+
+  $('#library_option').val("<%= @library %>");
+  $('#library_option').on('change', function() {
+    window.location.replace(document.location.origin + "?library=" + this.value);
+  });
 </script>

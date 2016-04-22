@@ -1,4 +1,4 @@
-<body data-controller="<%= controller.controller_name %>" data-action="<%= controller.action_name %>" data-floor="<%= @floor %>">
+<body data-controller="<%= controller.controller_name %>" data-action="<%= controller.action_name %>" data-floor="<%= @floor %>" data-library="<%= @library %>">
 
 <div id="bd-wrapper">
   <nav class="bg-blue">
@@ -35,6 +35,20 @@
         <li><button class="btn shortcutbtn orange" onclick="removeSelected()"><span class="glyphicon glyphicon-trash"></span></button></li>
         <li><button class="btn shortcutbtn btn-primary" onclick="rasterizeSVG()"><span class="glyphicon glyphicon-export"></span> Publish</button></li>
       </ul>
+
+      <label class="optionsTopBarAdmin"> Library: </label>
+      <select id="library_option">
+        <option value="main">Main Library</option>
+        <option value="murray">Murray Library</option>
+      </select>
+
+      <label class="optionsTopBarAdmin"> Floors: </label>
+      <%= link_to "Lower Ground", {controller: "admin", action: "map", floor: 0, library: @library}, class: "btn btn-default btn-floor", data: { no_turbolink: true, floor: 0 } %>
+      <%= link_to "Ground", {controller: "admin", action: "map", floor: 1, library: @library}, class: "btn btn-default btn-floor", data: { no_turbolink: true, floor: 1 } %>
+      <%= link_to "First", {controller: "admin", action: "map", floor: 2, library: @library}, class: "btn btn-default btn-floor", data: { no_turbolink: true, floor: 2 } %>
+      <%= link_to "Second", {controller: "admin", action: "map", floor: 3, library: @library}, class: "btn btn-default btn-floor", data: { no_turbolink: true, floor: 3 } %>
+      <%= link_to "Third", {controller: "admin", action: "map", floor: 4, library: @library}, class: "btn btn-default btn-floor", data: { no_turbolink: true, floor: 4 } %>
+      <%= link_to "Fourth", {controller: "admin", action: "map", floor: 5, library: @library}, class: "btn btn-default btn-floor", data: { no_turbolink: true, floor: 5 } %>
     </div>
 
     <div id="loading-container">
@@ -44,6 +58,8 @@
         <div class="sk-cube4 sk-cube"></div>
         <div class="sk-cube3 sk-cube"></div>
       </div>
+      <div id="loading-text">Loading...</div>
+
     </div>
 
     <div id="canvas-container" style="width: 1300px;margin-left: auto;margin-right: auto;display:none">
@@ -214,8 +230,6 @@
         <%= link_to "3", {controller: "admin", action: "map", floor: 3}, class: "btn btn-default", data: { no_turbolink: true } %>
         <%= link_to "4", {controller: "admin", action: "map", floor: 4}, class: "btn btn-default", data: { no_turbolink: true } %>
         </div>
-        <br>
-
         <div id="shelfData">
           <label> Range Start: </label><br>
 
@@ -242,13 +256,13 @@
           <input type="text" id="range_up_digits" name="rangeUp" placeholder="e.g. 273">
 
           <br>
-
-          <label for="classification"> Classification: </label>
-          <input type="text" id="classification" name="classification">
-          <br>
           <label for="identifier"> Identifier: </label>
-          <input type="text" id="identifier" name="identifier">
           <br>
+          <select id="identifier" name="identifier">
+            <option value="lc_main" selected="selected">Main Library - General</option>
+            <option value="lc_hub">Main Library - Hub</option>
+          </select>
+          <br><br>
           <button class="btn" id="saveElems" onclick="saveElementData()">Save Element Data</button>
         </div>
       </div>
@@ -305,7 +319,7 @@
 
   $(document).one("canvas:preloaded", function() {
     <%
-    elements = Element.where(floor: @floor)
+    elements = Element.where("floor = :floor AND library = :library", {floor: @floor, library: @library})
     elements.each_with_index do |element, index| %>
 
     loadElementInCanvas(<%= element.to_json.html_safe %>, "<%= element.element_type.name %>", "<%= asset_path(element.element_type.svg_path) %>", <%= elements.size %>)

@@ -363,7 +363,6 @@ CLASS_HASH = {
             'KPT'  => { :name => 'Thailand' },
             'KPV'  => { :name => 'Vietnam (to 1945). North Vietnam (1945-1975). Vietnam (1975-)' },
             'KPW'  => { :name => 'South Vietnam' },
-            'KQ-KTZ'  => { :name => 'Africa' },
             'KQ'  => { :name => 'History of law in Africa . Extinct jurisdictions. Customary law' },
             'KQC'  => { :name => 'Regional comparative and uniform law' },
             'KQE'  => { :name => 'Regional organization and integration' },
@@ -431,7 +430,6 @@ CLASS_HASH = {
             'KTX'  => { :name => 'Congo (Democratic Republic). Zaire' },
             'KTY'  => { :name => 'Zambia. Zanzibar' },
             'KTZ'  => { :name => 'Zimbabwe' },
-            'KU-KWW'  => { :name => 'Pacific area' },
             'KU'  => { :name => 'Australia (general)' },
             'KUA'  => { :name => 'Australian Capital Territory' },
             'KUB'  => { :name => 'Northern Territory' },
@@ -712,13 +710,21 @@ CLASS_HASH.each do |key, klas|
 end
 CLASS_HASH.each do |key, klas|
   klas[:subclasses].each do |letter, body|
-    HubLcSection.create({letters: 'Folio ' + letter, token: i, name: 'Folio - ' + body[:name]})
+    if letter[0] != 'N'
+      HubLcSection.create({letters: 'Folio ' + letter, token: i, name: 'Folio - ' + body[:name]})
+    end
     i = i + 1
   end
 end
 
 CLASS_HASH.each do |key, klas|
   klas[:subclasses].each do |letter, body|
+    if letter == 'N'
+      klas[:subclasses].each do |letter1, body1|
+        HubLcSection.create({letters: 'Folio ' + letter1, token: i, name: 'Folio - ' + body1[:name]})
+        i = i + 1
+      end
+    end
     HubLcSection.create({letters: letter, token: i, name: body[:name]})
     i = i + 1
   end

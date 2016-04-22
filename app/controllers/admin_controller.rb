@@ -1,11 +1,11 @@
 class AdminController < ApplicationController
   def index
-    redirect_to action: "map", floor: 1
+    redirect_to action: "map", floor: 1, library: "main"
   end
 
   def save_svg
-    if params[:svg_data]
-      File.write('public/assets/main_1.svg', params[:svg_data]);
+    if params[:svg_data] and params[:library] and params[:floor]
+      File.write('public/assets/' + params[:library] + '_' + params[:floor] + '.svg', params[:svg_data]);
     end
 
     head :ok
@@ -40,6 +40,8 @@ class AdminController < ApplicationController
 
   def map
     @floor = params[:floor]
+    @library = params[:library]
+
     if params[:elements] then
       @elements = JSON.parse params[:elements]
 
@@ -76,6 +78,7 @@ class AdminController < ApplicationController
     canvasElement.scaleY = element["scaleY"]
     canvasElement.element_type_id = element["element_type_id"]
     canvasElement.floor = element["floor"]
+    canvasElement.library = element["library"]
 
     if element["element_type_id"] == ElementType.find_by(name: "Shelf").id
 
@@ -141,7 +144,6 @@ class AdminController < ApplicationController
       # Update shelve's custom attribute
       canvasElement.range_up = shelfmark_up
       canvasElement.range_down = shelfmark_down
-      canvasElement.classification = element["classification"]
       canvasElement.identifier = element["identifier"]
       canvasElement.range_up_opt = element["range_up_opt"]
       canvasElement.range_up_digits = element["range_up_digits"]
