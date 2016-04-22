@@ -53,21 +53,21 @@
   <div id="commands">
 
     <ul class="nav nav-tabs" style="background-color:white">
-      <li><a href="#simple-shapes" data-toggle="tab">Simple</a></li>
+   <!--    <li><a href="#simple-shapes" data-toggle="tab">Simple</a></li> -->
       <li><a href="#svg-shapes" data-toggle="tab">SVG</a></li>
       <li class="active"><a href="#object-controls-pane" data-toggle="tab">Controls</a></li>
-      <li><a href="#load-svg-pane" data-toggle="tab">Load SVG</a></li>
+    <!--   <li><a href="#load-svg-pane" data-toggle="tab">Load SVG</a></li>
       <li><a href="#execute-code" data-toggle="tab">Execute</a></li>
-      <li><a href="#json-inout" data-toggle="tab">JSON</a></li>
+      <li><a href="#json-inout" data-toggle="tab">JSON</a></li> -->
     </ul>
 
     <div class="tab-content" style="padding: 20px;background-color:white; height:670px; overflow: auto;">
+      <div class="tab-pane" id="svg-shapes">
       <form class="navbar-form nav-bar marginSearch" role="search">
         <input type="text" id="search" name="search" class="form-control search" placeholder="Search Elements">
         <button type="submit" name="submit" class="btn btn-primary go">Go</button>
       </form>
       <div style="clear:both"></div>
-      <div class="tab-pane" id="svg-shapes">
         <p>Add <strong>SVG shapes</strong> to canvas:</p>
 
         <ul class="svg-shapes">
@@ -143,8 +143,8 @@
       </div>
 
       <div class="tab-pane active" id="object-controls-pane">
-        <div id="global-controls">
-          <p>
+        <div id="gridCheckbox" class="commandCtr">
+         <!--  <p>
             Rasterize canvas to
             <button class="btn btn-general" id="rasterize" ng-click="rasterize()">
               Image
@@ -155,25 +155,44 @@
             <button class="btn btn-general" id="rasterize-json" ng-click="rasterizeJSON()">
               JSON
             </button>
-          </p>
-          <p>
-            Enable grid: <input id="gridCheckbox" type="checkbox" checked/>
-          <div class="progress-frame">
-            <input type="range" value="0.3" step="0.05" min="0.1" max="1" id="zoomSlider"/>
+          </p> -->
+          <span class="switch-button-label">Grid:</span>
+          <div class="switch-button-background">
+            <div class="switch-button-button checked" id="gridCheckbox" ></div>
           </div>
-          <div class="text-center">
-            <button class="btn btn-general" id="zoomIn">Zoom +</button>
-            <button class="btn btn-general" id="zoomOut">Zoom -</button>
+          </div>
+          <hr style="width:100%;">
+          <div style="clear:both;"></div>
+          <div id="mode" class="commandCtr">
+            <span class="switch-button-label">Mode:</span>
+            <div class="mode-background">
+              <div class="mode-button grab" id="modeSwitch" >Grab</div>
+            </div>
+          </div>
+          <hr style="width:100%;">
+          <div style="clear:both;"></div>
+            <!-- Enable grid: <input id="gridCheckbox" type="checkbox" checked/> -->
+          <div class="row text-center">
+            <div class="col-sm-2"><button class="btn btn-zoom" id="zoomIn">+</button></div>
+            <div class="progress-frame col-sm-6">
+              <input type="range" value="0.3" step="0.05" min="0.1" max="1" id="zoomSlider"/>
+            </div>
+            <div class="col-sm-2"> <button class="btn btn-zoom" id="zoomOut">-</button></div>
+          </div>
+          
+        <hr style="width:100%;">
+          <div>
+            <!-- <span>Grab</span> -->
+          <!-- </div>
             <a href="#" class="btn edit"><i class="fa fa-edit"></i> Edit mode</a>
             <a href="#" class="btn grab"><i class="fa fa-arrows"></i> Grab mode</a>
-          </div>
-          </p>
-          <p class="text-center">
+          </div> -->
+          <p class="commandCtr text-center">
             <button class="btn btn-save clear" onclick="saveCanvas()"><span class="glyphicon glyphicon-floppy-disk"></span> Save elements</button>
           </p>
         </div>
 
-        <div class="object-controls text-center">
+        <div class="commandCtr text-center">
 
           <div style="margin-top:10px;">
             <p>
@@ -186,15 +205,15 @@
           </div>
         </div>
 
-        <br>
-        <br>
-
+        <hr style="width:100%;">
+        <div style="clear:both;"></div>
+        <div class="commandCtr text-center">
         <label> Floors: </label>
         <%= link_to "1", {controller: "admin", action: "map", floor: 1}, class: "btn btn-default", data: { no_turbolink: true } %>
         <%= link_to "2", {controller: "admin", action: "map", floor: 2}, class: "btn btn-default", data: { no_turbolink: true } %>
         <%= link_to "3", {controller: "admin", action: "map", floor: 3}, class: "btn btn-default", data: { no_turbolink: true } %>
         <%= link_to "4", {controller: "admin", action: "map", floor: 4}, class: "btn btn-default", data: { no_turbolink: true } %>
-
+        </div>
         <br>
 
         <div id="shelfData">
