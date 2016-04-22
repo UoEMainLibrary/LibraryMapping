@@ -31,11 +31,12 @@
   <link href='http://fonts.googleapis.com/css?family=Plaster' rel='stylesheet' type='text/css'>
   <link href='http://fonts.googleapis.com/css?family=Engagement' rel='stylesheet' type='text/css'>
 
-  <div class="navbar-collapse shortcut">
-    <form class="navbar-form nav-bar" role="search">
-      <input type="text" id="search" name="search" class="form-control search" placeholder="Search Location">
-      <button type="submit" name="submit" class="btn btn-primary go"><span class="glyphicon glyphicon-map-marker"></span>Go</button>
-    </form>
+  <div id="tipbtn" class="hidden">
+    <p class="tip-btn" onclick=showTip();>Tips</p>
+  </div>
+  <div id="tip-div" class="navbar-collapse tip">
+    <p id="i-label">Here is the tip for the users</p>
+    <p id="tip-close" onclick=hideTip();>x</p>
   </div>
 <!--Image map canvas-->
 <div id="image-map"></div>
@@ -166,4 +167,16 @@
   <% @elements.each do |element| %>
     L.marker(map.unproject([<%= element.left %>, <%= element.top %>], map.getMaxZoom()-1)).addTo(map).bindPopup("<b>To kill a mockingbird</b><br> Harper Lee").openPopup();
   <% end %>
+
+  function showTip(){
+    $('#tip-div').removeClass('hidden').animate(500);
+    $('#tipbtn').addClass('hidden');
+  };
+
+  function hideTip(){
+    $('#tip-div').addClass('hidden');
+    $('#tipbtn').removeClass('hidden');
+  };
+  var h = $('#main-container').height();
+  $('#image-map').height() ;
 </script>
