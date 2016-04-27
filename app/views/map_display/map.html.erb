@@ -187,10 +187,6 @@
     $('#console').append("- Geo Location is not supported.\n");
   }
 
-  <% @elements.each do |element| %>
-    L.marker(map.unproject([<%= element.left %>, <%= element.top %>], map.getMaxZoom()-1)).addTo(map).bindPopup("<b>To kill a mockingbird</b><br> Harper Lee").openPopup();
-  <% end %>
-
   function showTip(){
     $('#tip-div').removeClass('hidden').animate(500);
     $('#tipbtn').addClass('hidden');
