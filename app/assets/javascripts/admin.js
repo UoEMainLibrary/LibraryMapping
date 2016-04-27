@@ -47,6 +47,8 @@ $(document).on('admin#map:loaded', function(){
     $("#zoomSlider").val(minZoom);
     $(".progress-bar").css("width", $("#zoomSlider").val());
 
+
+
     var gridSize = 20;
 
     var gridEnabled = true;
@@ -596,19 +598,48 @@ $(document).on('admin#map:loaded', function(){
         canvas.renderAll();
     });
 
-    $('.edit').click(function(){
-        canvas.isGrabMode = false;
-        return false;
-    });
+    // $('.edit').click(function(){
+    //     canvas.isGrabMode = false;
+    //     return false;
+    // });
+    $('#mode').click(function(){
+        if($('.mode-button').hasClass('grab')){
+            canvas.isGrabMode = false;
+            $('.mode-button').html('Edit');
+            $('.mode-button').animate({
+                left: "-=40px"
+            })
+            $('.mode-button').removeClass('grab');
+            return false;
+        }else{
+            canvas.isGrabMode = true;
+            $('.mode-button').html('Grab');
+            $('.mode-button').animate({
+                left: "+=40px"
+            })
+            $('.mode-button').addClass('grab');
+            return true;
+        }
+    })
 
     $('#gridCheckbox').click(function(){
-        if ($(this).prop('checked')) {
+        if (!$('.switch-button-button').hasClass('checked')) {
             canvas.add(grid);
             canvas.sendToBack(grid);
             gridEnabled = true;
+            $('.switch-button-background').css('background', '#1ABB9C');
+            $('.switch-button-button').animate({
+                left: "+=20px"
+            })
+            $('.switch-button-button').addClass('checked');
         } else {
             canvas.remove(grid);
             gridEnabled = false;
+            $('.switch-button-background').css('background', '#fff');
+            $('.switch-button-button').animate({
+                left: "-=20px"
+            })
+            $('.switch-button-button').removeClass('checked');
         }
     });
 

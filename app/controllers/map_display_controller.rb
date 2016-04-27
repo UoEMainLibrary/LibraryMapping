@@ -10,6 +10,10 @@ class MapDisplayController < ApplicationController
       @floor = 1
     end
 
+    unless @library
+      @library = "main"
+    end
+
     if shelfmark and @library and @floor
         shelfmarkNumber = shelfmarkToOrder(shelfmark)
         @elements = Element.where("range_up >= :shelfmark AND range_down <= :shelfmark AND library = :library AND floor = :floor", {shelfmark: shelfmarkNumber, library: @library, floor: @floor})
