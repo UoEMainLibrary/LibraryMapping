@@ -8,6 +8,12 @@ class AdminController < ApplicationController
       File.write('public/assets/' + params[:library] + '_' + params[:floor] + '.svg', params[:svg_data]);
     end
 
+    if params[:png_data] and params[:library] and params[:floor]
+      File.open('public/assets/' + params[:library] + '_' + params[:floor] + '.png', 'wb') do |f|
+        f.write(Base64.decode64(params[:png_data]))
+      end
+    end
+
     head :ok
   end
 

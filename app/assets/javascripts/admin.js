@@ -33,11 +33,11 @@ $(document).on('admin#map:loaded', function(){
     });
 
 
-    canvas.setBackgroundImage("/assets/overlay_ml_1.png", canvas.renderAll.bind(canvas), {
-        width: 6000,
-        height: 4000,
-        opacity: 0.3
-    });
+    //canvas.setBackgroundImage("/assets/overlay_ml_1.png", canvas.renderAll.bind(canvas), {
+    //    width: 6000,
+    //    height: 4000,
+    //    opacity: 0.3
+    //});
 
     wallCircles = [];
 
@@ -187,17 +187,36 @@ $(document).on('admin#map:loaded', function(){
         });
         var w = canvas.width;
         var h = canvas.height;
+        var z = canvas.viewport.zoom;
+        var x = canvas.viewport.position.x;
+        var y = canvas.viewport.position.y;
 
-        canvas.width = 6003;
-        canvas.height = 4003;
+
+        canvas.setZoom(1);
+
+        canvas.setWidth(6003);
+        canvas.setHeight(4003);
+
+        canvas.viewport.position.x = 0;
+        canvas.viewport.position.y = 0;
+
+        canvas.renderAll();
+
         canvas.remove(grid);
         removeWallCircles();
 
+        //console.log(canvas.toDataURL());
+
         var data = canvas.toSVG();
+        var data2 = canvas.toDataURL().replace(/^data:image\/(png|jpg);base64,/, "");
+
         $.ajax({
             url : "/admin/save_svg/" + library + "/"+floor,
             type : "post",
-            data : { svg_data: data },
+            data : {
+                svg_data: data,
+                png_data: data2
+            },
             success: function() {
                 progress.update('type', 'success');
                 progress.update('message', 'The canvas has been published successfully! <br> Check the live version by clicking <a href="/QA1234">here</a>.');
@@ -209,10 +228,19 @@ $(document).on('admin#map:loaded', function(){
         });
 
         restoreWallCircles();
-        canvas.width = w;
-        canvas.height = h;
+
+        canvas.setZoom(z);
+
+        canvas.setWidth(w);
+        canvas.setHeight(h);
+
+        canvas.viewport.position.x = x;
+        canvas.viewport.position.y = y;
+
         canvas.add(grid);
         canvas.sendToBack(grid);
+
+        canvas.renderAll();
     };
 
     addShape = function(assetId, assetName, assetPath) {
