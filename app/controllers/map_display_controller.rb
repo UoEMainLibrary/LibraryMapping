@@ -1,5 +1,12 @@
 class MapDisplayController < ApplicationController
   def map
+    browser = Browser.new(request.user_agent)
+    @extension = ".png"
+
+    if (browser.chrome? or browser.firefox? or browser.safari?) and !browser.platform.ios? and !browser.platform.android?
+      @extension = ".svg"
+    end
+
     shelfmark = params[:shelfmark]
     @library = params[:library]
     @floor = params[:floor]

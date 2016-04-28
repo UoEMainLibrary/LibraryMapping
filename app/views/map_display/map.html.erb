@@ -96,7 +96,7 @@
   // dimensions of the image
   var w = 6000,
       h = 4000,
-      url = '/assets/' + '<%= @library %>' + '_' + '<%= @floor %>' + '.svg';
+      url = '/assets/' + '<%= @library %>' + '_' + '<%= @floor %>' + '<%= @extension %>';
 
   // calculate the edges of the image, in coordinate space
   var southWest = map.unproject([0, h], map.getMaxZoom()-1);
