@@ -61,6 +61,12 @@
       <span><%= @author %></span>
     <% end %>
   </div>
+
+  <% if @qr %>
+    <%= raw @qr.as_html %>
+  <% end %>
+
+
 <!--Image map canvas-->
 <div id="image-map"></div>
 <!--Footer-->
