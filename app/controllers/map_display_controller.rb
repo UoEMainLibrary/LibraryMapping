@@ -22,7 +22,7 @@ class MapDisplayController < ApplicationController
     end
 
     if shelfmark and @library and @floor
-        unless browser.platform.ios? and browser.platform.android? and browser.platform.windows_phone?
+        unless browser.platform.ios? or browser.platform.android? or browser.platform.windows_phone?
           @qr = RQRCode::QRCode.new(request.original_url)
         end
         shelfmarkNumber = shelfmarkToOrder(shelfmark)

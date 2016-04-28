@@ -220,6 +220,8 @@ $(document).on('admin#map:loaded', function(){
 
         canvas.remove(grid);
         removeWallCircles();
+        canvas.setBackgroundImage(null, canvas.renderAll.bind(canvas));
+        canvas.renderAll();
 
         //console.log(canvas.toDataURL());
 
@@ -243,6 +245,11 @@ $(document).on('admin#map:loaded', function(){
             }
         });
 
+        canvas.setBackgroundImage(overlay_url, canvas.renderAll.bind(canvas), {
+            width: 6000,
+            height: 4000,
+            opacity: 0.3
+        });
         restoreWallCircles();
 
         canvas.setZoom(z);
