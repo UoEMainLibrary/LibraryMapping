@@ -32,12 +32,21 @@ $(document).on('admin#map:loaded', function(){
         canvas.renderAll();
     });
 
+    overlay_url = "";
+    switch(floor){
+        case 0: overlay_url = "/assets/overlay_ml_0.png"; break;
+        case 1: overlay_url = "/assets/overlay_ml_1.png"; break;
+        case 2: overlay_url = "/assets/overlay_ml_2.png"; break;
+        case 3: overlay_url = "/assets/overlay_ml_3.png"; break;
+        case 4: overlay_url = "/assets/overlay_ml_4.png"; break;
+        case 5: overlay_url = "/assets/overlay_ml_5.png"; break;
+    }
 
-    //canvas.setBackgroundImage("/assets/overlay_ml_1.png", canvas.renderAll.bind(canvas), {
-    //    width: 6000,
-    //    height: 4000,
-    //    opacity: 0.3
-    //});
+    canvas.setBackgroundImage(overlay_url, canvas.renderAll.bind(canvas), {
+        width: 6000,
+        height: 4000,
+        opacity: 0.3
+    });
 
     wallCircles = [];
 
