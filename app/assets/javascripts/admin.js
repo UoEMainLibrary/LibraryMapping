@@ -118,7 +118,12 @@ $(document).on('admin#map:loaded', function(){
             url : "/admin/save_element/" + library + "/" + floor,
             type : "post",
             data : { element: JSON.stringify(obj) },
-            success: function() {
+            success: function(data) {
+
+                if(!obj.id) {
+                    obj.id = data.next_id;
+                }
+
                 $.notify({
                     message: 'Shelf attributes saved successfully!'
                 },{
