@@ -39,7 +39,9 @@ class AdminController < ApplicationController
       end
     end
 
-    head :ok
+    render :json => {
+        :next_id => Element.maximum(:id).to_i
+    }
   end
 
 

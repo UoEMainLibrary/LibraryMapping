@@ -32,11 +32,21 @@ $(document).on('admin#map:loaded', function(){
         canvas.renderAll();
     });
 
-    //canvas.setBackgroundImage("/assets/overlay_ml_1.png", canvas.renderAll.bind(canvas), {
-    //    width: 6000,
-    //    height: 4000,
-    //    opacity: 0.3
-    //});
+    overlay_url = "";
+    switch(floor){
+        case 0: overlay_url = "/assets/overlay_ml_0.png"; break;
+        case 1: overlay_url = "/assets/overlay_ml_1.png"; break;
+        case 2: overlay_url = "/assets/overlay_ml_2.png"; break;
+        case 3: overlay_url = "/assets/overlay_ml_3.png"; break;
+        case 4: overlay_url = "/assets/overlay_ml_4.png"; break;
+        case 5: overlay_url = "/assets/overlay_ml_5.png"; break;
+    }
+
+    canvas.setBackgroundImage(overlay_url, canvas.renderAll.bind(canvas), {
+        width: 6000,
+        height: 4000,
+        opacity: 0.3
+    });
 
     wallCircles = [];
 
@@ -117,7 +127,12 @@ $(document).on('admin#map:loaded', function(){
             url : "/admin/save_element/" + library + "/" + floor,
             type : "post",
             data : { element: JSON.stringify(obj) },
-            success: function() {
+            success: function(data) {
+
+                if(!obj.id) {
+                    obj.id = data.next_id;
+                }
+
                 $.notify({
                     message: 'Shelf attributes saved successfully!'
                 },{
@@ -205,6 +220,8 @@ $(document).on('admin#map:loaded', function(){
 
         canvas.remove(grid);
         removeWallCircles();
+        canvas.setBackgroundImage(null, canvas.renderAll.bind(canvas));
+        canvas.renderAll();
 
         //console.log(canvas.toDataURL());
 
@@ -228,6 +245,11 @@ $(document).on('admin#map:loaded', function(){
             }
         });
 
+        canvas.setBackgroundImage(overlay_url, canvas.renderAll.bind(canvas), {
+            width: 6000,
+            height: 4000,
+            opacity: 0.3
+        });
         restoreWallCircles();
 
         canvas.setZoom(z);
