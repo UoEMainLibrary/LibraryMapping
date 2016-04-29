@@ -355,11 +355,17 @@ $(document).on('admin#map:loaded', function(){
     selectShelf = function(id) {
         var shelf = canvas.getObjects().find(function(o) {return o.id == id});
         canvas.setActiveObject(shelf);
+        canvas.setZoom(0.78);
+        canvas.viewport.position.x = (- shelf.left * canvas.viewport.zoom) + ( canvas.width * canvas.viewport.zoom / 2);
+        canvas.viewport.position.y = (- shelf.top * canvas.viewport.zoom) + ( canvas.height * canvas.viewport.zoom / 2);
+
+        canvas.renderAll();
     };
 
     openEditShelf = function(id) {
         selectShelf(id);
         $('#controls_tab').tab('show');
+
     };
 
     /* ------- EVENT LISTENERS ------- */
@@ -741,11 +747,12 @@ function loadElementInCanvas(element, element_type, svg_path, last) {
                     originX: 'center',
                     originY: 'center'
                 })
+
                 $('#shelves-table > tbody:last-child').append('' +
                     '<tr>' +
                         '<td>' + element.id + '</td>' +
-                        '<td>' + element.range_down_opt + ' ' + element.range_down_letters + ' ' + element.range_down_digits+ '</td>' +
-                        '<td>' + element.range_up_opt + ' ' + element.range_up_letters + ' ' + element.range_up_digits+ '</td>' +
+                        '<td style="color: white; background-color:'+get_rgb(element.range_down)+'">' + element.range_down_opt + ' ' + element.range_down_letters + ' ' + element.range_down_digits+ '</td>' +
+                        '<td style="color: white; background-color:'+get_rgb(element.range_up)+'">' + element.range_up_opt + ' ' + element.range_up_letters + ' ' + element.range_up_digits+ '</td>' +
                         '<td><a href="#" onclick="openEditShelf('+element.id+')">Edit</a></td>' +
                         '<td><a href="#" onclick="selectShelf('+element.id+')">Select</a></td>' +
                     '</tr>');
@@ -848,4 +855,17 @@ function makeCircle(left, top, line1, line2) {
     c.line2 = line2;
 
     return c;
+}
+
+get_rgb = function(value) {
+    console.log(value);
+    var minimum = 1000;
+    var maximum = 1600;
+    var ratio = 2 * (value - minimum) / (maximum - minimum);
+    var b = Math.round(Math.max(0, 255*(1 - ratio)));
+    var r = Math.round(Math.max(0, 255*(ratio - 1)));
+    var g = 255 - b - r;
+    var res = "rgb(" + r + ", " + g + ", " + b + ")";
+    console.log(res);
+    return res;
 }
