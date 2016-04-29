@@ -73,7 +73,7 @@ body, html {
   background-color: #F0F0F0!important;
 }
 
-table {
+#qr-container table {
   border-width: 0;
   border-style: none;
   border-color: #0000ff;
@@ -84,7 +84,7 @@ table {
   right: 10px;
 }
 
-td {
+#qr-container td {
   border-left: solid 3px #000;
   padding: 0;
   margin: 0;
@@ -92,8 +92,8 @@ td {
   height: 3px;
 }
 
-td.black { border-color: #000; }
-td.white { border-color: #fff; }
+#qr-container td.black { border-color: #000; }
+#qr-container td.white { border-color: #fff; }
 
 @media screen and (max-width: 588px) {
   #image-map {

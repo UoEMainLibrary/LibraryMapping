@@ -223,7 +223,6 @@ $(document).on('admin#map:loaded', function(){
         canvas.setBackgroundImage(null, canvas.renderAll.bind(canvas));
         canvas.renderAll();
 
-        //console.log(canvas.toDataURL());
 
         var data = canvas.toSVG();
         var data2 = canvas.toDataURL().replace(/^data:image\/(png|jpg);base64,/, "");
@@ -354,9 +353,7 @@ $(document).on('admin#map:loaded', function(){
     };
 
     selectShelf = function(id) {
-        console.log(id);
         var shelf = canvas.getObjects().find(function(o) {return o.id == id});
-        console.log(shelf)
         canvas.setActiveObject(shelf);
     };
 

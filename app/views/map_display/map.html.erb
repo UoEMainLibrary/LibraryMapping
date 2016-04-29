@@ -62,9 +62,11 @@
     <% end %>
   </div>
 
-  <% if @qr %>
-    <%= raw @qr.as_html %>
-  <% end %>
+  <div id="qr-container">
+    <% if @qr %>
+      <%= raw @qr.as_html %>
+    <% end %>
+  </div>
 
 
 <!--Image map canvas-->
