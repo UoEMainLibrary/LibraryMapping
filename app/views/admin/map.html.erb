@@ -68,13 +68,10 @@
   </div>
   <div id="commands">
 
-    <ul class="nav nav-tabs" style="background-color:white">
-   <!--    <li><a href="#simple-shapes" data-toggle="tab">Simple</a></li> -->
+    <ul class="nav nav-tabs" style="background-color:white" id="main_tabs">
       <li><a href="#svg-shapes" data-toggle="tab">SVG</a></li>
-      <li class="active"><a href="#object-controls-pane" data-toggle="tab">Controls</a></li>
-    <!--   <li><a href="#load-svg-pane" data-toggle="tab">Load SVG</a></li>
-      <li><a href="#execute-code" data-toggle="tab">Execute</a></li>
-      <li><a href="#json-inout" data-toggle="tab">JSON</a></li> -->
+      <li class="active"><a href="#object-controls-pane" data-toggle="tab" id="controls_tab">Controls</a></li>
+      <li><a href="#shelves-overview" data-toggle="tab">Shelves</a></li>
     </ul>
 
     <div class="tab-content" style="padding: 20px;background-color:white; height:670px; overflow: auto;">
@@ -112,66 +109,8 @@
         </ul>
       </div>
 
-      <div class="tab-pane" id="simple-shapes">
-        <p>Add <strong>simple shapes</strong> to canvas:</p>
-        <p>
-          <button type="button" class="btn rect" ng-click="addRect()">Rectangle</button>
-          <button type="button" class="btn circle" ng-click="addCircle()">Circle</button>
-          <button type="button" class="btn triangle" ng-click="addTriangle()">Triangle</button>
-          <button type="button" class="btn line" ng-click="addLine()">Line</button>
-          <button type="button" class="btn polygon" ng-click="addPolygon()">Polygon</button>
-        </p>
-
-        <p>
-          <button class="btn" ng-click="addText()">Add text</button>
-        </p>
-
-        <p>Add <strong>images</strong> to canvas:</p>
-        <p>
-          <button type="button" class="btn image1" ng-click="addImage1()">Image 1 (pug)</button>
-          <button type="button" class="btn image2" ng-click="addImage2()">Image 2 (google)</button>
-          <button type="button" class="btn image3" n-click="addImage3()">Image 3 (printio)</button>
-        </p>
-
-        <p>Add <strong>gradient-based shapes</strong> to canvas:</p>
-
-        <p>
-          <button class="btn shape" id="shape74">Gradient 1</button>
-          <button class="btn shape" id="shape66">Gradient 2</button>
-          <button class="btn shape" id="shape75">Gradient 3</button>
-          <button class="btn shape" id="shape148">Gradient 4</button>
-        </p>
-
-        <p>Add <strong>arcs</strong> and misc to canvas:</p>
-
-        <p>
-          <button class="btn shape" id="shape104">Arc(s) 1</button>
-          <button class="btn shape" id="shape105">Arc(s) 2</button>
-          <button class="btn shape" id="shape106">Arc(s) 3</button>
-          <button class="btn shape" id="shape107">Arc(s) 4</button>
-        </p>
-        <p>
-          <button class="btn shape" id="shape103">Transformed paths</button>
-        </p>
-        <p>
-          <button class="btn shape" id="shape54">Image</button>
-        </p>
-      </div>
-
       <div class="tab-pane active" id="object-controls-pane">
         <div id="gridCheckbox" class="commandCtr">
-         <!--  <p>
-            Rasterize canvas to
-            <button class="btn btn-general" id="rasterize" ng-click="rasterize()">
-              Image
-            </button>
-            <button class="btn btn-general" id="rasterize-svg">
-              SVG
-            </button>
-            <button class="btn btn-general" id="rasterize-json" ng-click="rasterizeJSON()">
-              JSON
-            </button>
-          </p> -->
           <span class="switch-button-label">Grid:</span>
           <div class="switch-button-background">
             <div class="switch-button-button checked" id="gridCheckbox" ></div>
@@ -267,34 +206,16 @@
         </div>
       </div>
 
-      <div class="tab-pane" id="load-svg-pane">
-      <textarea id="svg-console" bind-value-to="consoleSVG">
-      </textarea>
-        <button type="button" class="btn btn-info" ng-click="loadSVG()">
-          Load
-        </button>
-        <button type="button" class="btn" ng-click="loadSVGWithoutGrouping()">
-          Load without grouping
-        </button>
-      </div>
+      <div class="tab-pane" id="shelves-overview">
+        <table id="shelves-table">
+          <tbody>
+          <tr>
+            <th>Shelf id</th><th>Start range</th><th>End range</th><th>Edit</th><th>Select</th>
+          </tr>
 
-      <div class="tab-pane" id="execute-code">
-        <textarea id="canvas-console" bind-value-to="console">
-        </textarea>
-        <button type="button" class="btn btn-info" ng-click="execute()">Execute</button>
+          </tbody>
+        </table>
       </div>
-
-      <div class="tab-pane" id="json-inout">
-      <textarea id="json-console" bind-value-to="consoleJSON">
-      </textarea>
-        <button type="button" class="btn btn-info" ng-click="loadJSON()">
-          Load
-        </button>
-        <button type="button" class="btn btn-info" ng-click="saveJSON()">
-          Save
-        </button>
-      </div>
-
     </div>
 
   </div>
@@ -319,7 +240,7 @@
 
   $(document).one("canvas:preloaded", function() {
     <%
-    elements = Element.where("floor = :floor AND library = :library", {floor: @floor, library: @library})
+    elements = Element.where("floor = :floor AND library = :library", {floor: @floor, library: @library}).order("range_up")
     elements.each_with_index do |element, index| %>
 
     loadElementInCanvas(<%= element.to_json.html_safe %>, "<%= element.element_type.name %>", "<%= asset_path(element.element_type.svg_path) %>", <%= elements.size %>)

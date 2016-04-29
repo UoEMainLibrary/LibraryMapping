@@ -32,7 +32,6 @@ $(document).on('admin#map:loaded', function(){
         canvas.renderAll();
     });
 
-
     //canvas.setBackgroundImage("/assets/overlay_ml_1.png", canvas.renderAll.bind(canvas), {
     //    width: 6000,
     //    height: 4000,
@@ -330,6 +329,18 @@ $(document).on('admin#map:loaded', function(){
         for(var i=0; i < wallCircles.length; i++) {
             wallCircles[i].setOpacity(1);
         }
+    };
+
+    selectShelf = function(id) {
+        console.log(id);
+        var shelf = canvas.getObjects().find(function(o) {return o.id == id});
+        console.log(shelf)
+        canvas.setActiveObject(shelf);
+    };
+
+    openEditShelf = function(id) {
+        selectShelf(id);
+        $('#controls_tab').tab('show');
     };
 
     /* ------- EVENT LISTENERS ------- */
@@ -711,6 +722,15 @@ function loadElementInCanvas(element, element_type, svg_path, last) {
                     originX: 'center',
                     originY: 'center'
                 })
+                $('#shelves-table > tbody:last-child').append('' +
+                    '<tr>' +
+                        '<td>' + element.id + '</td>' +
+                        '<td>' + element.range_down_opt + ' ' + element.range_down_letters + ' ' + element.range_down_digits+ '</td>' +
+                        '<td>' + element.range_up_opt + ' ' + element.range_up_letters + ' ' + element.range_up_digits+ '</td>' +
+                        '<td><a href="#" onclick="openEditShelf('+element.id+')">Edit</a></td>' +
+                        '<td><a href="#" onclick="selectShelf('+element.id+')">Select</a></td>' +
+                    '</tr>');
+
             }
             canvas.add(loadedObject);
             if (counter == last) {

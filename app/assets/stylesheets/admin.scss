@@ -392,6 +392,17 @@ input[type=radio] {
   border-radius: 0px 4px 4px 0px;
 }
 
+#shelves-overview {
+  width: 450px;
+}
+
+#shelves-table, th, td {
+  border: 1px solid black;
+}
+
+#shelves-table th, #shelves-table td {
+  padding: 5px;
+}
 
 // LOADING ANIMATIONS
 #loading-container {
