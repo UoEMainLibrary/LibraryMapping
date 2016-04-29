@@ -14,12 +14,13 @@
             <span class="icon-bar"></span>
           </button>
 
-          <img class="logo" src="/assets/logo-01.png"><h2>LibraryMapping&middot; User map</h2>
+          <img class="logo" src="/assets/logo-01.png"><h2>LibraryMapping</h2>
         </div>
         <div class="collapse navbar-collapse" id="myNavbar">
           <ul class="nav navbar-nav navbar-right ">
-              <li><a class="white-font" href="#"><span class="glyphicon glyphicon-user"></span> Sign Up</a></li>
-              <li><a class="white-font" href="#"><span class="glyphicon glyphicon-log-in"></span> Login</a></li>
+            <li><a class="white-font" id="libraries-and-floors" href="javascript:;"><span class="glyphicon glyphicon-menu-hamburger"></span> Libraries and Floors </a></li>
+            <li><a class="white-font" id="qr-code" href="javascript:;"><span class="glyphicon glyphicon-qrcode"></span> QR Code </a></li>
+            <li><a class="white-font" href="#"><span class="glyphicon glyphicon-send"></span>Feedback</a></li>
           </ul>
         </div>
    </div>
@@ -219,4 +220,13 @@
   $('#library_option').on('change', function() {
     window.location.replace(document.location.origin + "?library=" + this.value);
   });
+
+  $( "#libraries-and-floors" ).click(function() {
+    $(".optionsTopBar").slideToggle();
+  });
+
+  $( "#qr-code" ).click(function() {
+    $("#qr-container").toggle();
+  });
+
 </script>
