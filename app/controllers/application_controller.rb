@@ -15,14 +15,12 @@ class ApplicationController < ActionController::Base
     #TODO: if hub, lcSection, etc
     subclass = HubLcSection.where(:letters => letters).first
 
-    if(!subclass)
+
+    if(!subclass or !shelfmark.match(/(\d+)/))
       return -1
     end
 
-
-
     token = Integer(subclass.token)
-
     digits = Integer(shelfmark.match(/(\d+)/)[0])
     digits = digits.to_s.rjust(5, "0") # add prepending 0s
 

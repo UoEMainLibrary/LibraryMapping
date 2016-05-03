@@ -127,6 +127,14 @@ class AdminController < ApplicationController
         shelfmark_down = element["range_down_opt"] + element["range_down_letters"] + element["range_down_digits"]
       end
 
+      if shelfmark_up == "" and shelfmark_down == ""
+        if canvasElement.save
+          return true
+        else
+          return {"error" => canvasElement.errors.full_messages}
+        end
+      end
+
       if shelfmark_down != ""
         shelfmark_down = shelfmarkToOrder(shelfmark_down)
         if shelfmark_down == -1
