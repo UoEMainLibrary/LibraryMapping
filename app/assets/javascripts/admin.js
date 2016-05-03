@@ -115,15 +115,17 @@ $(document).on('admin#map:loaded', function(){
     saveElementData = function () {
         var obj = canvas.getActiveObject();
 
-        obj.range_end_opt =  $("#range_end_opt").val();
-        obj.range_end_digits =  $("#range_end_digits").val();
-        obj.range_end_letters = $("#range_end_letters").val();
+        obj.range_end_opt =  $(".range-form:visible .range_end_opt").val();
+        obj.range_end_digits =  $(".range-form:visible .range_end_digits").val();
+        obj.range_end_letters = $(".range-form:visible .range_end_letters").val();
 
-        obj.range_start_opt =  $("#range_start_opt").val();
-        obj.range_start_digits =  $("#range_start_digits").val();
-        obj.range_start_letters = $("#range_start_letters").val();
+        obj.range_start_opt =  $(".range-form:visible .range_start_opt").val();
+        obj.range_start_digits =  $(".range-form:visible .range_start_digits").val();
+        obj.range_start_letters = $(".range-form:visible .range_start_letters").val();
 
         obj.identifier = $("#identifier").val();
+
+        console.log(obj)
 
         $.ajax({
             url : "/admin/save_element/" + library + "/" + floor,
@@ -577,17 +579,40 @@ $(document).on('admin#map:loaded', function(){
 
         if(options.target.element_type_name == "Shelf") {
             $("#shelfData").css("display", "initial");
-            $("#range_end_opt").val(options.target.range_end_opt);
-            $("#range_end_letters").val(options.target.range_end_letters);
-            $("#range_end_digits").val(options.target.range_end_digits);
-
-            $("#range_start_opt").val(options.target.range_start_opt);
-            $("#range_start_letters").val(options.target.range_start_letters);
-            $("#range_start_digits").val(options.target.range_start_digits);
 
             $("#identifier").val(options.target.identifier);
+            // Trigger change
+            $("#identifier").change();
+
+            $(".range_end_opt").val(options.target.range_end_opt);
+            $(".range_end_letters").val(options.target.range_end_letters);
+            $(".range_end_digits").val(options.target.range_end_digits);
+
+            $(".range_start_opt").val(options.target.range_start_opt);
+            $(".range_start_letters").val(options.target.range_start_letters);
+            $(".range_start_digits").val(options.target.range_start_digits);
         }
     });
+
+    $("#identifier").change(function(){
+        var val = $("#identifier").val();
+        console.log(val);
+
+        $(".range-form").hide();
+
+        switch (val) {
+            case "lc_hub":
+                $("#lc-form").show();
+                break;
+            case "lc_main":
+                $("#lc-form").show();
+                break;
+            case "dewey_main":
+                $("#dewey-form").show();
+                break;
+        }
+
+    })
 
     canvas.on('selection:cleared', function(options){
         $("#remove-selected").css("display", "none");
