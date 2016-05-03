@@ -7,10 +7,15 @@ body, html {
 
 #image-map {
 	width: 100%;
-	height: calc(100% - 119px);
 	border: 1px solid #ccc;
+    height: calc(100% - 80px);
 	margin:auto;
 }
+
+.image-map-open {
+  height: calc(100% - 120px)!important;
+}
+
 
 #main-container{
 	height: 100%;
@@ -25,6 +30,9 @@ body, html {
   height: auto;
   position: fixed;
   bottom: 0;
+  p {
+    margin: 5px 0px;
+  }
 }
 #i-label{
 	margin: 0;
@@ -58,7 +66,9 @@ body, html {
 
 .optionsTopBar{
   height: 40px;
-  padding-top: 9px;
+  padding: 9px 0px 6px 0px;
+  height: auto;
+
   label{
     margin-left: 30px;
   }
@@ -73,15 +83,19 @@ body, html {
   background-color: #F0F0F0!important;
 }
 
+#qr-container{
+  display: none;
+}
+
 #qr-container table {
   border-width: 0;
   border-style: none;
   border-color: #0000ff;
   border-collapse: collapse;
   position: absolute;
-  top: 100px;
+  top: 102px;
   z-index: 1;
-  right: 10px;
+  right: 15px;
 }
 
 #qr-container td {
@@ -92,11 +106,43 @@ body, html {
   height: 3px;
 }
 
+.navbar-header{
+  h2{
+    margin-top: 18px;
+  }
+}
+
+.navbar-right{
+  span{
+    margin-right:7px;
+  }
+
+
+  .white-font:active,
+  .white-font:focus {
+    background-color: inherit;
+    color: inherit;
+  }
+
+  .white-font:hover{
+    background-color: #eeeeee;
+    color: #1B325E;
+  }
+}
+
 #qr-container td.black { border-color: #000; }
 #qr-container td.white { border-color: #fff; }
 
-@media screen and (max-width: 588px) {
+@media screen and (max-width: 767px) {
   #image-map {
-   height: calc(100% - 140px);
+    height: calc(100% - 50px);
+  }
+
+  .image-map-open {
+    height: calc(100% - 93px)!important;
+  }
+
+  .footerHolder{
+    display: none;
   }
 }
