@@ -72,7 +72,9 @@ $(document).on('admin#map:loaded', function(){
 
     var grid = new fabric.Group(lines, {selectable: false, evented: false});
 
-    canvas.add(grid)
+    canvas.add(grid);
+
+    var printQueue = [];
 
     /* ------- CANVAS METHODS ------- */
 
@@ -365,7 +367,42 @@ $(document).on('admin#map:loaded', function(){
     openEditShelf = function(id) {
         selectShelf(id);
         $('#controls_tab').tab('show');
+    };
 
+    printRanges = function() {
+        $(".print_col").show();
+    };
+
+    printThis = function() {
+
+        var count = $(".print_col input:checked").length;
+
+        if (count == 2) {
+            console.log($(".print_col input:checked:eq(0)").data("id"));
+            console.log($(".print_col input:checked:eq(1)").data("id"));
+            var element1 = canvas.getObjects().find(function(o) {return o.id == $(".print_col input:checked:eq(0)").data("id")});
+            var element2 = canvas.getObjects().find(function(o) {return o.id == $(".print_col input:checked:eq(1)").data("id")});
+
+            var doc = new jsPDF();
+            doc.text(20, 20, element1.range_down_opt + ' ' + element1.range_down_letters + ' ' + element1.range_down_digits);
+            doc.text(20, 30, element1.range_up_opt + ' ' + element1.range_up_letters + ' ' + element1.range_up_digits);
+
+            doc.text(150, 20, element2.range_down_opt + ' ' + element2.range_down_letters + ' ' + element2.range_down_digits);
+            doc.text(150, 30, element2.range_up_opt + ' ' + element2.range_up_letters + ' ' + element2.range_up_digits);
+
+            doc.addPage();
+
+            doc.text(20, 20, element2.range_down_opt + ' ' + element2.range_down_letters + ' ' + element2.range_down_digits);
+            doc.text(20, 30, element2.range_up_opt + ' ' + element2.range_up_letters + ' ' + element2.range_up_digits);
+
+            doc.text(150, 20, element1.range_down_opt + ' ' + element1.range_down_letters + ' ' + element1.range_down_digits);
+            doc.text(150, 30, element1.range_up_opt + ' ' + element1.range_up_letters + ' ' + element1.range_up_digits);
+
+            doc.save('Shelfmarks.pdf');
+
+            printQueue = [];
+            $(".print_col input").prop( "checked", false );
+        }
     };
 
     /* ------- EVENT LISTENERS ------- */
@@ -755,6 +792,7 @@ function loadElementInCanvas(element, element_type, svg_path, last) {
                         '<td style="color: white; background-color:'+get_rgb(element.range_up)+'">' + element.range_up_opt + ' ' + element.range_up_letters + ' ' + element.range_up_digits+ '</td>' +
                         '<td><a href="#" onclick="openEditShelf('+element.id+')">Edit</a></td>' +
                         '<td><a href="#" onclick="selectShelf('+element.id+')">Select</a></td>' +
+                        '<td class="print_col" style="display: none"><input type="checkbox" data-id="'+element.id+'" onclick="printThis()"></td>' +
                     '</tr>');
 
             }
@@ -858,14 +896,11 @@ function makeCircle(left, top, line1, line2) {
 }
 
 get_rgb = function(value) {
-    console.log(value);
     var minimum = 1000;
     var maximum = 1600;
     var ratio = 2 * (value - minimum) / (maximum - minimum);
     var b = Math.round(Math.max(0, 255*(1 - ratio)));
     var r = Math.round(Math.max(0, 255*(ratio - 1)));
     var g = 255 - b - r;
-    var res = "rgb(" + r + ", " + g + ", " + b + ")";
-    console.log(res);
-    return res;
+    return "rgb(" + r + ", " + g + ", " + b + ")";
 }
