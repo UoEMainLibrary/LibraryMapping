@@ -166,27 +166,27 @@
         <div id="shelfData">
           <label> Range Start: </label><br>
 
-          <select id="range_down_opt">
+          <select id="range_start_opt">
             <option value=""></option>
             <option value="Folio ">Folio</option>
             <option value="Pamph. ">Pamph.</option>
             <option value="Ref. ">Ref.</option>
           </select>
-          <input type="text" id="range_down_letters" name="rangeDown" placeholder="e.g. QA">
-          <input type="text" id="range_down_digits" name="rangeDown" placeholder="e.g. 273">
+          <input type="text" id="range_start_letters" name="rangeDown" placeholder="e.g. QA">
+          <input type="text" id="range_start_digits" name="rangeDown" placeholder="e.g. 273">
 
           <br>
 
           <label> Range End: </label><br>
 
-          <select id="range_up_opt">
+          <select id="range_end_opt">
             <option value=""></option>
             <option value="Folio ">Folio</option>
             <option value="Pamph. ">Pamph.</option>
             <option value="Ref. ">Ref.</option>
           </select>
-          <input type="text" id="range_up_letters" name="rangeUp" placeholder="e.g. QA">
-          <input type="text" id="range_up_digits" name="rangeUp" placeholder="e.g. 273">
+          <input type="text" id="range_end_letters" name="rangeUp" placeholder="e.g. QA">
+          <input type="text" id="range_end_digits" name="rangeUp" placeholder="e.g. 273">
 
           <br>
           <label for="identifier"> Identifier: </label>
@@ -236,7 +236,7 @@
 
   $(document).one("canvas:preloaded", function() {
     <%
-    elements = Element.where("floor = :floor AND library = :library", {floor: @floor, library: @library}).order("range_up")
+    elements = Element.where("floor = :floor AND library = :library", {floor: @floor, library: @library}).order("range_end")
     elements.each_with_index do |element, index| %>
 
     loadElementInCanvas(<%= element.to_json.html_safe %>, "<%= element.element_type.name %>", "<%= asset_path(element.element_type.svg_path) %>", <%= elements.size %>)

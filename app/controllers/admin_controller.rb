@@ -90,44 +90,44 @@ class AdminController < ApplicationController
 
     if element["element_type_id"] == ElementType.find_by(name: "Shelf").id
 
-      if element["range_up_opt"] == nil
-        element["range_up_opt"] = ''
+      if element["range_end_opt"] == nil
+        element["range_end_opt"] = ''
       end
 
-      if element["range_up_digits"] == nil
-        element["range_up_digits"] = ''
+      if element["range_end_digits"] == nil
+        element["range_end_digits"] = ''
       end
 
-      if element["range_up_letters"] == nil
-        element["range_up_letters"] = ''
+      if element["range_end_letters"] == nil
+        element["range_end_letters"] = ''
       end
 
-      if element["range_down_opt"] == nil
-        element["range_down_opt"] = ''
+      if element["range_start_opt"] == nil
+        element["range_start_opt"] = ''
       end
 
-      if element["range_down_digits"] == nil
-        element["range_down_digits"] = ''
+      if element["range_start_digits"] == nil
+        element["range_start_digits"] = ''
       end
 
-      if element["range_down_letters"] == nil
-        element["range_down_letters"] = ''
+      if element["range_start_letters"] == nil
+        element["range_start_letters"] = ''
       end
 
       # Validate shelfmark
-      if (element["range_up_opt"] == "Ref. ")
-        shelfmark_up = element["range_up_letters"] + element["range_up_digits"]
+      if (element["range_end_opt"] == "Ref. ")
+        shelfmark_end = element["range_end_letters"] + element["range_end_digits"]
       else
-        shelfmark_up = element["range_up_opt"] + element["range_up_letters"] + element["range_up_digits"]
+        shelfmark_end = element["range_end_opt"] + element["range_end_letters"] + element["range_end_digits"]
       end
 
-      if (element["range_down_opt"] == "Ref. ")
-        shelfmark_down = element["range_down_letters"] + element["range_down_digits"]
+      if (element["range_start_opt"] == "Ref. ")
+        shelfmark_start = element["range_start_letters"] + element["range_start_digits"]
       else
-        shelfmark_down = element["range_down_opt"] + element["range_down_letters"] + element["range_down_digits"]
+        shelfmark_start = element["range_start_opt"] + element["range_start_letters"] + element["range_start_digits"]
       end
 
-      if shelfmark_up == "" and shelfmark_down == ""
+      if shelfmark_end == "" and shelfmark_start == ""
         if canvasElement.save
           return true
         else
@@ -135,38 +135,38 @@ class AdminController < ApplicationController
         end
       end
 
-      if shelfmark_down != ""
-        shelfmark_down = shelfmarkToOrder(shelfmark_down)
-        if shelfmark_down == -1
+      if shelfmark_start != ""
+        shelfmark_start = shelfmarkToOrder(shelfmark_start)
+        if shelfmark_start == -1
           return {"error" => "Invalid start shelfmark"}
         end
       else
         return {"error" => "Start shelfmark cannot be empty"}
       end
 
-      if shelfmark_up != ""
-        shelfmark_up = shelfmarkToOrder(shelfmark_up)
-        if shelfmark_up == -1
+      if shelfmark_end != ""
+        shelfmark_end = shelfmarkToOrder(shelfmark_end)
+        if shelfmark_end == -1
           return {"error" => "Invalid end shelfmark"}
         end
       else
         return {"error" => "End shelfmark cannot be empty"}
       end
 
-      if shelfmark_down > shelfmark_up
+      if shelfmark_start > shelfmark_end
         return {"error" => "Invalid range: start shelfmark should be lower than end shelfmark"}
       end
 
       # Update shelve's custom attribute
-      canvasElement.range_up = shelfmark_up
-      canvasElement.range_down = shelfmark_down
+      canvasElement.range_end = shelfmark_end
+      canvasElement.range_start = shelfmark_start
       canvasElement.identifier = element["identifier"]
-      canvasElement.range_up_opt = element["range_up_opt"]
-      canvasElement.range_up_digits = element["range_up_digits"]
-      canvasElement.range_up_letters = element["range_up_letters"]
-      canvasElement.range_down_opt = element["range_down_opt"]
-      canvasElement.range_down_digits = element["range_down_digits"]
-      canvasElement.range_down_letters = element["range_down_letters"]
+      canvasElement.range_end_opt = element["range_end_opt"]
+      canvasElement.range_end_digits = element["range_end_digits"]
+      canvasElement.range_end_letters = element["range_end_letters"]
+      canvasElement.range_start_opt = element["range_start_opt"]
+      canvasElement.range_start_digits = element["range_start_digits"]
+      canvasElement.range_start_letters = element["range_start_letters"]
 
     elsif element["element_type_id"] == ElementType.find_by(name: "Wall").id
 

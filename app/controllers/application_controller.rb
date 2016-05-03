@@ -25,7 +25,7 @@ class ApplicationController < ActionController::Base
     digits = digits.to_s.rjust(5, "0") # add prepending 0s
 
     res = Float(token.to_s + '.' + digits)
-    return res;
+    return res
   end
 
 end

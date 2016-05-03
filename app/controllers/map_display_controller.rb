@@ -26,7 +26,7 @@ class MapDisplayController < ApplicationController
           @qr = RQRCode::QRCode.new(request.original_url)
         end
         shelfmarkNumber = shelfmarkToOrder(shelfmark)
-        @elements = Element.where("range_up >= :shelfmark AND range_down <= :shelfmark AND library = :library AND floor = :floor", {shelfmark: shelfmarkNumber, library: @library, floor: @floor})
+        @elements = Element.where("range_end >= :shelfmark AND range_start <= :shelfmark AND library = :library AND floor = :floor", {shelfmark: shelfmarkNumber, library: @library, floor: @floor})
     end
   end
 end

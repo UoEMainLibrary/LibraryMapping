@@ -115,13 +115,13 @@ $(document).on('admin#map:loaded', function(){
     saveElementData = function () {
         var obj = canvas.getActiveObject();
 
-        obj.range_up_opt =  $("#range_up_opt").val();
-        obj.range_up_digits =  $("#range_up_digits").val();
-        obj.range_up_letters = $("#range_up_letters").val();
+        obj.range_end_opt =  $("#range_end_opt").val();
+        obj.range_end_digits =  $("#range_end_digits").val();
+        obj.range_end_letters = $("#range_end_letters").val();
 
-        obj.range_down_opt =  $("#range_down_opt").val();
-        obj.range_down_digits =  $("#range_down_digits").val();
-        obj.range_down_letters = $("#range_down_letters").val();
+        obj.range_start_opt =  $("#range_start_opt").val();
+        obj.range_start_digits =  $("#range_start_digits").val();
+        obj.range_start_letters = $("#range_start_letters").val();
 
         obj.identifier = $("#identifier").val();
 
@@ -290,12 +290,12 @@ $(document).on('admin#map:loaded', function(){
                     if (assetName == "Shelf") {
                         $.extend(opts, {
                             identifier: this.identifier,
-                            range_up_opt: this.range_up_opt,
-                            range_up_digits: this.range_up_digits,
-                            range_up_letters:this.range_up_letters,
-                            range_down_opt: this.range_down_opt,
-                            range_down_digits: this.range_down_digits,
-                            range_down_letters: this.range_down_letters
+                            range_end_opt: this.range_end_opt,
+                            range_end_digits: this.range_end_digits,
+                            range_end_letters:this.range_end_letters,
+                            range_start_opt: this.range_start_opt,
+                            range_start_digits: this.range_start_digits,
+                            range_start_letters: this.range_start_letters
                         })
                     }
                     return fabric.util.object.extend(toObject.call(this), opts);
@@ -317,12 +317,12 @@ $(document).on('admin#map:loaded', function(){
 
             if (assetName == "Shelf") {
                 loadedObject.set({
-                    range_up_opt: "",
-                    range_up_digits: "",
-                    range_up_letters: "",
-                    range_down_opt: "",
-                    range_down_digits: "",
-                    range_down_letters: "",
+                    range_end_opt: "",
+                    range_end_digits: "",
+                    range_end_letters: "",
+                    range_start_opt: "",
+                    range_start_digits: "",
+                    range_start_letters: "",
                     identifier: "",
                     originX: 'center',
                     originY: 'center'
@@ -384,19 +384,19 @@ $(document).on('admin#map:loaded', function(){
             var element2 = canvas.getObjects().find(function(o) {return o.id == $(".print_col input:checked:eq(1)").data("id")});
 
             var doc = new jsPDF();
-            doc.text(20, 20, element1.range_down_opt + ' ' + element1.range_down_letters + ' ' + element1.range_down_digits);
-            doc.text(20, 30, element1.range_up_opt + ' ' + element1.range_up_letters + ' ' + element1.range_up_digits);
+            doc.text(20, 20, element1.range_start_opt + ' ' + element1.range_start_letters + ' ' + element1.range_start_digits);
+            doc.text(20, 30, element1.range_end_opt + ' ' + element1.range_end_letters + ' ' + element1.range_end_digits);
 
-            doc.text(150, 20, element2.range_down_opt + ' ' + element2.range_down_letters + ' ' + element2.range_down_digits);
-            doc.text(150, 30, element2.range_up_opt + ' ' + element2.range_up_letters + ' ' + element2.range_up_digits);
+            doc.text(150, 20, element2.range_start_opt + ' ' + element2.range_start_letters + ' ' + element2.range_start_digits);
+            doc.text(150, 30, element2.range_end_opt + ' ' + element2.range_end_letters + ' ' + element2.range_end_digits);
 
             doc.addPage();
 
-            doc.text(20, 20, element2.range_down_opt + ' ' + element2.range_down_letters + ' ' + element2.range_down_digits);
-            doc.text(20, 30, element2.range_up_opt + ' ' + element2.range_up_letters + ' ' + element2.range_up_digits);
+            doc.text(20, 20, element2.range_start_opt + ' ' + element2.range_start_letters + ' ' + element2.range_start_digits);
+            doc.text(20, 30, element2.range_end_opt + ' ' + element2.range_end_letters + ' ' + element2.range_end_digits);
 
-            doc.text(150, 20, element1.range_down_opt + ' ' + element1.range_down_letters + ' ' + element1.range_down_digits);
-            doc.text(150, 30, element1.range_up_opt + ' ' + element1.range_up_letters + ' ' + element1.range_up_digits);
+            doc.text(150, 20, element1.range_start_opt + ' ' + element1.range_start_letters + ' ' + element1.range_start_digits);
+            doc.text(150, 30, element1.range_end_opt + ' ' + element1.range_end_letters + ' ' + element1.range_end_digits);
 
             doc.save('Shelfmarks.pdf');
 
@@ -577,13 +577,13 @@ $(document).on('admin#map:loaded', function(){
 
         if(options.target.element_type_name == "Shelf") {
             $("#shelfData").css("display", "initial");
-            $("#range_up_opt").val(options.target.range_up_opt);
-            $("#range_up_letters").val(options.target.range_up_letters);
-            $("#range_up_digits").val(options.target.range_up_digits);
+            $("#range_end_opt").val(options.target.range_end_opt);
+            $("#range_end_letters").val(options.target.range_end_letters);
+            $("#range_end_digits").val(options.target.range_end_digits);
 
-            $("#range_down_opt").val(options.target.range_down_opt);
-            $("#range_down_letters").val(options.target.range_down_letters);
-            $("#range_down_digits").val(options.target.range_down_digits);
+            $("#range_start_opt").val(options.target.range_start_opt);
+            $("#range_start_letters").val(options.target.range_start_letters);
+            $("#range_start_digits").val(options.target.range_start_digits);
 
             $("#identifier").val(options.target.identifier);
         }
@@ -743,12 +743,12 @@ function loadElementInCanvas(element, element_type, svg_path, last) {
                     if (element_type == "Shelf") {
                         $.extend(opts, {
                             identifier: this.identifier,
-                            range_up_opt: this.range_up_opt,
-                            range_up_digits: this.range_up_digits,
-                            range_up_letters:this.range_up_letters,
-                            range_down_opt: this.range_down_opt,
-                            range_down_digits: this.range_down_digits,
-                            range_down_letters: this.range_down_letters
+                            range_end_opt: this.range_end_opt,
+                            range_end_digits: this.range_end_digits,
+                            range_end_letters:this.range_end_letters,
+                            range_start_opt: this.range_start_opt,
+                            range_start_digits: this.range_start_digits,
+                            range_start_letters: this.range_start_letters
                         })
                     }
                     return fabric.util.object.extend(toObject.call(this), opts);
@@ -774,12 +774,12 @@ function loadElementInCanvas(element, element_type, svg_path, last) {
 
             if (element_type == "Shelf") {
                 loadedObject.set({
-                    range_up_opt: element.range_up_opt,
-                    range_up_digits: element.range_up_digits,
-                    range_up_letters: element.range_up_letters,
-                    range_down_opt: element.range_down_opt,
-                    range_down_digits: element.range_down_digits,
-                    range_down_letters: element.range_down_letters,
+                    range_end_opt: element.range_end_opt,
+                    range_end_digits: element.range_end_digits,
+                    range_end_letters: element.range_end_letters,
+                    range_start_opt: element.range_start_opt,
+                    range_start_digits: element.range_start_digits,
+                    range_start_letters: element.range_start_letters,
                     identifier: element.identifier,
                     originX: 'center',
                     originY: 'center'
@@ -788,8 +788,8 @@ function loadElementInCanvas(element, element_type, svg_path, last) {
                 $('#shelves-table > tbody:last-child').append('' +
                     '<tr>' +
                         '<td>' + element.id + '</td>' +
-                        '<td style="color: white; background-color:'+get_rgb(element.range_down)+'">' + element.range_down_opt + ' ' + element.range_down_letters + ' ' + element.range_down_digits+ '</td>' +
-                        '<td style="color: white; background-color:'+get_rgb(element.range_up)+'">' + element.range_up_opt + ' ' + element.range_up_letters + ' ' + element.range_up_digits+ '</td>' +
+                        '<td style="color: white; background-color:'+get_rgb(element.range_start)+'">' + element.range_start_opt + ' ' + element.range_start_letters + ' ' + element.range_start_digits+ '</td>' +
+                        '<td style="color: white; background-color:'+get_rgb(element.range_end)+'">' + element.range_end_opt + ' ' + element.range_end_letters + ' ' + element.range_end_digits+ '</td>' +
                         '<td><a href="#" onclick="openEditShelf('+element.id+')">Edit</a></td>' +
                         '<td><a href="#" onclick="selectShelf('+element.id+')">Select</a></td>' +
                         '<td class="print_col" style="display: none"><input type="checkbox" data-id="'+element.id+'" onclick="printThis()"></td>' +
