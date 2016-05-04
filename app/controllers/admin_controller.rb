@@ -136,7 +136,7 @@ class AdminController < ApplicationController
       end
 
       if shelfmark_start != ""
-        shelfmark_start = shelfmarkToOrder(shelfmark_start)
+        shelfmark_start = shelfmarkToOrder(shelfmark_start, element["identifier"])
         if shelfmark_start == -1
           return {"error" => "Invalid start shelfmark"}
         end
@@ -145,7 +145,7 @@ class AdminController < ApplicationController
       end
 
       if shelfmark_end != ""
-        shelfmark_end = shelfmarkToOrder(shelfmark_end)
+        shelfmark_end = shelfmarkToOrder(shelfmark_end, element["identifier"])
         if shelfmark_end == -1
           return {"error" => "Invalid end shelfmark"}
         end
