@@ -20,7 +20,7 @@
           <ul class="nav navbar-nav navbar-right ">
             <li><a class="white-font" id="libraries-and-floors" href="javascript:;"><span class="glyphicon glyphicon-menu-hamburger"></span> Libraries and Floors </a></li>
             <% if @qr %>
-              <li><a class="white-font" id="qr-code" href="javascript:;"><span class="glyphicon glyphicon-qrcode"></span> QR Code </a></li>
+              <li><a class="white-font" id="qr-code" href="javascript:;"><span class="glyphicon glyphicon glyphicon-phone"></span> Get it on mobile </a></li>
             <% end %>
             <li><a class="white-font" href="#"><span class="glyphicon glyphicon-send"></span>Feedback</a></li>
           </ul>
@@ -69,11 +69,35 @@
     <% if @qr %>
       <%= raw @qr.as_html %>
     <% end %>
+
+    <div>Scan the QR Code <br> using your mobile device! </div>
   </div>
 
 
 <!--Image map canvas-->
 <div id="image-map" class="<% unless @elements %> image-map-open <% end %>"></div>
+
+<div id="help-info">
+  <div id="help-info-text">
+    Have you found your book yet?
+  </div>
+  <a href="#" id="help-info-yes">
+  <div class="bottom-menu">
+    Yes
+  </div>
+  </a>
+  <a href="#" id="help-info-not-yet">
+  <div class="bottom-menu">
+    Not yet
+  </div>
+  </a>
+  <a href="#">
+  <div class="bottom-menu" id="help-info-no">
+    I cannot find it
+  </div>
+  </a>
+</div>
+
 <!--Footer-->
 <div class="footerHolder">
   <p>
@@ -231,6 +255,54 @@
   $( "#qr-code" ).click(function() {
     $("#qr-container").toggle();
   });
+
+  var state = "searching";
+  <% if @elements %>
+  if($(window).width() < 1100) {
+    helpInfo(5000);
+  }
+  <% end %>
+
+  $( "#help-info-yes" ).click(function() {
+    if(state == "searching") {
+      $("#help-info").slideToggle();
+    }else if(state == "floor-question"){
+      $("#help-info-text").text("Have you checked the recent return shelf?");
+      state = "recent-returns"
+    }else if(state == "recent-returns"){
+      $("#help-info-text").css("padding", "45px")
+      $("#help-info-text").text("Apologies for the inconvenience. Please contact the help desk services in the library if you have further questions.");
+    }
+  });
+
+  $( "#help-info-not-yet" ).click(function() {
+    $("#help-info").slideToggle();
+    helpInfo(5000);
+
+    setTimeout(function () {
+      if (state == "floor-question" || state == "recent-returns") {
+        $("#help-info-yes div").width("33.33%");
+        $("#help-info-not-yet div").width("33.33%");
+        $("#help-info-not-yet div").text("Not yet");
+        $("#help-info-text").text("Have you found your book?");
+        state = "searching"
+      }
+    }, 1000);
+  });
+
+  $( "#help-info-no" ).click(function() {
+      $("#help-info-yes div").width("50%");
+      $("#help-info-not-yet div").width("50%");
+      $("#help-info-not-yet div").text("No");
+      $("#help-info-text").text("Are you on " + $('.btn-floor[data-floor="<%= @floor %>"]').text() + " floor?");
+      state = "floor-question";
+  });
+
+  function helpInfo(time){
+    setTimeout(function () {
+      $("#help-info").slideToggle();
+    }, time);
+  }
 
 
 </script>

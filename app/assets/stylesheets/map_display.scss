@@ -87,7 +87,7 @@ body, html {
   display: none;
 }
 
-#qr-container table {
+#qr-container {
   border-width: 0;
   border-style: none;
   border-color: #0000ff;
@@ -95,7 +95,12 @@ body, html {
   position: absolute;
   top: 102px;
   z-index: 1;
-  right: 15px;
+  right: 55px;
+  text-align: center;
+
+  div {
+    margin-top: 10px;
+  }
 }
 
 #qr-container td {
@@ -128,6 +133,40 @@ body, html {
     background-color: #eeeeee;
     color: #1B325E;
   }
+}
+
+#help-info{
+  position: fixed;
+  bottom: 0;
+  width: 100%;
+  height:140px;
+  text-align: center;
+  z-index: 10;
+  display: none;
+  background-color: #1B325E;
+  color: #fff;
+
+  .bottom-menu{
+    width: 33.33%;
+    width: calc(100% / 3);
+    height: 100%;
+    float: left;
+    color: #fff;
+    padding-top: 35px;
+    font-size: 1.2em;
+
+    &:active{
+      background-color: #eeeeee;
+      color: #1B325E;
+    }
+  }
+
+  #help-info-text{
+    width: 100%;
+    padding: 12px;
+    font-size: 1.3em;
+  }
+
 }
 
 #qr-container td.black { border-color: #000; }
