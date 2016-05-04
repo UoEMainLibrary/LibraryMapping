@@ -406,6 +406,19 @@ input[type=radio] {
   }
 }
 
+.pin-sidebar{
+  position: absolute!important;
+  right: 0px;
+  top: 0px!important;
+  padding: 13px;
+  cursor: pointer;
+  border: 1px solid #ddd;
+
+  &:hover{
+    background-color: #ddd!important;
+  }
+}
+
 // LOADING ANIMATIONS
 #loading-container {
   height: 500px

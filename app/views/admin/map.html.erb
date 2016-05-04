@@ -66,6 +66,7 @@
       <li><a href="#svg-shapes" data-toggle="tab">SVG</a></li>
       <li class="active"><a href="#object-controls-pane" data-toggle="tab" id="controls_tab">Controls</a></li>
       <li><a href="#shelves-overview" data-toggle="tab">Shelves</a></li>
+      <div class="pin-sidebar glyphicon glyphicon-pushpin"></div>
     </ul>
 
     <div class="tab-content" style="padding: 20px;background-color:white; height:670px; overflow: auto;">
@@ -241,13 +242,28 @@
 
 
 <script>
+  var sidebarPin = false;
   $("#commands")
       .mouseover(function() {
-        $("#commands").css("right", 0);
+        if(!sidebarPin){
+          $("#commands").css("right", 0);
+        }
       })
       .mouseout(function() {
-        $("#commands").css("right", -490);
+        if(!sidebarPin) {
+          $("#commands").css("right", -490);
+        }
       });
+
+  $('.pin-sidebar').on('click', function(){
+    if(sidebarPin){
+      $('.pin-sidebar').css("background-color", "#fff");
+    }else{
+      $('.pin-sidebar').css("background-color", "#ddd");
+    }
+    sidebarPin = !sidebarPin;
+    $("#commands").css("right", 0);
+  });
 
   $("#switch").click(function(){
     $("#commands").css("right", 0);
