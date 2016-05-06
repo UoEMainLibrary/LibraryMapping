@@ -928,4 +928,4 @@ get_rgb = function(value) {
     var r = Math.round(Math.max(0, 255*(ratio - 1)));
     var g = 255 - b - r;
     return "rgb(" + r + ", " + g + ", " + b + ")";
-}
+};

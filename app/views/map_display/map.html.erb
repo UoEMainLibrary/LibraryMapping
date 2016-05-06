@@ -83,17 +83,17 @@
   </div>
   <a href="#" id="help-info-yes">
   <div class="bottom-menu">
-    Yes
+    Yes!
   </div>
   </a>
   <a href="#" id="help-info-not-yet">
   <div class="bottom-menu">
-    Not yet
+    Not yet...
   </div>
   </a>
   <a href="#">
   <div class="bottom-menu" id="help-info-no">
-    I cannot find it
+    I cannot find it!
   </div>
   </a>
 </div>
@@ -165,7 +165,7 @@
       marker.setLatLng(map.unproject([m.x, m.y], map.getMaxZoom()-1))
     }else{
       marker = L.marker(map.unproject([m.x, m.y], map.getMaxZoom()-1));
-      marker.addTo(map);
+      //marker.addTo(map);
     }
   }
 
@@ -235,7 +235,7 @@
   $('#image-map').height() ;
   <% if @elements
       @elements.each do |element| %>
-        L.marker(map.unproject([<%= element.left %>, <%= element.top %>], map.getMaxZoom()-1)).addTo(map).bindPopup("<b><%= @title %></b><br> <%= @author %>").openPopup();
+        L.marker(map.unproject([<%= element.left %>, <%= element.top %>], map.getMaxZoom()-1)).addTo(map).bindPopup("<b><%= @title %></b><br> <%= @author %><br> <%= @shelfmark%> ("+$('.btn-floor[data-floor="<%= @floor %>"]').text()+" floor)").openPopup();
   <%  end
      end %>
 
@@ -270,7 +270,7 @@
       $("#help-info-text").text("Have you checked the recent return shelf?");
       state = "recent-returns"
     }else if(state == "recent-returns"){
-      $("#help-info-text").css("padding", "45px")
+      $("#help-info-text").css("padding", "45px");
       $("#help-info-text").text("Apologies for the inconvenience. Please contact the help desk services in the library if you have further questions.");
     }
   });
@@ -283,7 +283,7 @@
       if (state == "floor-question" || state == "recent-returns") {
         $("#help-info-yes div").width("33.33%");
         $("#help-info-not-yet div").width("33.33%");
-        $("#help-info-not-yet div").text("Not yet");
+        $("#help-info-not-yet div").text("Not yet...");
         $("#help-info-text").text("Have you found your book?");
         state = "searching"
       }
@@ -293,8 +293,8 @@
   $( "#help-info-no" ).click(function() {
       $("#help-info-yes div").width("50%");
       $("#help-info-not-yet div").width("50%");
-      $("#help-info-not-yet div").text("No");
-      $("#help-info-text").text("Are you on " + $('.btn-floor[data-floor="<%= @floor %>"]').text() + " floor?");
+      $("#help-info-not-yet div").text("No!");
+      $("#help-info-text").text("Are you on the " + $('.btn-floor[data-floor="<%= @floor %>"]').text() + " floor?");
       state = "floor-question";
   });
 

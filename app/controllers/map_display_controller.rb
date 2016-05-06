@@ -7,7 +7,7 @@ class MapDisplayController < ApplicationController
       @extension = ".svg"
     end
 
-    shelfmark = params[:shelfmark]
+    @shelfmark = params[:shelfmark]
     identifier = params[:identifier]
     @library = params[:library]
     @floor = params[:floor]
@@ -26,11 +26,11 @@ class MapDisplayController < ApplicationController
       identifier = "lc_hub"
     end
 
-    if shelfmark and @library and @floor
+    if @shelfmark and @library and @floor
         unless browser.platform.ios? or browser.platform.android? or browser.platform.windows_phone?
           @qr = RQRCode::QRCode.new(request.original_url)
         end
-        shelfmarkNumber = shelfmarkToOrder(shelfmark, identifier)
+        shelfmarkNumber = shelfmarkToOrder(@shelfmark, identifier)
         @elements = Element.where("range_end >= :shelfmark AND range_start <= :shelfmark AND library = :library AND floor = :floor AND identifier = :identifier", {shelfmark: shelfmarkNumber, library: @library, floor: @floor, identifier: identifier})
     end
   end
