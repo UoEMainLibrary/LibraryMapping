@@ -1,29 +1,120 @@
-<%= @shelfmark %>
-<% @elements.each do |element| -%>
-    <p>
-      <%= element.id %>
-    </p>
+<% content_for :head do %>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no" />
 <% end %>
 
-<link rel="stylesheet" href="http://cdn.leafletjs.com/leaflet/v0.7.7/leaflet.css" />
-<script src="http://cdn.leafletjs.com/leaflet/v0.7.7/leaflet.js"></script>
 
-<style>
-  #image-map {
-    width: 1800px;
-    height: 1200px;
-    border: 1px solid #ccc;
-    margin-bottom: 10px;
-    margin-right:auto;
-    margin-left:auto;
-  }
-</style>
+<div id="main-container">
+  <!--nav-->
+ <nav class="bg-blue">
+    <div class="container-fluid">
+        <div class="navbar-header">
+          <button type="button" class="navbar-toggle" data-toggle="collapse" data-target="#myNavbar">
+            <span class="icon-bar"></span>
+            <span class="icon-bar"></span>
+            <span class="icon-bar"></span>
+          </button>
 
-<div id="image-map"></div>
+          <img class="logo" src="/assets/logo-01.png"><h2>Library Maps</h2>
+        </div>
+        <div class="collapse navbar-collapse" id="myNavbar">
+          <ul class="nav navbar-nav navbar-right ">
+            <li><a class="white-font" id="libraries-and-floors" href="javascript:;"><span class="glyphicon glyphicon-menu-hamburger"></span> Libraries and Floors </a></li>
+            <% if @qr %>
+              <li><a class="white-font" id="qr-code" href="javascript:;"><span class="glyphicon glyphicon glyphicon-phone"></span> Get it on mobile </a></li>
+            <% end %>
+            <li><a class="white-font" href="#"><span class="glyphicon glyphicon-send"></span>Feedback</a></li>
+          </ul>
+        </div>
+   </div>
+  </nav>
+  <!--[if IE]><script src="http://fabricjs.com/lib/fonts/Delicious.font.js"></script><![endif]-->
 
+
+
+  <link href='http://fonts.googleapis.com/css?family=Plaster' rel='stylesheet' type='text/css'>
+  <link href='http://fonts.googleapis.com/css?family=Engagement' rel='stylesheet' type='text/css'>
+<!--   <div id="tipbtn" class="hidden">
+    <p class="tip-btn" onclick=showTip();>Tips</p>
+  </div>
+  <div id="tip-div" class="navbar-collapse tip">
+    <p id="i-label">Here is the tip for the users</p>
+    <p id="tip-close" onclick=hideTip();>x</p> -->
+  <div class="navbar-collapse optionsTopBar" <% if @elements %> style="display: none;" <% end %>>
+    <label> Library: </label>
+    <select id="library_option">
+      <option value="main">Main Library</option>
+      <option value="murray">Murray Library</option>
+    </select>
+
+    <label> Floors: </label>
+    <%= link_to "Lower Ground", {controller: "map_display", action: "map", floor: 0, library: @library}, class: "btn btn-default btn-sm btn-floor", data: { no_turbolink: true, floor: 0 } %>
+    <%= link_to "Ground", {controller: "map_display", action: "map", floor: 1, library: @library}, class: "btn btn-default btn-sm btn-floor", data: { no_turbolink: true, floor: 1 } %>
+    <%= link_to "First", {controller: "map_display", action: "map", floor: 2, library: @library}, class: "btn btn-default btn-sm btn-floor", data: { no_turbolink: true, floor: 2 } %>
+    <%= link_to "Second", {controller: "map_display", action: "map", floor: 3, library: @library}, class: "btn btn-default btn-sm btn-floor", data: { no_turbolink: true, floor: 3  } %>
+    <%= link_to "Third", {controller: "map_display", action: "map", floor: 4, library: @library}, class: "btn btn-default btn-sm btn-floor", data: { no_turbolink: true, floor: 4  } %>
+    <%= link_to "Fourth", {controller: "map_display", action: "map", floor: 5, library: @library}, class: "btn btn-default btn-sm btn-floor", data: { no_turbolink: true, floor: 5  } %>
+
+    <% if @title %>
+      <label> Title: </label>
+      <span><%= @title %></span>
+    <% end %>
+
+    <% if @author %>
+      <label> Author: </label>
+      <span><%= @author %></span>
+    <% end %>
+  </div>
+
+  <div id="qr-container">
+    <% if @qr %>
+      <%= raw @qr.as_html %>
+    <% end %>
+
+    <div>Scan the QR Code <br> using your mobile device! </div>
+  </div>
+
+
+<!--Image map canvas-->
+<div id="image-map" class="<% unless @elements %> image-map-open <% end %>"></div>
+
+<div id="help-info">
+  <div id="help-info-text">
+    Have you found your book yet?
+  </div>
+  <a href="#" id="help-info-yes">
+  <div class="bottom-menu">
+    Yes!
+  </div>
+  </a>
+  <a href="#" id="help-info-not-yet">
+  <div class="bottom-menu">
+    Not yet...
+  </div>
+  </a>
+  <a href="#">
+  <div class="bottom-menu" id="help-info-no">
+    I cannot find it!
+  </div>
+  </a>
+</div>
+
+<!--Footer-->
+<div class="footerHolder">
+  <p>
+      Unless explicitly stated otherwise, all material is copyright © The University of Edinburgh
+
+      <script type="text/javascript">
+      var currentTime = new Date()
+      var year = currentTime.getFullYear()
+      document.write(+ year)
+      </script>
+              
+    </p>
+</div>
+</div>
 <script>
   var map = L.map('image-map', {
-    minZoom: 1,
+    minZoom: 0.2,
     maxZoom: 4,
     center: [0, 0],
     zoom: 1,
@@ -34,7 +125,7 @@
   // dimensions of the image
   var w = 6000,
       h = 4000,
-      url = '/assets/main_1.svg';
+      url = '/assets/' + '<%= @library %>' + '_' + '<%= @floor %>' + '<%= @extension %>';
 
   // calculate the edges of the image, in coordinate space
   var southWest = map.unproject([0, h], map.getMaxZoom()-1);
@@ -74,7 +165,7 @@
       marker.setLatLng(map.unproject([m.x, m.y], map.getMaxZoom()-1))
     }else{
       marker = L.marker(map.unproject([m.x, m.y], map.getMaxZoom()-1));
-      marker.addTo(map);
+      //marker.addTo(map);
     }
   }
 
@@ -130,5 +221,88 @@
   } else {
     $('#console').append("- Geo Location is not supported.\n");
   }
+
+  function showTip(){
+    $('#tip-div').removeClass('hidden').animate(500);
+    $('#tipbtn').addClass('hidden');
+  };
+
+  function hideTip(){
+    $('#tip-div').addClass('hidden');
+    $('#tipbtn').removeClass('hidden');
+  };
+  var h = $('#main-container').height();
+  $('#image-map').height() ;
+  <% if @elements
+      @elements.each do |element| %>
+        L.marker(map.unproject([<%= element.left %>, <%= element.top %>], map.getMaxZoom()-1)).addTo(map).bindPopup("<b><%= @title %></b><br> <%= @author %><br> <%= @shelfmark%> ("+$('.btn-floor[data-floor="<%= @floor %>"]').text()+" floor)").openPopup();
+  <%  end
+     end %>
+
+
+  $('.btn-floor[data-floor="<%= @floor %>"]').addClass("currentButton");
+
+  $('#library_option').val("<%= @library %>");
+  $('#library_option').on('change', function() {
+    window.location.replace(document.location.origin + "?library=" + this.value);
+  });
+
+  $( "#libraries-and-floors" ).click(function() {
+    $(".optionsTopBar").slideToggle();
+    $("#image-map").toggleClass("image-map-open");
+  });
+
+  $( "#qr-code" ).click(function() {
+    $("#qr-container").toggle();
+  });
+
+  var state = "searching";
+  <% if @elements %>
+  if($(window).width() < 1100) {
+    helpInfo(5000);
+  }
+  <% end %>
+
+  $( "#help-info-yes" ).click(function() {
+    if(state == "searching") {
+      $("#help-info").slideToggle();
+    }else if(state == "floor-question"){
+      $("#help-info-text").text("Have you checked the recent return shelf?");
+      state = "recent-returns"
+    }else if(state == "recent-returns"){
+      $("#help-info-text").css("padding", "45px");
+      $("#help-info-text").text("Apologies for the inconvenience. Please contact the help desk services in the library if you have further questions.");
+    }
+  });
+
+  $( "#help-info-not-yet" ).click(function() {
+    $("#help-info").slideToggle();
+    helpInfo(5000);
+
+    setTimeout(function () {
+      if (state == "floor-question" || state == "recent-returns") {
+        $("#help-info-yes div").width("33.33%");
+        $("#help-info-not-yet div").width("33.33%");
+        $("#help-info-not-yet div").text("Not yet...");
+        $("#help-info-text").text("Have you found your book?");
+        state = "searching"
+      }
+    }, 1000);
+  });
+
+  $( "#help-info-no" ).click(function() {
+      $("#help-info-yes div").width("50%");
+      $("#help-info-not-yet div").width("50%");
+      $("#help-info-not-yet div").text("No!");
+      $("#help-info-text").text("Are you on the " + $('.btn-floor[data-floor="<%= @floor %>"]').text() + " floor?");
+      state = "floor-question";
+  });
+
+  function helpInfo(time){
+    setTimeout(function () {
+      $("#help-info").slideToggle();
+    }, time);
+  }
+
 
 </script>

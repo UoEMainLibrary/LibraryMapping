@@ -1,3 +1,187 @@
 // Place all the styles related to the map_display controller here.
 // They will automatically be included in application.css.
 // You can use Sass (SCSS) here: http://sass-lang.com/
+body, html {
+	height: 100%;
+}
+
+#image-map {
+	width: 100%;
+	border: 1px solid #ccc;
+    height: calc(100% - 80px);
+	margin:auto;
+}
+
+.image-map-open {
+  height: calc(100% - 120px)!important;
+}
+
+
+#main-container{
+	height: 100%;
+}
+
+.footerHolder{
+  background: #1b325e none repeat scroll 0 0;
+  color: #fff;
+  text-align: center;
+  display: inline-block;
+  width: 100%;
+  height: auto;
+  position: fixed;
+  bottom: 0;
+  p {
+    margin: 5px 0px;
+  }
+}
+#i-label{
+	margin: 0;
+	font-size: 1em;
+	color: #1B325E;
+	float: left;
+}
+#tip-close{
+	margin: 0;
+	font-size: 1em;
+	color: #A94442;
+	float: right;
+	cursor: pointer;
+}
+.tip{
+	background-color: #ECEAD0;
+	width: 100%;
+}
+.tip-btn{
+	background-color: #ECEAD0;
+    position: fixed;
+    left: 0;
+    color: #777;
+    cursor: pointer;
+    z-index: 1000;
+    border-radius: 22%;
+    border: 1px solid #ccc;
+    padding: 4px;
+    margin: 80px 10px;
+}
+
+.optionsTopBar{
+  height: 40px;
+  padding: 9px 0px 6px 0px;
+  height: auto;
+
+  label{
+    margin-left: 30px;
+  }
+
+}
+
+.btn-floor{
+  margin-top: -3px;
+}
+
+.currentButton{
+  background-color: #F0F0F0!important;
+}
+
+#qr-container{
+  display: none;
+}
+
+#qr-container {
+  border-width: 0;
+  border-style: none;
+  border-color: #0000ff;
+  border-collapse: collapse;
+  position: absolute;
+  top: 102px;
+  z-index: 1;
+  right: 55px;
+  text-align: center;
+
+  div {
+    margin-top: 10px;
+  }
+}
+
+#qr-container td {
+  border-left: solid 3px #000;
+  padding: 0;
+  margin: 0;
+  width: 0px;
+  height: 3px;
+}
+
+.navbar-header{
+  h2{
+    margin-top: 18px;
+  }
+}
+
+.navbar-right{
+  span{
+    margin-right:7px;
+  }
+
+
+  .white-font:active,
+  .white-font:focus {
+    background-color: inherit;
+    color: inherit;
+  }
+
+  .white-font:hover{
+    background-color: #eeeeee;
+    color: #1B325E;
+  }
+}
+
+#help-info{
+  position: fixed;
+  bottom: 0;
+  width: 100%;
+  height:140px;
+  text-align: center;
+  z-index: 10;
+  display: none;
+  background-color: #1B325E;
+  color: #fff;
+
+  .bottom-menu{
+    width: 33.33%;
+    width: calc(100% / 3);
+    height: 100%;
+    float: left;
+    color: #fff;
+    padding-top: 35px;
+    font-size: 1.2em;
+
+    &:active{
+      background-color: #eeeeee;
+      color: #1B325E;
+    }
+  }
+
+  #help-info-text{
+    width: 100%;
+    padding: 12px;
+    font-size: 1.3em;
+  }
+
+}
+
+#qr-container td.black { border-color: #000; }
+#qr-container td.white { border-color: #fff; }
+
+@media screen and (max-width: 767px) {
+  #image-map {
+    height: calc(100% - 50px);
+  }
+
+  .image-map-open {
+    height: calc(100% - 93px)!important;
+  }
+
+  .footerHolder{
+    display: none;
+  }
+}

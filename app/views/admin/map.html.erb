@@ -1,27 +1,18 @@
+<body data-controller="<%= controller.controller_name %>" data-action="<%= controller.action_name %>" data-floor="<%= @floor %>" data-library="<%= @library %>">
 
-<!DOCTYPE html>
-<html lang="en" ng-app="kitchensink">
-<body>
-
-<div id="bd-wrapper" ng-controller="CanvasControls">
+<div id="bd-wrapper">
   <nav class="bg-blue">
     <div class="container-fluid">
-        <div class="navbar-header">
-          <button type="button" class="navbar-toggle" data-toggle="collapse" data-target="#myNavbar">
-            <span class="icon-bar"></span>
-            <span class="icon-bar"></span>
-            <span class="icon-bar"></span>
-          </button>
+      <div class="navbar-header">
+        <button type="button" class="navbar-toggle" data-toggle="collapse" data-target="#myNavbar">
+          <span class="icon-bar"></span>
+          <span class="icon-bar"></span>
+          <span class="icon-bar"></span>
+        </button>
 
-          <img class="logo" src="<%= asset_path("logo-01" + ".png") %>"><h2>LibraryMapping&middot; Admin panel</h2>
-        </div>
-        <div class="collapse navbar-collapse" id="myNavbar">
-          <ul class="nav navbar-nav navbar-right ">
-              <li><a class="white-font" href="#"><span class="glyphicon glyphicon-user"></span> Sign Up</a></li>
-              <li><a class="white-font" href="#"><span class="glyphicon glyphicon-log-in"></span> Login</a></li>
-          </ul>
-        </div>
-   </div>
+        <img class="logo" src="/assets/logo-01.png"><h2>LibraryMapping&middot; Admin panel</h2>
+      </div>
+    </div>
   </nav>
   <!--[if IE]><script src="http://fabricjs.com/lib/fonts/Delicious.font.js"></script><![endif]-->
 
@@ -32,236 +23,126 @@
 
   <div style="position:relative;width:100%;float:left;" id="canvas-wrapper">
 
- <div class="collapse navbar-collapse shortcut">
-    <ul class="nav navbar-nav">
-      <li><button class="btn shortcutbtn green" onclick="saveCanvas()"><span class="glyphicon glyphicon-floppy-disk"></span></button></li>
-      <li><button class="btn shortcutbtn orange" onclick="removeSelected()"><span class="glyphicon glyphicon-trash"></span></button></li>
-    </ul>
-    <form class="navbar-form navbar-left" role="search">
-      <input type="text" id="search" name="search" class="form-control search" placeholder="Search Elements">
-      <button type="submit" name="submit" class="btn btn-primary go">Go</button>
-    </form>
-  </div>
+    <div class="collapse navbar-collapse shortcut">
+      <ul class="nav navbar navbar-nav">
+        <li><button class="btn shortcutbtn green" onclick="saveCanvas()"><span class="glyphicon glyphicon-floppy-disk"></span></button></li>
+        <li><button class="btn shortcutbtn orange" onclick="removeSelected()"><span class="glyphicon glyphicon-trash"></span></button></li>
+        <li><button class="btn shortcutbtn btn-primary" onclick="rasterizeSVG()"><span class="glyphicon glyphicon-export"></span> Publish</button></li>
+      </ul>
 
-   <!-- <div id="canvas-controls">
-      <div id="complexity">
-        Canvas complexity (number of paths):
-        <strong>{[ canvas.complexity() ]}</strong>
+      <label class="optionsTopBarAdmin"> Library: </label>
+      <select id="library_option">
+        <option value="main">Main Library</option>
+        <option value="murray">Murray Library</option>
+      </select>
+
+      <label class="optionsTopBarAdmin"> Floors: </label>
+      <%= link_to "Lower Ground", {controller: "admin", action: "map", floor: 0, library: @library}, class: "btn btn-default btn-floor", data: { no_turbolink: true, floor: 0 } %>
+      <%= link_to "Ground", {controller: "admin", action: "map", floor: 1, library: @library}, class: "btn btn-default btn-floor", data: { no_turbolink: true, floor: 1 } %>
+      <%= link_to "First", {controller: "admin", action: "map", floor: 2, library: @library}, class: "btn btn-default btn-floor", data: { no_turbolink: true, floor: 2 } %>
+      <%= link_to "Second", {controller: "admin", action: "map", floor: 3, library: @library}, class: "btn btn-default btn-floor", data: { no_turbolink: true, floor: 3 } %>
+      <%= link_to "Third", {controller: "admin", action: "map", floor: 4, library: @library}, class: "btn btn-default btn-floor", data: { no_turbolink: true, floor: 4 } %>
+      <%= link_to "Fourth", {controller: "admin", action: "map", floor: 5, library: @library}, class: "btn btn-default btn-floor", data: { no_turbolink: true, floor: 5 } %>
+    </div>
+
+    <div id="loading-container">
+      <div class="sk-folding-cube">
+        <div class="sk-cube1 sk-cube"></div>
+        <div class="sk-cube2 sk-cube"></div>
+        <div class="sk-cube4 sk-cube"></div>
+        <div class="sk-cube3 sk-cube"></div>
       </div>
+      <div id="loading-text">Loading...</div>
 
-    </div>-->
+    </div>
 
-    <div id="canvas-container" style="width: 1300px;margin-left: auto;margin-right: auto;">
+    <div id="canvas-container" style="width: 1300px;margin-left: auto;margin-right: auto;display:none">
       <canvas id="canvas" width="1300px" height="650px"></canvas>
     </div>
-    <!--<div id="color-opacity-controls" ng-show="canvas.getActiveObject()">
-
-      <label for="opacity">Opacity: </label>
-      <input value="100" type="range" bind-value-to="opacity">
-
-      <label for="color" style="margin-left:10px">Color: </label>
-      <input type="color" style="width:40px" bind-value-to="fill">
-    </div> -->
-
-    <div id="text-wrapper" style="margin-top: 10px" ng-show="getText()">
-
-      <textarea bind-value-to="text"></textarea>
-
-      <div id="text-controls">
-        <label for="font-family" style="display:inline-block">Font family:</label>
-        <select id="font-family" class="btn-object-action" bind-value-to="fontFamily">
-          <option value="arial">Arial</option>
-          <option value="helvetica" selected>Helvetica</option>
-          <option value="myriad pro">Myriad Pro</option>
-          <option value="delicious">Delicious</option>
-          <option value="verdana">Verdana</option>
-          <option value="georgia">Georgia</option>
-          <option value="courier">Courier</option>
-          <option value="comic sans ms">Comic Sans MS</option>
-          <option value="impact">Impact</option>
-          <option value="monaco">Monaco</option>
-          <option value="optima">Optima</option>
-          <option value="hoefler text">Hoefler Text</option>
-          <option value="plaster">Plaster</option>
-          <option value="engagement">Engagement</option>
-        </select>
-        <br>
-        <label for="text-align" style="display:inline-block">Text align:</label>
-        <select id="text-align" class="btn-object-action" bind-value-to="textAlign">
-          <option>Left</option>
-          <option>Center</option>
-          <option>Right</option>
-          <option>Justify</option>
-        </select>
-        <div>
-          <label for="text-bg-color">Background color:</label>
-          <input type="color" value="" id="text-bg-color" size="10" class="btn-object-action"
-                 bind-value-to="bgColor">
-        </div>
-        <div>
-          <label for="text-lines-bg-color">Background text color:</label>
-          <input type="color" value="" id="text-lines-bg-color" size="10" class="btn-object-action"
-                 bind-value-to="textBgColor">
-        </div>
-        <div>
-          <label for="text-stroke-color">Stroke color:</label>
-          <input type="color" value="" id="text-stroke-color" class="btn-object-action"
-                 bind-value-to="strokeColor">
-        </div>
-        <div>
-          <label for="text-stroke-width">Stroke width:</label>
-          <input type="range" value="1" min="1" max="5" id="text-stroke-width" class="btn-object-action"
-                 bind-value-to="strokeWidth">
-        </div>
-        <div>
-          <label for="text-font-size">Font size:</label>
-          <input type="range" value="" min="1" max="120" step="1" id="text-font-size" class="btn-object-action"
-                 bind-value-to="fontSize">
-        </div>
-        <div>
-          <label for="text-line-height">Line height:</label>
-          <input type="range" value="" min="0" max="10" step="0.1" id="text-line-height" class="btn-object-action"
-                 bind-value-to="lineHeight">
-        </div>
-      </div>
-      <div id="text-controls-additional">
-        <button type="button" class="btn btn-object-action"
-                ng-click="toggleBold()"
-                ng-class="{'btn-inverse': isBold()}">
-          Bold
-        </button>
-        <button type="button" class="btn btn-object-action" id="text-cmd-italic"
-                ng-click="toggleItalic()"
-                ng-class="{'btn-inverse': isItalic()}">
-          Italic
-        </button>
-        <button type="button" class="btn btn-object-action" id="text-cmd-underline"
-                ng-click="toggleUnderline()"
-                ng-class="{'btn-inverse': isUnderline()}">
-          Underline
-        </button>
-        <button type="button" class="btn btn-object-action" id="text-cmd-linethrough"
-                ng-click="toggleLinethrough()"
-                ng-class="{'btn-inverse': isLinethrough()}">
-          Linethrough
-        </button>
-        <button type="button" class="btn btn-object-action" id="text-cmd-overline"
-                ng-click="toggleOverline()"
-                ng-class="{'btn-inverse': isOverline()}">
-          Overline
-        </button>
-      </div>
-    </div>
   </div>
-  <div id="commands" ng-click="maybeLoadShape($event)">
+  <div id="commands">
 
-    <ul class="nav nav-tabs" style="background-color:white">
-      <li><a href="#simple-shapes" data-toggle="tab">Simple</a></li>
+    <ul class="nav nav-tabs" style="background-color:white" id="main_tabs">
       <li><a href="#svg-shapes" data-toggle="tab">SVG</a></li>
-      <li class="active"><a href="#object-controls-pane" data-toggle="tab">Controls</a></li>
-      <li><a href="#load-svg-pane" data-toggle="tab">Load SVG</a></li>
-      <li><a href="#execute-code" data-toggle="tab">Execute</a></li>
-      <li><a href="#json-inout" data-toggle="tab">JSON</a></li>
+      <li class="active"><a href="#object-controls-pane" data-toggle="tab" id="controls_tab">Controls</a></li>
+      <li><a href="#shelves-overview" data-toggle="tab">Shelves</a></li>
+      <div class="pin-sidebar glyphicon glyphicon-pushpin"></div>
     </ul>
 
-    <div class="tab-content" style="padding: 20px;background-color:white; height:630px; overflow: auto;">
-
+    <div class="tab-content" style="padding: 20px;background-color:white; height:670px; overflow: auto;">
       <div class="tab-pane" id="svg-shapes">
+        <form class="navbar-form nav-bar marginSearch" role="search">
+          <input type="text" id="search" name="search" class="form-control search" placeholder="Search Elements">
+          <button type="submit" name="submit" class="btn btn-primary go">Go</button>
+        </form>
+        <div style="clear:both"></div>
         <p>Add <strong>SVG shapes</strong> to canvas:</p>
 
         <ul class="svg-shapes">
           <% ElementType.all.each do |type| %>
-              <li>
-                <button class="fix-width-btn" id="<%= type.id %>" onclick="addShape(<%= type.id %>, '<%= asset_path(type.svg_path + ".svg") %>')">
-                  <img src="<%= asset_path(type.svg_path + ".svg") %>" width="150px" height="150px"> <br> 
-                  
-                </button>
-                <div class="container-fluid description">
-                    <strong><%= type.name %></strong>
-                  </div>
-              </li>
+              <% if type.name != "Wall" %>
+                  <li>
+                    <button class="fix-width-btn" onclick="addShape(<%= type.id %>, '<%= type.name %>', '<%= asset_path(type.svg_path) %>')">
+                      <img src="<%= asset_path(type.svg_path) %>" width="150px" height="150px"> <br>
+
+                    </button>
+                    <div class="container-fluid description">
+                      <strong><%= type.name %></strong>
+                    </div>
+                  </li>
+              <% else %>
+                  <li>
+                    <button class="fix-width-btn" onclick="addWall(<%= type.id %>)">
+                      <img src="https://upload.wikimedia.org/wikipedia/commons/thumb/d/d1/Brick_wall_close-up_view.jpg/640px-Brick_wall_close-up_view.jpg" width="150px" height="150px"> <br>
+                    </button>
+                    <div class="container-fluid description">
+                      <strong>Wall</strong>
+                    </div>
+                  </li>
+              <% end %>
           <% end %>
         </ul>
       </div>
 
-      <div class="tab-pane" id="simple-shapes">
-        <p>Add <strong>simple shapes</strong> to canvas:</p>
-        <p>
-          <button type="button" class="btn rect" ng-click="addRect()">Rectangle</button>
-          <button type="button" class="btn circle" ng-click="addCircle()">Circle</button>
-          <button type="button" class="btn triangle" ng-click="addTriangle()">Triangle</button>
-          <button type="button" class="btn line" ng-click="addLine()">Line</button>
-          <button type="button" class="btn polygon" ng-click="addPolygon()">Polygon</button>
-        </p>
-
-        <p>
-          <button class="btn" ng-click="addText()">Add text</button>
-        </p>
-
-        <p>Add <strong>images</strong> to canvas:</p>
-        <p>
-          <button type="button" class="btn image1" ng-click="addImage1()">Image 1 (pug)</button>
-          <button type="button" class="btn image2" ng-click="addImage2()">Image 2 (google)</button>
-          <button type="button" class="btn image3" n-click="addImage3()">Image 3 (printio)</button>
-        </p>
-
-        <p>Add <strong>gradient-based shapes</strong> to canvas:</p>
-
-        <p>
-          <button class="btn shape" id="shape74">Gradient 1</button>
-          <button class="btn shape" id="shape66">Gradient 2</button>
-          <button class="btn shape" id="shape75">Gradient 3</button>
-          <button class="btn shape" id="shape148">Gradient 4</button>
-        </p>
-
-        <p>Add <strong>arcs</strong> and misc to canvas:</p>
-
-        <p>
-          <button class="btn shape" id="shape104">Arc(s) 1</button>
-          <button class="btn shape" id="shape105">Arc(s) 2</button>
-          <button class="btn shape" id="shape106">Arc(s) 3</button>
-          <button class="btn shape" id="shape107">Arc(s) 4</button>
-        </p>
-        <p>
-          <button class="btn shape" id="shape103">Transformed paths</button>
-        </p>
-        <p>
-          <button class="btn shape" id="shape54">Image</button>
-        </p>
-      </div>
-
       <div class="tab-pane active" id="object-controls-pane">
-        <div id="global-controls">
-          <p>
-            Rasterize canvas to
-            <button class="btn btn-general" id="rasterize" ng-click="rasterize()">
-              Image
-            </button>
-            <button class="btn btn-general" id="rasterize-svg">
-              SVG
-            </button>
-            <button class="btn btn-general" id="rasterize-json" ng-click="rasterizeJSON()">
-              JSON
-            </button>
-          </p>
-          <p>
-            Enable grid: <input id="gridCheckbox" type="checkbox" checked/>
-            <div class="progress-frame">
+        <div id="gridCheckbox" class="commandCtr">
+          <span class="switch-button-label">Grid:</span>
+          <div class="switch-button-background">
+            <div class="switch-button-button checked" id="gridCheckbox" ></div>
+          </div>
+        </div>
+        <hr style="width:100%;">
+        <div style="clear:both;"></div>
+        <div id="mode" class="commandCtr">
+          <span class="switch-button-label">Mode:</span>
+          <div class="mode-background">
+            <div class="mode-button grab" id="modeSwitch" >Grab</div>
+          </div>
+        </div>
+        <hr style="width:100%;">
+        <div style="clear:both;"></div>
+        <!-- Enable grid: <input id="gridCheckbox" type="checkbox" checked/> -->
+        <div class="row text-center">
+          <div class="col-sm-2"><button class="btn btn-zoom" id="zoomIn">+</button></div>
+          <div class="progress-frame col-sm-6">
             <input type="range" value="0.3" step="0.05" min="0.1" max="1" id="zoomSlider"/>
-            </div>
-            <div class="text-center">
-            <button class="btn btn-general" id="zoomIn">Zoom +</button>
-            <button class="btn btn-general" id="zoomOut">Zoom -</button>
+          </div>
+          <div class="col-sm-2"> <button class="btn btn-zoom" id="zoomOut">-</button></div>
+        </div>
+
+        <hr style="width:100%;">
+        <div>
+          <!-- <span>Grab</span> -->
+          <!-- </div>
             <a href="#" class="btn edit"><i class="fa fa-edit"></i> Edit mode</a>
             <a href="#" class="btn grab"><i class="fa fa-arrows"></i> Grab mode</a>
-            </div>
-          </p>
-          <p class="text-center">
+          </div> -->
+          <p class="commandCtr text-center">
             <button class="btn btn-save clear" onclick="saveCanvas()"><span class="glyphicon glyphicon-floppy-disk"></span> Save elements</button>
           </p>
         </div>
 
-        <div class="object-controls text-center">
+        <div class="commandCtr text-center">
 
           <div style="margin-top:10px;">
             <p>
@@ -274,628 +155,138 @@
           </div>
         </div>
 
-        <br>
-        <br>
-
-        <label> Floors: </label>
-        <%= link_to "1", {controller: "admin", action: "map", floor: 1}, class: "btn btn-default", data: { no_turbolink: true } %>
-        <%= link_to "2", {controller: "admin", action: "map", floor: 2}, class: "btn btn-default", data: { no_turbolink: true } %>
-        <%= link_to "3", {controller: "admin", action: "map", floor: 3}, class: "btn btn-default", data: { no_turbolink: true } %>
-        <%= link_to "4", {controller: "admin", action: "map", floor: 4}, class: "btn btn-default", data: { no_turbolink: true } %>
-
-        <br>
-
+        <hr style="width:100%;">
+        <div style="clear:both;"></div>
         <div id="shelfData">
-          <label> Range Start: </label><br>
-
-          <select id="range_down_opt">
-            <option value=""></option>
-            <option value="Folio ">Folio</option>
-            <option value="Pham. ">Pham.</option>
-            <option value="Ref. ">Ref.</option>
-          </select>
-          <input type="text" id="range_down_letters" name="rangeDown" placeholder="e.g. QA">
-          <input type="text" id="range_down_digits" name="rangeDown" placeholder="e.g. 273">
-
-          <br>
-
-          <label> Range End: </label><br>
-
-          <select id="range_up_opt">
-            <option value=""></option>
-            <option value="Folio ">Folio</option>
-            <option value="Pham. ">Pham.</option>
-            <option value="Ref. ">Ref.</option>
-          </select>
-          <input type="text" id="range_up_letters" name="rangeUp" placeholder="e.g. QA">
-          <input type="text" id="range_up_digits" name="rangeUp" placeholder="e.g. 273">
-
-          <br>
-
-          <label for="classification"> Classification: </label>
-          <input type="text" id="classification" name="classification">
-          <br>
           <label for="identifier"> Identifier: </label>
-          <input type="text" id="identifier" name="identifier">
           <br>
+          <select id="identifier" name="identifier">
+            <option value="lc_main" selected="selected">Main Library - Main Collection (LC)</option>
+            <option value="lc_hub">Main Library - Hub (LC)</option>
+            <option value="dewey_main">Main Library - Main Dewey</option>
+          </select>
+          <br>
+
+          <div class="range-form" id ="lc-form" style="display:none">
+            <label> Range Start: </label><br>
+
+            <select class="range_start_opt">
+              <option value=""></option>
+              <option value="Folio ">Folio</option>
+              <option value="Pamph. ">Pamph.</option>
+              <option value="Ref. ">Ref.</option>
+            </select>
+            <input type="text" class="range_start_letters" name="rangeDown" placeholder="e.g. QA">
+            <input type="text" class="range_start_digits" name="rangeDown" placeholder="e.g. 273">
+
+            <br>
+
+            <label> Range End: </label><br>
+
+            <select class="range_end_opt">
+              <option value=""></option>
+              <option value="Folio ">Folio</option>
+              <option value="Pamph. ">Pamph.</option>
+              <option value="Ref. ">Ref.</option>
+            </select>
+            <input type="text" class="range_end_letters" name="rangeUp" placeholder="e.g. QA">
+            <input type="text" class="range_end_digits" name="rangeUp" placeholder="e.g. 273">
+
+            <br><br>
+          </div>
+
+          <div class="range-form" id="dewey-form" style="display:none">
+            <label> Range Start: </label><br>
+
+            <select class="range_start_opt">
+              <option value=""></option>
+              <option value="P ">P</option>
+              <option value="F ">F</option>
+            </select>
+            <input type="text" class="range_start_digits" name="rangeDown" placeholder="e.g. .273">
+
+            <br>
+
+            <label> Range End: </label><br>
+
+            <select class="range_end_opt">
+              <option value=""></option>
+              <option value="P ">P</option>
+              <option value="F ">F</option>
+            </select>
+            <input type="text" class="range_end_digits" name="rangeUp" placeholder="e.g. .273">
+
+            <br><br>
+          </div>
+
           <button class="btn" id="saveElems" onclick="saveElementData()">Save Element Data</button>
         </div>
       </div>
 
-      <div class="tab-pane" id="load-svg-pane">
-      <textarea id="svg-console" bind-value-to="consoleSVG">
-      </textarea>
-        <button type="button" class="btn btn-info" ng-click="loadSVG()">
-          Load
-        </button>
-        <button type="button" class="btn" ng-click="loadSVGWithoutGrouping()">
-          Load without grouping
-        </button>
-      </div>
+      <div class="tab-pane" id="shelves-overview">
+        <table id="shelves-table">
+          <tbody>
+          <tr>
+            <th>Shelf id</th><th>Start range</th><th>End range</th><th>Edit</th><th>Select</th>
+          </tr>
 
-      <div class="tab-pane" id="execute-code">
-        <textarea id="canvas-console" bind-value-to="console">
-        </textarea>
-        <button type="button" class="btn btn-info" ng-click="execute()">Execute</button>
-      </div>
+          </tbody>
+        </table>
 
-      <div class="tab-pane" id="json-inout">
-      <textarea id="json-console" bind-value-to="consoleJSON">
-      </textarea>
-        <button type="button" class="btn btn-info" ng-click="loadJSON()">
-          Load
-        </button>
-        <button type="button" class="btn btn-info" ng-click="saveJSON()">
-          Save
-        </button>
+        <button class="btn shortcutbtn btn-primary" onclick="printRanges()"><span class="glyphicon glyphicon-print"></span> Print ranges</button>
       </div>
-
     </div>
 
   </div>
-
 </div>
 
+
 <script>
+  var sidebarPin = false;
+  $("#commands")
+      .mouseover(function() {
+        if(!sidebarPin){
+          $("#commands").css("right", 0);
+        }
+      })
+      .mouseout(function() {
+        if(!sidebarPin) {
+          $("#commands").css("right", -490);
+        }
+      });
+
+  $('.pin-sidebar').on('click', function(){
+    if(sidebarPin){
+      $('.pin-sidebar').css("background-color", "#fff");
+    }else{
+      $('.pin-sidebar').css("background-color", "#ddd");
+    }
+    sidebarPin = !sidebarPin;
+    $("#commands").css("right", 0);
+  });
+
+  $("#switch").click(function(){
+    $("#commands").css("right", 0);
+  });
+
+
   var canvas = new fabric.CanvasWithViewport('canvas');
 
-  var boundingBox = new fabric.Rect({
-    fill: "transparent",
-    width: 6000,
-    height: 4000,
-    hasBorders: false,
-    hasControls: false,
-    lockMovementX: true,
-    lockMovementY: true,
-    evented: false,
-    selectable: false,
-    stroke: "#333"
-  });
+  $(document).one("canvas:preloaded", function() {
+    <%
+    elements = Element.where("floor = :floor AND library = :library", {floor: @floor, library: @library}).order("range_end")
+    elements.each_with_index do |element, index| %>
 
-  canvas.add(boundingBox);
+    loadElementInCanvas(<%= element.to_json.html_safe %>, "<%= element.element_type.name %>", "<%= asset_path(element.element_type.svg_path) %>", <%= elements.size %>)
 
-  canvas.svgViewportTransformation = false;
-  canvas.renderOnAddRemove = false;
-
-  var minZoom = canvas.width / boundingBox.width
-  canvas.viewport.zoom = minZoom;
-  $("#zoomSlider").attr("min", minZoom);
-  $("#zoomSlider").val(minZoom);
-  $(".progress-bar").css("width", $("#zoomSlider").val());
-
-  <%
-  elements = Element.where(floor: @floor)
-  elements.each_with_index do |element, index| %>
-
-  var shape = "<%= asset_path(element.element_type.svg_path + ".svg") %>"
-
-  fabric.loadSVGFromURL(shape, function(objects, options) {
-
-    var loadedObject = fabric.util.groupSVGElements(objects, options);
-
-    loadedObject.toObject = (function (toObject) {
-      return function () {
-        var opts = {
-          id: this.id,
-          floor: this.floor,
-          element_type_id: this.element_type_id,
-          modified: this.modified
-        }
-
-        if (this.element_type_id == 11) {
-          $.extend(opts, {
-            classification: this.classification,
-            identifier: this.identifier,
-            range_up_opt: this.range_up_opt,
-            range_up_digits: this.range_up_digits,
-            range_up_letters:this.range_up_letters,
-            range_down_opt: this.range_down_opt,
-            range_down_digits: this.range_down_digits,
-            range_down_letters: this.range_down_letters
-          })
-        }
-        return fabric.util.object.extend(toObject.call(this), opts);
-      };
-    })(fabric.Object.prototype.toObject);
-
-    loadedObject.set({
-          left: <%= element.left %>,
-          top: <%= element.top %>,
-          height: <%= element.height %>,
-          width: <%= element.width %>,
-          scaleX: <%= element.scaleX %>,
-          scaleY: <%= element.scaleY %>,
-          opacity: <%= element.opacity %>,
-          angle: <%= element.angle %>,
-          fill: "<%= element.fill %>",
-          id: <%= element.id %>,
-          floor: <%= element.floor %>,
-          modified: false,
-          element_type_id: <%= element.element_type_id %>
-        })
-        .setCoords();
-
-    <% if element.element_type_id == 11 %>
-      loadedObject.set({
-        range_up_opt: "<%= element.range_up_opt %>",
-        range_up_digits: "<%= element.range_up_digits %>",
-        range_up_letters: "<%= element.range_up_letters %>",
-        range_down_opt: "<%= element.range_down_opt %>",
-        range_down_digits: "<%= element.range_down_digits %>",
-        range_down_letters: "<%= element.range_down_letters %>",
-        classification: "<%= element.classification %>",
-        identifier: "<%= element.identifier %>",
-      })
     <% end %>
 
-    canvas.add(loadedObject);
-
-    <% if index == elements.size - 1 %>
-      canvas.renderAll();
+    <% if elements.length == 0 %>
+    canvas.renderOnAddRemove = true;
+    $('#loading-container').hide();
+    $('#canvas-container').fadeIn(500);
+    console.log("renderOnAddRemove");
     <% end %>
-  });
-  <% end %>
 
-  function saveCanvas(){
-    canvas.deactivateAll();
-    var obj = canvas.getObjects().filter(function(o) {return o.modified == true} );
-
-    console.log(JSON.stringify(obj));
-
-    $.ajax({
-      url : "/admin/"+<%= @floor %>,
-      type : "post",
-      data : { elements: JSON.stringify(obj) }
-    });
-  }
-
-  $( "#commands" )
-    .mouseover(function() {
-      $( "#commands").css( "right", 0 );
-    })
-    .mouseout(function() {
-      $( "#commands").css( "right", -490 );
-    });
-
-  $( "#switch").click(function(){
-      $( "#commands").css( "right", 0);
-    })
-
-  var clipboardObj, clipboardGroup;
-  $(document).on("keydown", function(e){
-    if (e.keyCode == 67 && (e.ctrlKey || e.metaKey)){
-      var obj = canvas.getActiveObject(), group = canvas.getActiveGroup();
-      if(obj){
-        clipboardObj = obj;
-      }else if(group){
-        clipboardGroup = group;
-      }
-    }else if(e.keyCode == 86 && (e.ctrlKey || e.metaKey)){
-      if(clipboardObj) {
-        var clone = fabric.util.object.clone(clipboardObj);
-        clone.set({
-          left: clipboardObj.left + 30,
-          top: clipboardObj.top + 30,
-        });
-
-        clone.id = null;
-        clone.modified = true;
-
-        canvas.add(clone);
-        canvas.deactivateAll().renderAll();
-        canvas.setActiveObject(clone);
-
-      }else if(clipboardGroup){
-        canvas.deactivateAll();
-
-        clipboardGroup.forEachObject(function(o) {
-          var clone = fabric.util.object.clone(o);
-          clone.set({
-            left: o.left + 30,
-            top: o.top + 30,
-          }).setCoords();
-
-          clone.id = null;
-          clone.modified = true;
-          canvas.add(clone);
-        });
-
-        canvas.renderAll();
-
-      }
-    }
-
-  });
-
-  document.body.addEventListener('keydown', function(evt) {
-    if(evt.keyCode==18) {
-      canvas.isGrabMode = true;
-    }
-
-    var movementDelta = 2;
-
-    if(event.shiftKey){
-      movementDelta = 10;
-    }
-    var activeObject = canvas.getActiveObject();
-    var activeGroup = canvas.getActiveGroup();
-
-    if (evt.keyCode === 37) {
-      evt.preventDefault(); // Prevent the default action
-      if (activeObject) {
-        var a = activeObject.get('left') - movementDelta;
-        activeObject.set('left', a);
-      }
-      else if (activeGroup) {
-        var a = activeGroup.get('left') - movementDelta;
-        activeGroup.set('left', a);
-      }
-
-    } else if (evt.keyCode === 39) {
-      evt.preventDefault(); // Prevent the default action
-      if (activeObject) {
-        var a = activeObject.get('left') + movementDelta;
-        activeObject.set('left', a);
-      }
-      else if (activeGroup) {
-        var a = activeGroup.get('left') + movementDelta;
-        activeGroup.set('left', a);
-      }
-
-    } else if (evt.keyCode === 38) {
-      evt.preventDefault(); // Prevent the default action
-      if (activeObject) {
-        var a = activeObject.get('top') - movementDelta;
-        activeObject.set('top', a);
-      }
-      else if (activeGroup) {
-        var a = activeGroup.get('top') - movementDelta;
-        activeGroup.set('top', a);
-      }
-
-    } else if (evt.keyCode === 40) {
-      evt.preventDefault(); // Prevent the default action
-      if (activeObject) {
-        var a = activeObject.get('top') + movementDelta;
-        activeObject.set('top', a);
-      }
-      else if (activeGroup) {
-        var a = activeGroup.get('top') + movementDelta;
-        activeGroup.set('top', a);
-      }
-    }
-
-    if (activeObject) {
-      activeObject.setCoords();
-      activeObject.modified = true;
-      canvas.renderAll();
-    } else if (activeGroup) {
-      activeGroup.setCoords();
-      activeGroup.forEachObject(function(o) {
-        o.modified = true;
-      });
-      canvas.renderAll();
-    }
-
-  });
-
-  document.body.addEventListener('keyup', function(e) {
-    if(e.keyCode==18) {
-      canvas.isGrabMode = false;
-    }
-  });
-
-  function saveElementData(){
-    var obj = canvas.getActiveObject();
-
-    obj.range_up_opt =  $("#range_up_opt").val();
-    obj.range_up_digits =  $("#range_up_digits").val();
-    obj.range_up_letters = $("#range_up_letters").val();
-
-    obj.range_down_opt =  $("#range_down_opt").val();
-    obj.range_down_digits =  $("#range_down_digits").val();
-    obj.range_down_letters = $("#range_down_letters").val();
-
-    obj.classification =  $("#classification").val();
-    obj.identifier = $("#identifier").val();
-
-    $.ajax({
-      url : "/admin/save_element/" + <%= @floor %>,
-      type : "post",
-      data : { element: JSON.stringify(obj) }
-    });
-  }
-
-  var gridSize = 20;
-
-  var gridEnabled = true;
-  var lines = [];
-  for (var i = 0; i < (boundingBox.width / gridSize); i++) {
-    lines.push(new fabric.Line([ i * gridSize, 0, i * gridSize, boundingBox.height], { stroke: '#ccc'})); // vertical lines
-    lines.push(new fabric.Line([ 0, i * gridSize, boundingBox.width, i * gridSize], { stroke: '#ccc'})) // horizontal lines
-  }
-
-  var grid = new fabric.Group(lines, {selectable: false, evented: false});
-
-
-  canvas.on('object:modified', function(options) {
-    if (options.target._objects) {
-      options.target._objects.forEach(function(o) {
-        o.modified = true;
-      })
-    } else {
-      options.target.modified = true;
-    }
-  });
-
-  canvas.on('object:removed', function(options){
-    if(options.target.id) {
-      $.ajax({
-        url: "/admin/" +<%= @floor %>,
-        type: "delete",
-        data: {element_id: options.target.id}
-      });
-    }
-  });
-
-  function removeSelected() {
-    if (confirm('Are you sure?')) {
-      var activeObject = canvas.getActiveObject(),
-          activeGroup = canvas.getActiveGroup();
-
-      if (activeGroup) {
-        var objectsInGroup = activeGroup.getObjects();
-        canvas.discardActiveGroup();
-        objectsInGroup.forEach(function (object) {
-          canvas.remove(object);
-        });
-      }
-      else if (activeObject) {
-        canvas.remove(activeObject);
-      }
-    }
-  }
-
-  canvas.on('object:selected', function(options){
-    $("#remove-selected").css("display", "initial");
-    if(options.target.element_type_id == 11) {
-      $("#shelfData").css("display", "initial");
-    }
-
-
-    $("#range_up_opt").val(options.target.range_up_opt);
-    $("#range_up_letters").val(options.target.range_up_letters);
-    $("#range_up_digits").val(options.target.range_up_digits);
-
-    $("#range_down_opt").val(options.target.range_down_opt);
-    $("#range_down_letters").val(options.target.range_down_letters);
-    $("#range_down_digits").val(options.target.range_down_digits);
-
-    $("#classification").val(options.target.classification);
-    $("#identifier").val(options.target.identifier);
-  });
-
-  canvas.on('selection:cleared', function(options){
-    $("#remove-selected").css("display", "none");
-    $("#shelfData").css("display", "none");
-  });
-
-  canvas.on("object:moving", function(e) {
-    var obj = e.target;
-    var top = obj.top;
-    var left = obj.left;
-    var zoom = canvas.viewport.zoom;
-
-    // width & height we are constraining to must be calculated by applying the inverse of the current viewportTransform
-    var c_width = canvas.width / zoom;
-    var c_height = canvas.height / zoom;
-
-    var w = obj.width * obj.scaleX;
-    var h = obj.height * obj.scaleY;
-
-    var top_bound = boundingBox.top;
-    var bottom_bound = boundingBox.top + boundingBox.height - h;
-    var left_bound = boundingBox.left;
-    var right_bound = boundingBox.left + boundingBox.width - w;
-
-    if( w > c_width ) {
-      obj.setLeft(left_bound);
-    } else {
-      if (gridEnabled) {
-        obj.setLeft(Math.min(Math.max(Math.round(left / gridSize) * gridSize, left_bound), right_bound));
-      } else {
-        obj.setLeft(Math.min(Math.max(left, left_bound), right_bound));
-      }
-    }
-
-    if( h > c_height ) {
-      obj.setTop(top_bound);
-    } else {
-      if (gridEnabled) {
-        obj.setTop(Math.min(Math.max(Math.round(top / gridSize) * gridSize, top_bound), bottom_bound));
-      } else {
-        obj.setTop(Math.min(Math.max(top, top_bound), bottom_bound));
-      }
-    }
-  });
-
-  $('#zoomIn').click(function(){
-    var newZoom = canvas.viewport.zoom * 1.1;
-    if (newZoom <= 1) {
-      canvas.setZoom(newZoom);
-      $("#zoomSlider").val(newZoom);
-    }
-    return false;
-  });
-
-  $('#zoomOut').click(function(){
-    var newZoom = canvas.viewport.zoom / 1.1;
-    if (newZoom >= minZoom) {
-      canvas.setZoom(newZoom);
-      $("#zoomSlider").val(newZoom);
-    }
-    return false;
-  });
-
-  $('#zoomSlider').on('input', function () {
-    canvas.setZoom($(this).val());
-    if (canvas.viewport.position.x > 0) {
-      canvas.viewport.position.x = 0;
-    }
-    if (canvas.viewport.position.y > 0) {
-      canvas.viewport.position.y = 0;
-    }
-    canvas.renderAll();
-  });
-
-  $('.edit').click(function(){
-    canvas.isGrabMode = false;
-    return false;
-  });
-
-  $('#gridCheckbox').click(function(){
-    if ($(this).prop('checked')) {
-      canvas.add(grid);
-      canvas.sendToBack(grid);
-      gridEnabled = true;
-    } else {
-      canvas.remove(grid);
-      gridEnabled = false;
-    }
-  });
-
-  $('#rasterize-svg').click(function(){
-    var w = canvas.width;
-    var h = canvas.height;
-
-    canvas.width = 6003;
-    canvas.height = 4003;
-    canvas.remove(grid);
-
-    var data = canvas.toSVG()
-    $.ajax({
-      url : "/admin/save_svg/"+<%= @floor %>,
-      type : "post",
-      data : { svg_data: data }
-    });
-
-    canvas.width = w;
-    canvas.height = h;
-    canvas.add(grid);
-    canvas.sendToBack(grid);
-
-  });
-
-  function addShape(assetId, assetPath) {
-
-    var coord = {
-      left: (- canvas.viewport.position.x / canvas.viewport.zoom) + ( canvas.width / canvas.viewport.zoom / 2),
-      top: (- canvas.viewport.position.y / canvas.viewport.zoom) + ( canvas.height / canvas.viewport.zoom / 2)
-    };
-
-    var element_type_id = parseInt(assetId);
-
-    fabric.loadSVGFromURL(assetPath, function(objects, options) {
-
-      var loadedObject = fabric.util.groupSVGElements(objects, options);
-
-      loadedObject.toObject = (function (toObject) {
-        return function () {
-          var opts = {
-            id: this.id,
-            floor: this.floor,
-            element_type_id: this.element_type_id,
-            modified: this.modified
-          }
-
-          if (this.element_type_id == 11) {
-            $.extend(opts, {
-              classification: this.classification,
-              identifier: this.identifier,
-              range_up_opt: this.range_up_opt,
-              range_up_digits: this.range_up_digits,
-              range_up_letters:this.range_up_letters,
-              range_down_opt: this.range_down_opt,
-              range_down_digits: this.range_down_digits,
-              range_down_letters: this.range_down_letters
-            })
-          }
-          return fabric.util.object.extend(toObject.call(this), opts);
-        };
-      })(fabric.Object.prototype.toObject);
-
-      loadedObject.set({
-            left: coord.left,
-            top: coord.top,
-            angle: 0,
-            floor: <%= @floor %>,
-            element_type_id: parseInt(assetId),
-            modified: true,
-            id: null
-          })
-          .setCoords();
-
-      if (element_type_id == 11) {
-        loadedObject.set({
-          range_up_opt: "",
-          range_up_digits: "",
-          range_up_letters: "",
-          range_down_opt: "",
-          range_down_digits: "",
-          range_down_letters: "",
-          classification: "",
-          identifier: ""
-        })
-      }
-
-      canvas.add(loadedObject);
-    });
-  }
-
-  canvas.add(grid);
-
-  canvas.renderAll();
-  canvas.renderOnAddRemove = true;
-
-  function handleScroll(evt){
-    var delta = evt.wheelDelta ? evt.wheelDelta/40 : evt.detail ? -evt.detail : 0;
-    if (delta > 0) {
-      var newZoom = canvas.viewport.zoom / 1.1;
-      if (newZoom >= minZoom) {
-        canvas.setZoom(newZoom);
-        $("#zoomSlider").val(newZoom);
-      }
-    } else if (delta < 0) {
-      var newZoom = canvas.viewport.zoom * 1.1;
-      if (newZoom <= 1) {
-        canvas.setZoom(newZoom);
-        $("#zoomSlider").val(newZoom);
-      }
-    }
-    return evt.preventDefault() && false;
-  };
-
-  var canvas_container = document.getElementById('canvas-container');
-  canvas_container.addEventListener('DOMMouseScroll',handleScroll,false);
-  canvas_container.addEventListener('mousewheel',handleScroll,false);
+  })
 </script>
