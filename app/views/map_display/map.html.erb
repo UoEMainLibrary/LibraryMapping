@@ -2,6 +2,10 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no" />
 <% end %>
 
+<body data-controller="<%= controller.controller_name %>" data-action="<%= controller.action_name %>">
+<link rel="stylesheet" href="//maxcdn.bootstrapcdn.com/font-awesome/4.5.0/css/font-awesome.min.css">
+<link rel="stylesheet" href="https://domoritz.github.io/leaflet-locatecontrol/dist/L.Control.Locate.min.css" />
+
 
 <div id="main-container">
   <!--nav-->
@@ -33,12 +37,6 @@
 
   <link href='http://fonts.googleapis.com/css?family=Plaster' rel='stylesheet' type='text/css'>
   <link href='http://fonts.googleapis.com/css?family=Engagement' rel='stylesheet' type='text/css'>
-<!--   <div id="tipbtn" class="hidden">
-    <p class="tip-btn" onclick=showTip();>Tips</p>
-  </div>
-  <div id="tip-div" class="navbar-collapse tip">
-    <p id="i-label">Here is the tip for the users</p>
-    <p id="tip-close" onclick=hideTip();>x</p> -->
   <div class="navbar-collapse optionsTopBar" <% if @elements %> style="display: none;" <% end %>>
     <label> Library: </label>
     <select id="library_option">
@@ -112,6 +110,7 @@
     </p>
 </div>
 </div>
+</body>
 <script>
   var map = L.map('image-map', {
     minZoom: 0.2,
@@ -121,6 +120,17 @@
     attributionControl: false,
     crs: L.CRS.Simple
   });
+
+  // Initialise latlng coordinates of main library
+  var _br = fromLatLngToVectorPoint(55.942517,-3.188288);
+  var _bl = fromLatLngToVectorPoint(55.942326,-3.189546);
+  var _tr = fromLatLngToVectorPoint(55.942999,-3.188516);
+  var _tl = fromLatLngToVectorPoint(55.942811,-3.189775);
+
+  var br = reflectYaxis(_bl.subtract(_br));
+  var bl = reflectYaxis(_bl.subtract(_bl));
+  var tr = reflectYaxis(_bl.subtract(_tr));
+  var tl = reflectYaxis(_bl.subtract(_tl));
 
   // dimensions of the image
   var w = 6000,
@@ -132,177 +142,22 @@
   var northEast = map.unproject([w, 0], map.getMaxZoom()-1);
   var bounds = new L.LatLngBounds(southWest, northEast);
 
-  // add the image overlay,
-  // so that it covers the entire map
   L.imageOverlay(url, bounds).addTo(map);
 
   // tell leaflet that the map is exactly as big as the image
   map.setMaxBounds(bounds);
 
-  var _br = fromLatLngToVectorPoint(55.942517,-3.188288);
-  var _bl = fromLatLngToVectorPoint(55.942326,-3.189546);
-  var _tr = fromLatLngToVectorPoint(55.942999,-3.188516);
-  var _tl = fromLatLngToVectorPoint(55.942811,-3.189775);
 
-  var br = reflectYaxis(_bl.subtract(_br));
-  var bl = reflectYaxis(_bl.subtract(_bl));
-  var tr = reflectYaxis(_bl.subtract(_tr));
-  var tl = reflectYaxis(_bl.subtract(_tl));
-
-  var marker;
-  function addPin(lat, lng, accuracy) {
-    console.log(accuracy / (80/6000));
-    var _newPoint = fromLatLngToVectorPoint(lat, lng);
-    var newPoint = reflectYaxis(_bl.subtract(_newPoint));
-
-    var m = {
-      x: project(newPoint, br).modulus() * 6473394.1008608695,
-      y: 4000 - project(newPoint, tl).modulus() * 6279304.20368495
-    }
-
-    console.log(m);
-    if(marker){
-      marker.setLatLng(map.unproject([m.x, m.y], map.getMaxZoom()-1))
-    }else{
-      marker = L.marker(map.unproject([m.x, m.y], map.getMaxZoom()-1));
-      //marker.addTo(map);
-    }
-  }
-
-  function project(b, a) {
-    return a.multiply(a.dot(b) / (a.modulus() * a.modulus()))
-  }
-
-  function reflectYaxis(v) {
-    return Vector.create([v.e(1)*-1, v.e(2)]);
-  }
-
-  function fromLatLngToVectorPoint(lat, long) {
-    var x = (long + 180) / 360 * 256;
-    var y = ((1 - Math.log(Math.tan(lat * Math.PI / 180) + 1 / Math.cos(lat * Math.PI / 180)) / Math.PI) / 2 * Math.pow(2, 0)) * 256;
-    return Vector.create([x, y]);
-  }
-
-
-
-  function successCallback(position) {
-    console.log(position.coords.latitude, position.coords.longitude, position.coords.altitude)
-    addPin(position.coords.latitude, position.coords.longitude, position.coords.accuracy);
-  }
-
-  function errorCallback(error){
-    console.log("- It didn't work.\n");
-    switch(error.code){
-      case error.PERMISSION_DENIED:
-        console.log("- Permission denied.\n");
-        break;
-      case error.POSITION_UNAVAILABLE:
-        console.log("- Position unavailable.\n");
-        break;
-      case error.TIMEOUT:
-        console.log("- Timeout.\n");
-        break;
-      case error.UNKNOW_ERROR:
-        console.log("- Unknown error.\n");
-        break;
-    }
-  }
-
-  if (navigator.geolocation) {
-    $('#console').append("- Retrieving position.\n");
-    var options = {
-      enableHighAccuracy : true,
-      timeout : 10000, // 10s
-      maximumAge : 0
-    };
-
-    navigator.geolocation.watchPosition(successCallback, errorCallback, options);
-
-  } else {
-    $('#console').append("- Geo Location is not supported.\n");
-  }
-
-  function showTip(){
-    $('#tip-div').removeClass('hidden').animate(500);
-    $('#tipbtn').addClass('hidden');
-  };
-
-  function hideTip(){
-    $('#tip-div').addClass('hidden');
-    $('#tipbtn').removeClass('hidden');
-  };
-  var h = $('#main-container').height();
-  $('#image-map').height() ;
   <% if @elements
-      @elements.each do |element| %>
-        L.marker(map.unproject([<%= element.left %>, <%= element.top %>], map.getMaxZoom()-1)).addTo(map).bindPopup("<b><%= @title %></b><br> <%= @author %><br> <%= @shelfmark%> ("+$('.btn-floor[data-floor="<%= @floor %>"]').text()+" floor)").openPopup();
+  @elements.each do |element| %>
+  L.marker(map.unproject([<%= element.left %>, <%= element.top %>], map.getMaxZoom()-1)).addTo(map).bindPopup("<b><%= @title %></b><br> <%= @author %><br> <%= @shelfmark%> ("+$('.btn-floor[data-floor="<%= @floor %>"]').text()+" floor)").openPopup();
   <%  end
-     end %>
+  end %>
 
-
-  $('.btn-floor[data-floor="<%= @floor %>"]').addClass("currentButton");
-
-  $('#library_option').val("<%= @library %>");
-  $('#library_option').on('change', function() {
-    window.location.replace(document.location.origin + "?library=" + this.value);
-  });
-
-  $( "#libraries-and-floors" ).click(function() {
-    $(".optionsTopBar").slideToggle();
-    $("#image-map").toggleClass("image-map-open");
-  });
-
-  $( "#qr-code" ).click(function() {
-    $("#qr-container").toggle();
-  });
-
-  var state = "searching";
   <% if @elements %>
   if($(window).width() < 1100) {
     helpInfo(5000);
   }
   <% end %>
-
-  $( "#help-info-yes" ).click(function() {
-    if(state == "searching") {
-      $("#help-info").slideToggle();
-    }else if(state == "floor-question"){
-      $("#help-info-text").text("Have you checked the recent return shelf?");
-      state = "recent-returns"
-    }else if(state == "recent-returns"){
-      $("#help-info-text").css("padding", "45px");
-      $("#help-info-text").text("Apologies for the inconvenience. Please contact the help desk services in the library if you have further questions.");
-    }
-  });
-
-  $( "#help-info-not-yet" ).click(function() {
-    $("#help-info").slideToggle();
-    helpInfo(5000);
-
-    setTimeout(function () {
-      if (state == "floor-question" || state == "recent-returns") {
-        $("#help-info-yes div").width("33.33%");
-        $("#help-info-not-yet div").width("33.33%");
-        $("#help-info-not-yet div").text("Not yet...");
-        $("#help-info-text").text("Have you found your book?");
-        state = "searching"
-      }
-    }, 1000);
-  });
-
-  $( "#help-info-no" ).click(function() {
-      $("#help-info-yes div").width("50%");
-      $("#help-info-not-yet div").width("50%");
-      $("#help-info-not-yet div").text("No!");
-      $("#help-info-text").text("Are you on the " + $('.btn-floor[data-floor="<%= @floor %>"]').text() + " floor?");
-      state = "floor-question";
-  });
-
-  function helpInfo(time){
-    setTimeout(function () {
-      $("#help-info").slideToggle();
-    }, time);
-  }
-
 
 </script>
