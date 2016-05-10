@@ -28,12 +28,22 @@ $(document).on('map_display#map:loaded', function(){
     $( "#help-info-yes" ).click(function() {
         if(state == "searching") {
             $("#help-info").slideToggle();
+            $.ajax({
+                url: "/save_statistics",
+                type: "post",
+                data: {found: true},
+            });
         }else if(state == "floor-question"){
             $("#help-info-text").text("Have you checked the recent return shelf?");
             state = "recent-returns"
         }else if(state == "recent-returns"){
             $("#help-info-text").css("padding", "45px");
             $("#help-info-text").text("Apologies for the inconvenience. Please contact the help desk services in the library if you have further questions.");
+            $.ajax({
+                url: "/save_statistics",
+                type: "post",
+                data: {found: false},
+            });
         }
     });
 
