@@ -34,4 +34,13 @@ class MapDisplayController < ApplicationController
         @elements = Element.where("range_end >= :shelfmark AND range_start <= :shelfmark AND library = :library AND floor = :floor AND identifier = :identifier", {shelfmark: shelfmarkNumber, library: @library, floor: @floor, identifier: identifier})
     end
   end
+
+  def save_statistics
+    found = params[:found]
+    if found
+      UsageStatistic.create(found: found)
+    end
+
+    head :ok
+  end
 end
