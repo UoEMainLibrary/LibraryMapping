@@ -240,7 +240,7 @@ $(document).on('admin#map:loaded', function(){
             },
             success: function() {
                 progress.update('type', 'success');
-                progress.update('message', 'The canvas has been published successfully! <br> Check the live version by clicking <a href="/QA1234">here</a>.');
+                progress.update('message', 'The canvas has been published successfully! <br> Check the live version by clicking <a href="/?floor='+floor+'&library='+library+'" target="_blank">here</a>.');
 
                 setTimeout(function() {
                     progress.close();
