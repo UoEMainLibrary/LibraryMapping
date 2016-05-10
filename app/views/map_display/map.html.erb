@@ -160,4 +160,10 @@
   }
   <% end %>
 
+  $('.btn-floor[data-floor="<%= @floor %>"]').addClass("currentButton");
+  $('#library_option').val("<%= @library %>");
+  $('#library_option').on('change', function() {
+    window.location.replace(document.location.origin + "?library=" + this.value);
+  });
+
 </script>

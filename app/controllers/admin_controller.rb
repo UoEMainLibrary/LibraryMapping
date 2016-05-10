@@ -1,6 +1,8 @@
 class AdminController < ApplicationController
   def index
-    redirect_to action: "map", floor: 1, library: "main"
+    #redirect_to action: "map", floor: 1, library: "main"
+    @total = UsageStatistic.count
+    @found = UsageStatistic.where(found: true).count
   end
 
   def save_svg

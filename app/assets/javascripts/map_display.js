@@ -6,14 +6,6 @@ $(document).on('map_display#map:loaded', function(){
     var h = $('#main-container').height();
     $('#image-map').height() ;
 
-
-    $('.btn-floor[data-floor="<%= @floor %>"]').addClass("currentButton");
-
-    $('#library_option').val("<%= @library %>");
-    $('#library_option').on('change', function() {
-        window.location.replace(document.location.origin + "?library=" + this.value);
-    });
-
     $( "#libraries-and-floors" ).click(function() {
         $(".optionsTopBar").slideToggle();
         $("#image-map").toggleClass("image-map-open");
