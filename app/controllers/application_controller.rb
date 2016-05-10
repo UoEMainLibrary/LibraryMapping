@@ -32,6 +32,16 @@ class ApplicationController < ActionController::Base
 
     elsif identifier == "dewey_main"
 
+      offset = 0
+
+      if shelfmark[0] == 'F'
+        offset = 1
+        shelfmark = shelfmark[2..-1]
+      elsif shelfmark[0] == 'P'
+        offset = 2
+        shelfmark = shelfmark[2..-1]
+      end
+
       shelfmark = shelfmark.gsub(/[^0-9A-Za-z]/, '')
       shelfmark = shelfmark.match(/^[^\d]*(\d+)/)[0]
 
@@ -39,7 +49,7 @@ class ApplicationController < ActionController::Base
         return -1
       end
 
-      res = Float("."+shelfmark)
+      res = Float("."+shelfmark) - offset
       return res
 
     end
