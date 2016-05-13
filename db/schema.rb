@@ -11,7 +11,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20160510085213) do
+ActiveRecord::Schema.define(version: 20160513101151) do
 
   create_table "element_types", force: :cascade do |t|
     t.string   "name",       limit: 255, null: false
@@ -49,6 +49,14 @@ ActiveRecord::Schema.define(version: 20160510085213) do
   end
 
   add_index "elements", ["element_type_id"], name: "index_elements_on_element_type_id", using: :btree
+
+  create_table "feedback_messages", force: :cascade do |t|
+    t.string   "name",       limit: 255
+    t.string   "email",      limit: 255
+    t.string   "message",    limit: 255
+    t.datetime "created_at",             null: false
+    t.datetime "updated_at",             null: false
+  end
 
   create_table "hub_lc_sections", force: :cascade do |t|
     t.string  "letters", limit: 255, null: false

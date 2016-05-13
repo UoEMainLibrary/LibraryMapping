@@ -51,4 +51,22 @@ class MapDisplayController < ApplicationController
 
     head :ok
   end
+
+  def feedback
+    @message = FeedbackMessage.new
+    @success = params[:success]
+  end
+
+  def create_feedback
+    @message = FeedbackMessage.new(message_params)
+    @message.save
+
+    redirect_to action: "feedback", success: true
+  end
+
+  private
+
+  def message_params
+    params.require(:feedback_message).permit(:name, :email, :message)
+  end
 end
