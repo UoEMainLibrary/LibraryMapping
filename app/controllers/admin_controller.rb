@@ -130,6 +130,7 @@ class AdminController < ApplicationController
       end
 
       if shelfmark_end == "" and shelfmark_start == ""
+        canvasElement.identifier = element["identifier"]
         if canvasElement.save
           return true
         else
