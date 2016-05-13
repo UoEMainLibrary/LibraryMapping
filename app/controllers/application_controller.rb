@@ -3,8 +3,13 @@ class ApplicationController < ActionController::Base
   # For APIs, you may want to use :null_session instead.
   protect_from_forgery with: :exception
 
+
+
+  # Maps shelfmarks in different classification to LibraryMapping's ordering system
   def shelfmarkToOrder(shelfmark, identifier)
 
+    # Library of Congress classifications
+    # Add other LoC collections here
     if identifier == "lc_main" || identifier == "lc_hub"
       letters = shelfmark.match(/^((Folio )|(Pamph. )|(Ref. ))?[A-Z]+/)[0]
 
@@ -30,6 +35,8 @@ class ApplicationController < ActionController::Base
       res = Float(token.to_s + '.' + digits)
       return res
 
+    # Dewey Decimal classifications
+    # Add other Dewey Decimal collections here
     elsif identifier == "dewey_main"
 
       offset = 0

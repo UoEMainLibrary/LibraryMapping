@@ -1,5 +1,7 @@
 class MapDisplayController < ApplicationController
   def map
+
+    # Select Leaflet image based on browser
     browser = Browser.new(request.user_agent)
     @extension = ".png"
 
@@ -31,11 +33,16 @@ class MapDisplayController < ApplicationController
           @qr = RQRCode::QRCode.new(request.original_url)
         end
 
+        # Matches all the shelves in the EAS Collection
         if identifier == "eas_main"
           @elements = Element.where("identifier = :identifier AND library = :library AND floor = :floor", {identifier: identifier, shelfmark: shelfmarkNumber, library: @library, floor: @floor})
+
+        # Matches all the file in special collections (C.A.S., Watt, Smith, Serjeant)
         elsif @shelfmark.match(/^(Smith Coll.|Watt Coll.|Serj. Coll.|C.A.S.)/)
           identifier = "cwss_main"
           @elements = Element.where("identifier = :identifier AND library = :library AND floor = :floor", {identifier: identifier, shelfmark: shelfmarkNumber, library: @library, floor: @floor})
+
+        # Matches all other shelves (HUB, Library of Congress, Dewey Decimal...)
         else
           shelfmarkNumber = shelfmarkToOrder(@shelfmark, identifier)
           @elements = Element.where("range_end >= :shelfmark AND range_start <= :shelfmark AND library = :library AND floor = :floor AND identifier = :identifier", {shelfmark: shelfmarkNumber, library: @library, floor: @floor, identifier: identifier})

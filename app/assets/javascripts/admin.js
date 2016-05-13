@@ -78,24 +78,25 @@ $(document).on('admin#map:loaded', function(){
 
     /* ------- CANVAS METHODS ------- */
 
+    // Save all modified elements in the canvas
     saveCanvas = function() {
         canvas.deactivateAll();
         removeWallCircles();
 
-        var obj = canvas.getObjects().filter(function(o) {
+        var objs = canvas.getObjects().filter(function(o) {
             return o.modified == true
         } );
 
-        console.log(JSON.stringify(obj));
-        restoreWallCircles();
+        console.log(JSON.stringify(objs));
 
         return $.ajax({
             url : "/admin/" + library + "/"+floor,
             type : "post",
-            data : { elements: JSON.stringify(obj) },
-            success: function(data, textStatus, xhr) {
+            data : { elements: JSON.stringify(objs) },
+            success: function(data) {
+                // Post processing of elements: remove modified attribute
                 var idCount = data.next_id;
-                obj.forEach(function(o) {
+                objs.forEach(function(o) {
                     o.modified = false;
                     if (!o.id) {
                         o.id = idCount;
@@ -112,9 +113,12 @@ $(document).on('admin#map:loaded', function(){
         });
     };
 
+
+    // Save a shelf's custom attributes
     saveElementData = function () {
         var obj = canvas.getActiveObject();
 
+        // Get values of visible form
         obj.range_end_opt =  $(".range-form:visible .range_end_opt").val();
         obj.range_end_digits =  $(".range-form:visible .range_end_digits").val();
         obj.range_end_letters = $(".range-form:visible .range_end_letters").val();
@@ -125,8 +129,7 @@ $(document).on('admin#map:loaded', function(){
 
         obj.identifier = $("#identifier").val();
 
-        console.log(obj)
-
+        // Send parameters to controller with an AJAX call
         $.ajax({
             url : "/admin/save_element/" + library + "/" + floor,
             type : "post",
@@ -176,7 +179,7 @@ $(document).on('admin#map:loaded', function(){
                 if (object.type != "circle") {
                     canvas.remove(object);
                 } else {
-                    // If wall
+                    // If it's a wall, also remove its circles
                     canvas.remove(object.line1);
                     canvas.remove(object.line2);
                     for (var i=0; i < wallCircles.length; i++) {
@@ -197,6 +200,7 @@ $(document).on('admin#map:loaded', function(){
     };
 
     rasterizeSVG = function() {
+        // Display a notification
         var progress = $.notify({
             message: 'Publication in progress...'
         },{
@@ -205,13 +209,15 @@ $(document).on('admin#map:loaded', function(){
             delay: 20000,
             offset: 10
         });
+
+        // Store canvas parameters to be restored
         var w = canvas.width;
         var h = canvas.height;
         var z = canvas.viewport.zoom;
         var x = canvas.viewport.position.x;
         var y = canvas.viewport.position.y;
 
-
+        // Prepare canvas for publication
         canvas.setZoom(1);
 
         canvas.setWidth(6003);
@@ -220,25 +226,25 @@ $(document).on('admin#map:loaded', function(){
         canvas.viewport.position.x = 0;
         canvas.viewport.position.y = 0;
 
-        canvas.renderAll();
-
         canvas.remove(grid);
         removeWallCircles();
         canvas.setBackgroundImage(null, canvas.renderAll.bind(canvas));
-        canvas.renderAll();
 
 
-        var data = canvas.toSVG();
-        var data2 = canvas.toDataURL().replace(/^data:image\/(png|jpg);base64,/, "");
+        // Get data for image files
+        var svg_data = canvas.toSVG();
+        var png_data = canvas.toDataURL().replace(/^data:image\/(png|jpg);base64,/, "");
 
+        // Pass data to AJAX call
         $.ajax({
             url : "/admin/save_svg/" + library + "/"+floor,
             type : "post",
             data : {
-                svg_data: data,
-                png_data: data2
+                svg_data: svg_data,
+                png_data: png_data
             },
             success: function() {
+                // Updates the notification to success
                 progress.update('type', 'success');
                 progress.update('message', 'The canvas has been published successfully! <br> Check the live version by clicking <a href="/?floor='+floor+'&library='+library+'" target="_blank">here</a>.');
 
@@ -248,6 +254,7 @@ $(document).on('admin#map:loaded', function(){
             }
         });
 
+        // Restore canvas properties
         canvas.setBackgroundImage(overlay_url, canvas.renderAll.bind(canvas), {
             width: 6000,
             height: 4000,
@@ -269,15 +276,18 @@ $(document).on('admin#map:loaded', function(){
         canvas.renderAll();
     };
 
+    // Add an SVG element in the canvas
     addShape = function(assetId, assetName, assetPath) {
+        // Precompute coordinates of new element to be in the middle of the current viewport
         var coord = {
             left: (- canvas.viewport.position.x / canvas.viewport.zoom) + ( canvas.width / canvas.viewport.zoom / 2),
             top: (- canvas.viewport.position.y / canvas.viewport.zoom) + ( canvas.height / canvas.viewport.zoom / 2)
         };
 
         fabric.loadSVGFromURL(assetPath, function(objects, options) {
-
             var loadedObject = fabric.util.groupSVGElements(objects, options);
+
+            // Expand object with custom attributes
             loadedObject.toObject = (function (toObject) {
                 return function () {
                     var opts = {
@@ -335,6 +345,7 @@ $(document).on('admin#map:loaded', function(){
         });
     };
 
+    // Add a wall with circles in the canvas
     addWall = function(element_type_id) {
         var left = (- canvas.viewport.position.x / canvas.viewport.zoom) + ( canvas.width / canvas.viewport.zoom / 2)
         var top = (- canvas.viewport.position.y / canvas.viewport.zoom) + ( canvas.height / canvas.viewport.zoom / 2)
@@ -344,18 +355,21 @@ $(document).on('admin#map:loaded', function(){
     };
 
 
+    // Remove wall circles (for rasterising purposes)
     removeWallCircles = function() {
         for(var i=0; i < wallCircles.length; i++) {
             wallCircles[i].setOpacity(0);
         }
     };
 
+    // Put back all the wall circles
     restoreWallCircles = function() {
         for(var i=0; i < wallCircles.length; i++) {
             wallCircles[i].setOpacity(1);
         }
     };
 
+    // Select a shelf with id in the canvas
     selectShelf = function(id) {
         var shelf = canvas.getObjects().find(function(o) {return o.id == id});
         canvas.setActiveObject(shelf);
@@ -366,6 +380,7 @@ $(document).on('admin#map:loaded', function(){
         canvas.renderAll();
     };
 
+    // Open the shelf form
     openEditShelf = function(id) {
         selectShelf(id);
         $('#controls_tab').tab('show');
@@ -380,6 +395,7 @@ $(document).on('admin#map:loaded', function(){
         var count = $(".print_col input:checked").length;
 
         if (count == 2) {
+            // Generate PDF of shelfmarks
             console.log($(".print_col input:checked:eq(0)").data("id"));
             console.log($(".print_col input:checked:eq(1)").data("id"));
             var element1 = canvas.getObjects().find(function(o) {return o.id == $(".print_col input:checked:eq(0)").data("id")});
@@ -400,7 +416,7 @@ $(document).on('admin#map:loaded', function(){
             doc.text(150, 20, element1.range_start_opt + ' ' + element1.range_start_letters + ' ' + element1.range_start_digits);
             doc.text(150, 30, element1.range_end_opt + ' ' + element1.range_end_letters + ' ' + element1.range_end_digits);
 
-            doc.save('Shelfmarks.pdf');
+            doc.save('Shelfmarks.pdf'); //TODO: Make this a dynamic title, according to shelfmark
 
             printQueue = [];
             $(".print_col input").prop( "checked", false );
@@ -499,9 +515,9 @@ $(document).on('admin#map:loaded', function(){
     });
 
     $(document).on('keyup', function(e) {
-        if(e.keyCode==18) {
+        if (e.keyCode == 18) { // Reset canvas to edit mode
             canvas.isGrabMode = false;
-        } else if (e.shiftKey) {
+        } else if (e.shiftKey) { // Reset the movement delta back to 2
             movementDelta = 2;
         }
     });
@@ -510,6 +526,7 @@ $(document).on('admin#map:loaded', function(){
     canvas_container.addEventListener('DOMMouseScroll', handleScroll, false);
     canvas_container.addEventListener('mousewheel', handleScroll, false);
 
+    // Handles the scroll to point when zooming with mouse scroll
     function handleScroll(e) {
         var delta = e.wheelDelta ? e.wheelDelta/40 : e.detail ? -e.detail : 0;
         if (delta > 0) {
@@ -528,6 +545,7 @@ $(document).on('admin#map:loaded', function(){
         return e.preventDefault() && false;
     }
 
+    // Set element as modified to mark it for database persistance on canvas save
     canvas.on('object:modified', function(options) {
         var toModify = [];
         if (options.target._objects) {
@@ -549,6 +567,7 @@ $(document).on('admin#map:loaded', function(){
         });
     });
 
+    // Delete the removed element from the database with AJAX call
     canvas.on('object:removed', function(options){
         if(options.target.id) {
             $.ajax({
@@ -567,12 +586,14 @@ $(document).on('admin#map:loaded', function(){
         }
     });
 
+    // Add support for shift + rotate, for 45 DEG rotations
     canvas.on('object:rotating', function(options) {
         if (options.e.shiftKey) {
             options.target.angle = options.target.angle - options.target.angle % 45
         }
     });
 
+    // Toggle frontend form, when shelf is selected
     canvas.on('object:selected', function(options){
         $("#remove-selected").css("display", "initial");
         $("#shelfData").css("display", "none");
@@ -594,6 +615,7 @@ $(document).on('admin#map:loaded', function(){
         }
     });
 
+    // Load the correct form according to the identifier chosen
     $("#identifier").change(function(){
         var val = $("#identifier").val();
         console.log(val);
@@ -612,9 +634,10 @@ $(document).on('admin#map:loaded', function(){
                 break;
         }
 
-    })
+    });
 
-    canvas.on('selection:cleared', function(options){
+    // Toggle frontend form, when selection is cleared
+    canvas.on('selection:cleared', function(){
         $("#remove-selected").css("display", "none");
         $("#shelfData").css("display", "none");
     });
@@ -625,7 +648,13 @@ $(document).on('admin#map:loaded', function(){
         var left = obj.left;
         var zoom = canvas.viewport.zoom;
 
-        // width & height we are constraining to must be calculated by applying the inverse of the current viewportTransform
+        // If moving a wall circle, update its line's attributes
+        if (obj.line1 || obj.line2) {
+            obj.line1 && obj.line1.set({'x2': obj.left, 'y2': obj.top});
+            obj.line2 && obj.line2.set({'x1': obj.left, 'y1': obj.top});
+            canvas.renderAll();
+        }
+
         var c_width = canvas.width / zoom;
         var c_height = canvas.height / zoom;
 
@@ -637,6 +666,7 @@ $(document).on('admin#map:loaded', function(){
         var left_bound = boundingBox.left;
         var right_bound = boundingBox.left + boundingBox.width - w;
 
+        // Constrains x and y to the canvas' bounds (so that elements won't fall outside the floor plan)
         if( w > c_width ) {
             obj.setLeft(left_bound);
         } else {
@@ -656,13 +686,6 @@ $(document).on('admin#map:loaded', function(){
                 obj.setTop(Math.min(Math.max(top, top_bound), bottom_bound));
             }
         }
-    });
-
-    canvas.on('object:moving', function(e) {
-        var p = e.target;
-        p.line1 && p.line1.set({ 'x2': p.left, 'y2': p.top });
-        p.line2 && p.line2.set({ 'x1': p.left, 'y1': p.top });
-        canvas.renderAll();
     });
 
     /* ------- UI LISTENERS ------- */
@@ -685,6 +708,7 @@ $(document).on('admin#map:loaded', function(){
         return false;
     });
 
+    // Update zoom slider on zoom change
     $('#zoomSlider').on('input', function() {
         canvas.setZoom($(this).val());
         if (canvas.viewport.position.x > 0) {
@@ -696,10 +720,7 @@ $(document).on('admin#map:loaded', function(){
         canvas.renderAll();
     });
 
-    // $('.edit').click(function(){
-    //     canvas.isGrabMode = false;
-    //     return false;
-    // });
+    // Update canvas mode
     $('#mode').click(function(){
         if($('.mode-button').hasClass('grab')){
             canvas.isGrabMode = false;
@@ -718,8 +739,9 @@ $(document).on('admin#map:loaded', function(){
             $('.mode-button').addClass('grab');
             return true;
         }
-    })
+    });
 
+    // Switch grid on and off;
     $('#gridCheckbox').click(function(){
         if (!$('.switch-button-button').hasClass('checked')) {
             canvas.add(grid);
@@ -741,20 +763,24 @@ $(document).on('admin#map:loaded', function(){
         }
     });
 
+    // Triggers the event in admin/map.html.erb
     $(document).trigger('canvas:preloaded');
 });
 
 
-
+// Loads a particular element into the canvas, adding all custom properties
+// Function is called in a loop in admin/map.html.erb
 
 var counter = 1;
 function loadElementInCanvas(element, element_type, svg_path, last) {
     if (element_type != "Wall") {
         var shape = svg_path;
 
+        // Load SVG file
         fabric.loadSVGFromURL(shape, function(objects, options) {
             var loadedObject = fabric.util.groupSVGElements(objects, options);
 
+            // Expand object with custom attributes
             loadedObject.toObject = (function (toObject) {
                 return function () {
                     var opts = {
@@ -797,6 +823,7 @@ function loadElementInCanvas(element, element_type, svg_path, last) {
                 })
                 .setCoords();
 
+            // Set shelf attributes if it's a shelf
             if (element_type == "Shelf") {
                 loadedObject.set({
                     range_end_opt: element.range_end_opt,
@@ -808,8 +835,20 @@ function loadElementInCanvas(element, element_type, svg_path, last) {
                     identifier: element.identifier,
                     originX: 'center',
                     originY: 'center'
-                })
+                });
 
+                // Generates an RGB color based on the shelfmark
+                get_rgb = function(value) {
+                    var minimum = 1000;
+                    var maximum = 1600;
+                    var ratio = 2 * (value - minimum) / (maximum - minimum);
+                    var b = Math.round(Math.max(0, 255*(1 - ratio)));
+                    var r = Math.round(Math.max(0, 255*(ratio - 1)));
+                    var g = 255 - b - r;
+                    return "rgb(" + r + ", " + g + ", " + b + ")";
+                };
+
+                // Add element into the shelves overview table
                 $('#shelves-table > tbody:last-child').append('' +
                     '<tr>' +
                         '<td>' + element.id + '</td>' +
@@ -823,6 +862,8 @@ function loadElementInCanvas(element, element_type, svg_path, last) {
 
             }
             canvas.add(loadedObject);
+
+            // Trigger events when last element has been loaded
             if (counter == last) {
                 canvas.renderOnAddRemove = true;
                 canvas.renderAll();
@@ -833,6 +874,7 @@ function loadElementInCanvas(element, element_type, svg_path, last) {
             counter++;
         });
     } else {
+        // If it's a wall, add circles as well
         counter++;
         var wall = new Wall(element.id, element.element_type_id, element.floor, element.library, element.top, element.right, element.left, element.bottom);
         wall.addTo(canvas);
@@ -842,7 +884,7 @@ function loadElementInCanvas(element, element_type, svg_path, last) {
 }
 
 
-/* ------- WALL ------- */
+/* ------- WALL PROTOTYPE ------- */
 function Wall(id, element_type_id, floor, library, left, top, right, bottom) {
     if (!right || !bottom) {
         right = left + 100;
@@ -891,6 +933,7 @@ function Wall(id, element_type_id, floor, library, left, top, right, bottom) {
     }
 }
 
+// Create the line for the wall
 function makeLine(coords) {
     return new fabric.Line(coords, {
         fill: '#333',
@@ -902,6 +945,7 @@ function makeLine(coords) {
     });
 }
 
+// Create a new circle and associates it to the line
 function makeCircle(left, top, line1, line2) {
     var c = new fabric.Circle({
         left: left,
@@ -920,13 +964,3 @@ function makeCircle(left, top, line1, line2) {
 
     return c;
 }
-
-get_rgb = function(value) {
-    var minimum = 1000;
-    var maximum = 1600;
-    var ratio = 2 * (value - minimum) / (maximum - minimum);
-    var b = Math.round(Math.max(0, 255*(1 - ratio)));
-    var r = Math.round(Math.max(0, 255*(ratio - 1)));
-    var g = 255 - b - r;
-    return "rgb(" + r + ", " + g + ", " + b + ")";
-};
