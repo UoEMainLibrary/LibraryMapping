@@ -3,6 +3,7 @@ class AdminController < ApplicationController
     #redirect_to action: "map", floor: 1, library: "main"
     @total = UsageStatistic.count
     @found = UsageStatistic.where(found: true).count
+    @feedback_messages = FeedbackMessage.all
   end
 
   def save_svg
