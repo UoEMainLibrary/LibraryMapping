@@ -31,11 +31,11 @@ class MapDisplayController < ApplicationController
           @qr = RQRCode::QRCode.new(request.original_url)
         end
 
-        if @shelfmark.match(/^(Smith Coll.|Watt Coll.|Serj. Coll.|C.A.S.)/)
+        if identifier == "eas_main"
+          @elements = Element.where("identifier = :identifier AND library = :library AND floor = :floor", {identifier: identifier, shelfmark: shelfmarkNumber, library: @library, floor: @floor})
+        elsif @shelfmark.match(/^(Smith Coll.|Watt Coll.|Serj. Coll.|C.A.S.)/)
           identifier = "cwss_main"
-          @elements = Element.where("identifier = :identifier AND library = :library AND floor = :floor", {identifier: identifier, library: @library, floor: @floor})
-        elsif identifier == "eas_main"
-          @elements = Element.where("identifier = :identifier AND library = :library AND floor = :floor", {identifier: identifier, library: @library, floor: @floor})
+          @elements = Element.where("identifier = :identifier AND library = :library AND floor = :floor", {identifier: identifier, shelfmark: shelfmarkNumber, library: @library, floor: @floor})
         else
           shelfmarkNumber = shelfmarkToOrder(@shelfmark, identifier)
           @elements = Element.where("range_end >= :shelfmark AND range_start <= :shelfmark AND library = :library AND floor = :floor AND identifier = :identifier", {shelfmark: shelfmarkNumber, library: @library, floor: @floor, identifier: identifier})
