@@ -37,7 +37,7 @@ class ApplicationController < ActionController::Base
 
     # Dewey Decimal classifications
     # Add other Dewey Decimal collections here
-    elsif identifier == "dewey_main"
+    elsif identifier == "dewey_main" || identifier == "journal_main"
 
       offset = 0
 

@@ -630,7 +630,20 @@ $(document).on('admin#map:loaded', function(){
                 $("#lc-form").show();
                 break;
             case "dewey_main":
+                $("#dewey-form .range_start_opt").prop('disabled', false);
+                $("#dewey-form .range_end_opt").prop('disabled', false);
+                $("#dewey-form .range_start_opt option[value='Per. ']").remove();
+                $("#dewey-form .range_end_opt option[value='Per. ']").remove();
                 $("#dewey-form").show();
+                break;
+            case "journal_main":
+                $("#dewey-form").show();
+                $("#dewey-form .range_start_opt").append('<option value="Per. ">Per.</option>');
+                $("#dewey-form .range_end_opt").append('<option value="Per. ">Per.</option>');
+                $("#dewey-form .range_start_opt").val("Per. ");
+                $("#dewey-form .range_start_opt").prop('disabled', true);
+                $("#dewey-form .range_end_opt").val("Per. ");
+                $("#dewey-form .range_end_opt").prop('disabled', true);
                 break;
         }
 
