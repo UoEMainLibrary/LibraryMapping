@@ -815,6 +815,7 @@ function loadElementInCanvas(element, element_type, svg_path, last) {
                         '<td>' + element.id + '</td>' +
                         '<td style="color: white; background-color:'+get_rgb(element.range_start)+'">' + element.range_start_opt + ' ' + element.range_start_letters + ' ' + element.range_start_digits+ '</td>' +
                         '<td style="color: white; background-color:'+get_rgb(element.range_end)+'">' + element.range_end_opt + ' ' + element.range_end_letters + ' ' + element.range_end_digits+ '</td>' +
+                        '<td>' + element.identifier + '</td>' +
                         '<td><a href="#" onclick="openEditShelf('+element.id+')">Edit</a></td>' +
                         '<td><a href="#" onclick="selectShelf('+element.id+')">Select</a></td>' +
                         '<td class="print_col" style="display: none"><input type="checkbox" data-id="'+element.id+'" onclick="printThis()"></td>' +
