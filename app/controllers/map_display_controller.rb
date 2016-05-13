@@ -32,7 +32,7 @@ class MapDisplayController < ApplicationController
         end
 
         if @shelfmark.match(/^(Smith Coll.|Watt Coll.|Serj. Coll.|C.A.S.)/)
-          identifier = "cwss"
+          identifier = "cwss_main"
           @elements = Element.where("identifier = :identifier AND library = :library AND floor = :floor", {identifier: identifier, library: @library, floor: @floor})
         elsif identifier == "eas_main"
           @elements = Element.where("identifier = :identifier AND library = :library AND floor = :floor", {identifier: identifier, library: @library, floor: @floor})

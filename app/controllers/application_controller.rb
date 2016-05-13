@@ -30,7 +30,7 @@ class ApplicationController < ActionController::Base
       res = Float(token.to_s + '.' + digits)
       return res
 
-    elsif identifier == "dewey_main"
+    elsif identifier == "dewey_main" || identifier == "journal_main"
 
       offset = 0
 
