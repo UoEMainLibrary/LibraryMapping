@@ -8,4 +8,23 @@
   <%= link_to "Main Library", {controller: "admin", action: "map", floor: 1, library: "main"}, data: { no_turbolink: true, floor: 1 } %>
   <br>
   <%= link_to "Murray Library", {controller: "admin", action: "map", floor: 1, library: "murray"}, data: { no_turbolink: true, floor: 1 } %>
+
+  <h1>FEEDBACK</h1>
+  <table class="table table-bordered">
+    <thead style="background-color: #ddd">
+      <td>NAME</td>
+      <td>EMAIL</td>
+      <td>MESSAGE</td>
+    </thead>
+    <tbody>
+    <% @feedback_messages.each do |feedback| %>
+        <tr>
+          <td><%= feedback.name %></td>
+          <td><%= feedback.email %></td>
+          <td><%= feedback.message %></td>
+        </tr>
+    <%end%>
+    </tbody>
+  </table>
 </div>
+
