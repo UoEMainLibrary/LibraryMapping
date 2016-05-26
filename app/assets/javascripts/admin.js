@@ -88,6 +88,7 @@ $(document).on('admin#map:loaded', function(){
         } );
 
         console.log(JSON.stringify(objs));
+        restoreWallCircles();
 
         return $.ajax({
             url : "/admin/" + library + "/"+floor,
