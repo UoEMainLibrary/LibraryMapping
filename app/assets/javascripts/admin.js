@@ -661,13 +661,6 @@ $(document).on('admin#map:loaded', function(){
         var left = obj.left;
         var zoom = canvas.viewport.zoom;
 
-        // If moving a wall circle, update its line's attributes
-        if (obj.line1 || obj.line2) {
-            obj.line1 && obj.line1.set({'x2': obj.left, 'y2': obj.top});
-            obj.line2 && obj.line2.set({'x1': obj.left, 'y1': obj.top});
-            canvas.renderAll();
-        }
-
         var c_width = canvas.width / zoom;
         var c_height = canvas.height / zoom;
 
@@ -699,6 +692,13 @@ $(document).on('admin#map:loaded', function(){
                 obj.setTop(Math.min(Math.max(top, top_bound), bottom_bound));
             }
         }
+    });
+
+    canvas.on("object:moving", function(e) {
+        var obj = e.target;
+        obj.line1 && obj.line1.set({'x2': obj.left, 'y2': obj.top});
+        obj.line2 && obj.line2.set({'x1': obj.left, 'y1': obj.top});
+        canvas.renderAll();
     });
 
     /* ------- UI LISTENERS ------- */
