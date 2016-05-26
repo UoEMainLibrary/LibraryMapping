@@ -739,7 +739,7 @@ $(document).on('admin#map:loaded', function(){
             canvas.isGrabMode = false;
             $('.mode-button').html('Edit');
             $('.mode-button').animate({
-                left: "-=40px"
+                left: "-=41px"
             })
             $('.mode-button').removeClass('grab');
             return false;
@@ -747,7 +747,7 @@ $(document).on('admin#map:loaded', function(){
             canvas.isGrabMode = true;
             $('.mode-button').html('Grab');
             $('.mode-button').animate({
-                left: "+=40px"
+                left: "+=41px"
             })
             $('.mode-button').addClass('grab');
             return true;
@@ -762,7 +762,7 @@ $(document).on('admin#map:loaded', function(){
             gridEnabled = true;
             $('.switch-button-background').css('background', '#1ABB9C');
             $('.switch-button-button').animate({
-                left: "+=20px"
+                left: "+=31px"
             })
             $('.switch-button-button').addClass('checked');
         } else {
@@ -770,7 +770,7 @@ $(document).on('admin#map:loaded', function(){
             gridEnabled = false;
             $('.switch-button-background').css('background', '#fff');
             $('.switch-button-button').animate({
-                left: "-=20px"
+                left: "-=31px"
             })
             $('.switch-button-button').removeClass('checked');
         }
