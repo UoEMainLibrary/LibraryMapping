@@ -35,12 +35,12 @@ class MapDisplayController < ApplicationController
 
         # Matches all the shelves in the EAS Collection
         if identifier == "eas_main"
-          @elements = Element.where("identifier = :identifier AND library = :library AND floor = :floor", {identifier: identifier, shelfmark: shelfmarkNumber, library: @library, floor: @floor})
+          @elements = Element.where("identifier = :identifier AND library = :library AND floor = :floor", {identifier: identifier, library: @library, floor: @floor})
 
         # Matches all the file in special collections (C.A.S., Watt, Smith, Serjeant)
         elsif @shelfmark.match(/^(Smith Coll.|Watt Coll.|Serj. Coll.|C.A.S.)/)
           identifier = "cwss_main"
-          @elements = Element.where("identifier = :identifier AND library = :library AND floor = :floor", {identifier: identifier, shelfmark: shelfmarkNumber, library: @library, floor: @floor})
+          @elements = Element.where("identifier = :identifier AND library = :library AND floor = :floor", {identifier: identifier, library: @library, floor: @floor})
 
         # Matches all other shelves (HUB, Library of Congress, Dewey Decimal...)
         else
