@@ -677,7 +677,9 @@ CLASS_HASH = {
         :name => 'Bibliography, Library Science',
         :subclasses => {
             'Z'   => { :name => 'Books (General). Writing. Paleography. Book industries and trade. Libraries. Bibliography' },
-            'ZA'  => { :name => 'Information resources (General)' }
+            'ZA'  => { :name => 'Information resources (General)' },
+            'ZW'   => { :name => 'NULL' },
+            'ZWZ'  => { :name => 'NULL' }
         }
     }
 }
