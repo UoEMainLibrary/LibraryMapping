@@ -42,11 +42,11 @@ $(document).on('admin#map:loaded', function(){
         case 5: overlay_url = "/assets/overlay_ml_5.png"; break;
     }
 
-    canvas.setBackgroundImage(overlay_url, canvas.renderAll.bind(canvas), {
-        width: 6000,
-        height: 4000,
-        opacity: 0.3
-    });
+    //canvas.setBackgroundImage(overlay_url, canvas.renderAll.bind(canvas), {
+    //    width: 6000,
+    //    height: 4000,
+    //    opacity: 0.3
+    //});
 
     wallCircles = [];
 
