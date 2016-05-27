@@ -1,15 +1,45 @@
-<div style="width:100%; height:100%; background-color: #F36E50 ">
-  Total: <%= @total %>
+<div id="main-container">
+  <nav class="bg-blue">
+    <div class="container-fluid">
+        <div class="navbar-header">
+          <img class="logo" src="/assets/logo-01.png"><h2>Library Maps | Feedback</h2>
+        </div>
+   </div>
+  </nav>
+<div class="container text-center">
+  <h1>User feedback</h1>
+  <div class="statistic col-sm-4">
+    <div class="statistic-graphic">
+      <span class="glyphicon glyphicon-user"></span>
+    </div>
+    <div class="statistic-text">
+      <div class="statistic-title">Total</div>
+      <div class="text-center"><%= @total %></div>
+    </div>
+  </div>
+  <div class="statistic col-sm-4">
+    <div class="statistic-graphic green">
+      <span class="glyphicon glyphicon-ok"></span>
+    </div>
+    <div class="statistic-text">
+      <div class="statistic-title">Found</div>
+      <div class="text-center"><%= @found %></div>
+    </div>
+  </div>
+  <div class="statistic col-sm-4">
+    <div class="statistic-graphic orange">
+      <span class="glyphicon glyphicon-remove"></span>
+    </div>
+    <div class="statistic-text">
+      <div class="statistic-title">Not Found</div>
+      <div class="text-center"><%= @total - @found %></div>
+    </div>
+  </div>
+  <%= link_to "Main Library", {controller: "admin", action: "map", floor: 1, library: "main"}, data: { no_turbolink: true, floor: 1 }, :class=>"links col-sm-6" %>
   <br>
-  Found: <%= @found %>
-  <br>
-  Did not find: <%= @total - @found %>
-  <br>
-  <%= link_to "Main Library", {controller: "admin", action: "map", floor: 1, library: "main"}, data: { no_turbolink: true, floor: 1 } %>
-  <br>
-  <%= link_to "Murray Library", {controller: "admin", action: "map", floor: 1, library: "murray"}, data: { no_turbolink: true, floor: 1 } %>
+  <%= link_to "Murray Library", {controller: "admin", action: "map", floor: 1, library: "murray"}, data: { no_turbolink: true, floor: 1 },  :class=>"links col-sm-6"%>
 
-  <h1>FEEDBACK</h1>
+  <h1>Messages</h1>
   <table class="table table-bordered">
     <thead style="background-color: #ddd">
       <td>NAME</td>
@@ -28,3 +58,4 @@
   </table>
 </div>
 
+</div>
