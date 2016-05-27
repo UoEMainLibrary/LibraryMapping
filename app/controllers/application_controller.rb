@@ -44,6 +44,8 @@ class ApplicationController < ActionController::Base
       if shelfmark[0] == 'F'
         offset = 1
         shelfmark = shelfmark[2..-1]
+      elsif identifier == "journal_main"
+        shelfmark = shelfmark[5..-1]
       elsif shelfmark[0] == 'P'
         offset = 2
         shelfmark = shelfmark[2..-1]
