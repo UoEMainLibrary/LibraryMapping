@@ -7,55 +7,61 @@
    </div>
   </nav>
 <div class="container text-center">
-  <h1>User feedback</h1>
-  <div class="statistic col-sm-4">
-    <div class="statistic-graphic">
-      <span class="glyphicon glyphicon-user"></span>
+  <div class="row">
+    <h5>User feedback</h5>
+    <div class="statistic col-sm-4">
+      <div class="statistic-graphic blue">
+        <span class="glyphicon glyphicon-user"></span>
+      </div>
+      <div class="statistic-text">
+        <div class="statistic-title">Total</div>
+        <div class="text-center"><%= @total %></div>
+      </div>
     </div>
-    <div class="statistic-text">
-      <div class="statistic-title">Total</div>
-      <div class="text-center"><%= @total %></div>
+    <div class="statistic col-sm-4">
+      <div class="statistic-graphic green">
+        <span class="glyphicon glyphicon-ok"></span>
+      </div>
+      <div class="statistic-text">
+        <div class="statistic-title">Found</div>
+        <div class="text-center"><%= @found %></div>
+      </div>
+    </div>
+    <div class="statistic col-sm-4">
+      <div class="statistic-graphic orange">
+        <span class="glyphicon glyphicon-remove"></span>
+      </div>
+      <div class="statistic-text">
+        <div class="statistic-title">Not Found</div>
+        <div class="text-center"><%= @total - @found %></div>
+      </div>
     </div>
   </div>
-  <div class="statistic col-sm-4">
-    <div class="statistic-graphic green">
-      <span class="glyphicon glyphicon-ok"></span>
-    </div>
-    <div class="statistic-text">
-      <div class="statistic-title">Found</div>
-      <div class="text-center"><%= @found %></div>
-    </div>
-  </div>
-  <div class="statistic col-sm-4">
-    <div class="statistic-graphic orange">
-      <span class="glyphicon glyphicon-remove"></span>
-    </div>
-    <div class="statistic-text">
-      <div class="statistic-title">Not Found</div>
-      <div class="text-center"><%= @total - @found %></div>
-    </div>
-  </div>
-  <%= link_to "Main Library", {controller: "admin", action: "map", floor: 1, library: "main"}, data: { no_turbolink: true, floor: 1 }, :class=>"links col-sm-6" %>
-  <br>
+  <div class="linkblock row">
+    <%= link_to "Main Library", {controller: "admin", action: "map", floor: 1, library: "main"}, data: { no_turbolink: true, floor: 1 }, :class=>"links col-sm-6" %>
   <%= link_to "Murray Library", {controller: "admin", action: "map", floor: 1, library: "murray"}, data: { no_turbolink: true, floor: 1 },  :class=>"links col-sm-6"%>
+  </div>
+  <div class="row">
+    <h5>Messages</h5>
+    <table class="table table-bordered">
+      <thead style="background-color: #1B325E; color:#fff;">
+        <td>NAME</td>
+        <td>EMAIL</td>
+        <td>MESSAGE</td>
+      </thead>
+      <tbody>
+      <% @feedback_messages.each do |feedback| %>
+          <tr>
+            <td><%= feedback.name %></td>
+            <td><%= feedback.email %></td>
+            <td><%= feedback.message %></td>
+          </tr>
+      <%end%>
+      </tbody>
+    </table>
+</div>
 
-  <h1>Messages</h1>
-  <table class="table table-bordered">
-    <thead style="background-color: #ddd">
-      <td>NAME</td>
-      <td>EMAIL</td>
-      <td>MESSAGE</td>
-    </thead>
-    <tbody>
-    <% @feedback_messages.each do |feedback| %>
-        <tr>
-          <td><%= feedback.name %></td>
-          <td><%= feedback.email %></td>
-          <td><%= feedback.message %></td>
-        </tr>
-    <%end%>
-    </tbody>
-  </table>
+  
 </div>
 
 </div>
