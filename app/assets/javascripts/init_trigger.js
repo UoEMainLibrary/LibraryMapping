@@ -1,3 +1,5 @@
+// Trigger page change events
+
 $(document).on("page:change", function(){
     var data = $('body').data();
     $(document).trigger(data.controller + ':loaded');

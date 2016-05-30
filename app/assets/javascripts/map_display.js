@@ -68,19 +68,3 @@ function helpInfo(time){
         $("#help-info").slideToggle();
     }, time);
 }
-
-
-// Geolocation logic
-function project(b, a) {
-    return a.multiply(a.dot(b) / (a.modulus() * a.modulus()))
-}
-
-function reflectYaxis(v) {
-    return Vector.create([v.e(1)*-1, v.e(2)]);
-}
-
-function fromLatLngToVectorPoint(lat, long) {
-    var x = (long + 180) / 360 * 256;
-    var y = ((1 - Math.log(Math.tan(lat * Math.PI / 180) + 1 / Math.cos(lat * Math.PI / 180)) / Math.PI) / 2 * Math.pow(2, 0)) * 256;
-    return Vector.create([x, y]);
-}

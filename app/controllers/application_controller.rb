@@ -41,6 +41,7 @@ class ApplicationController < ActionController::Base
 
       offset = 0
 
+      # Add offsets if Folios or Pamphlets
       if shelfmark[0] == 'F'
         offset = 1
         shelfmark = shelfmark[2..-1]

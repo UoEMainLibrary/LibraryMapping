@@ -1,3 +1,5 @@
+// Define sizes of libraries here
+
 var sizes = {
     'main': {
         width: 6000,

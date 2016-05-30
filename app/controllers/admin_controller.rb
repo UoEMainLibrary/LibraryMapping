@@ -28,6 +28,7 @@ class AdminController < ApplicationController
     head :ok
   end
 
+  #Save a single element
   def save_element
     if params[:element]
       element = JSON.parse params[:element]
@@ -48,15 +49,17 @@ class AdminController < ApplicationController
   end
 
 
-
   def map
     @floor = params[:floor]
     @library = params[:library]
 
+    # Saving the canvas
     if params[:elements] then
       @elements = JSON.parse params[:elements]
 
       newElementsCount = 0
+
+      # Loop through each element to save
       @elements.each do |element|
         unless Element.exists?(:id => element["id"])
           newElementsCount += 1

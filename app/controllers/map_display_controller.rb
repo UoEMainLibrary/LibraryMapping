@@ -9,6 +9,7 @@ class MapDisplayController < ApplicationController
       @extension = ".svg"
     end
 
+    # Read URL params
     @shelfmark = params[:shelfmark]
     identifier = params[:identifier]
     @library = params[:library]
@@ -28,6 +29,7 @@ class MapDisplayController < ApplicationController
       identifier = "lc_hub"
     end
 
+    # If URL is passing paramenters
     if @shelfmark and @library and @floor
         @is_searching = true
         

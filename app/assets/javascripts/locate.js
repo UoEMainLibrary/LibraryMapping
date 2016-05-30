@@ -575,9 +575,17 @@ $(document).on('map_display#map:loaded', function() {
 
 });
 
-/*!
- Copyright (c) 2016 Dominik Moritz
+// Geolocation logic
+function project(b, a) {
+    return a.multiply(a.dot(b) / (a.modulus() * a.modulus()))
+}
 
- This file is part of the leaflet locate control. It is licensed under the MIT license.
- You can find the project at: https://github.com/domoritz/leaflet-locatecontrol
- */
+function reflectYaxis(v) {
+    return Vector.create([v.e(1)*-1, v.e(2)]);
+}
+
+function fromLatLngToVectorPoint(lat, long) {
+    var x = (long + 180) / 360 * 256;
+    var y = ((1 - Math.log(Math.tan(lat * Math.PI / 180) + 1 / Math.cos(lat * Math.PI / 180)) / Math.PI) / 2 * Math.pow(2, 0)) * 256;
+    return Vector.create([x, y]);
+}
