@@ -69,6 +69,8 @@ function helpInfo(time){
     }, time);
 }
 
+
+// Geolocation logic
 function project(b, a) {
     return a.multiply(a.dot(b) / (a.modulus() * a.modulus()))
 }

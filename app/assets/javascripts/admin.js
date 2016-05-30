@@ -1,3 +1,14 @@
+var sizes = {
+    'main': {
+        width: 6000,
+        height: 4000
+    },
+    'murray': {
+        width: xxx,
+        height: yyy
+    }
+}
+
 $(document).on('admin#map:loaded', function(){
 
     /* ------- CANVAS PROPERTIES ------- */
@@ -200,7 +211,9 @@ $(document).on('admin#map:loaded', function(){
         }
     };
 
-    rasterizeSVG = function() {
+
+    // Generate the SVG and PNG map and publishes them
+    publishMap = function() {
         // Display a notification
         var progress = $.notify({
             message: 'Publication in progress...'

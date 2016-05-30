@@ -1,5 +1,16 @@
 $(document).on('map_display#map:loaded', function() {
 
+    // Initialise latlng coordinates of main library
+    var _br = fromLatLngToVectorPoint(55.942517,-3.188288);
+    var _bl = fromLatLngToVectorPoint(55.942326,-3.189546);
+    var _tr = fromLatLngToVectorPoint(55.942999,-3.188516);
+    var _tl = fromLatLngToVectorPoint(55.942811,-3.189775);
+
+    var br = reflectYaxis(_bl.subtract(_br));
+    var bl = reflectYaxis(_bl.subtract(_bl));
+    var tr = reflectYaxis(_bl.subtract(_tr));
+    var tl = reflectYaxis(_bl.subtract(_tl));
+
     (function (factory, window) {
         // see https://github.com/Leaflet/Leaflet/blob/master/PLUGIN-GUIDE.md#module-loaders
         // for details on how to structure a leaflet plugin.

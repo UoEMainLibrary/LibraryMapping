@@ -684,6 +684,8 @@ CLASS_HASH = {
     }
 }
 
+
+# Create Main LC conversion table
 i = 1;
 CLASS_HASH.each do |key, klas|
   klas[:subclasses].each do |letter, body|

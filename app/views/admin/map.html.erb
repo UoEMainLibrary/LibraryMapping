@@ -27,7 +27,7 @@
       <ul class="nav navbar navbar-nav">
         <li><button class="btn shortcutbtn green" onclick="saveCanvas()"><span class="glyphicon glyphicon-floppy-disk"></span></button></li>
         <li><button class="btn shortcutbtn orange" onclick="removeSelected()"><span class="glyphicon glyphicon-trash"></span></button></li>
-        <li><button class="btn shortcutbtn btn-primary" onclick="rasterizeSVG()"><span class="glyphicon glyphicon-export"></span> Publish</button></li>
+        <li><button class="btn shortcutbtn btn-primary" onclick="publishMap()"><span class="glyphicon glyphicon-export"></span> Publish</button></li>
       </ul>
 
       <label class="optionsTopBarAdmin"> Library: </label>
@@ -121,7 +121,6 @@
         </div>
         <hr style="width:100%;">
         <div style="clear:both;"></div>
-        <!-- Enable grid: <input id="gridCheckbox" type="checkbox" checked/> -->
         <div class="row text-center">
           <div class="col-sm-2"> <button class="btn btn-zoom" id="zoomOut">-</button></div>
           <div class="progress-frame col-sm-6">
@@ -132,11 +131,6 @@
 
         <hr style="width:100%;">
         <div>
-          <!-- <span>Grab</span> -->
-          <!-- </div>
-            <a href="#" class="btn edit"><i class="fa fa-edit"></i> Edit mode</a>
-            <a href="#" class="btn grab"><i class="fa fa-arrows"></i> Grab mode</a>
-          </div> -->
           <p class="commandCtr text-center">
             <button class="btn btn-save clear" onclick="saveCanvas()"><span class="glyphicon glyphicon-floppy-disk"></span> Save elements</button>
           </p>
