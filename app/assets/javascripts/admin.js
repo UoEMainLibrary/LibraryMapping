@@ -207,7 +207,7 @@ $(document).on('admin#map:loaded', function(){
         },{
             type: 'warning',
             allow_dismiss: false,
-            delay: 20000,
+            delay: 10000,
             offset: 10
         });
 

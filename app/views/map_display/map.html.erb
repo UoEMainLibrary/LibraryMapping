@@ -148,16 +148,22 @@
   map.setMaxBounds(bounds);
 
 
-  <% if @elements
-  @elements.each do |element| %>
-  L.marker(map.unproject([<%= element.left %>, <%= element.top %>], map.getMaxZoom()-1)).addTo(map).bindPopup("<b><%= @title %></b><br> <%= @author %><br> <%= @shelfmark%> ("+$('.btn-floor[data-floor="<%= @floor %>"]').text()+" floor)").openPopup();
-  <%  end
-  end %>
+  <% if @elements.length > 0
 
-  <% if @elements %>
-  if($(window).width() < 1100) {
-    helpInfo(5000);
-  }
+    @elements.each do |element| %>
+      L.marker(map.unproject([<%= element.left %>, <%= element.top %>], map.getMaxZoom()-1)).addTo(map).bindPopup("<b><%= @title %></b><br> <%= @author %><br> <%= @shelfmark%> ("+$('.btn-floor[data-floor="<%= @floor %>"]').text()+" floor)").openPopup();
+    <%  end %>
+
+    if($(window).width() < 1100) {
+      helpInfo(10000);
+    }
+  <% elsif @is_searching %>
+    $.notify({
+      message: 'We couldn\'t find this book in the maps. Find someone at the Helpdesk for help.'
+    },{
+      type: 'danger',
+      offset: 10
+    });
   <% end %>
 
   $('.btn-floor[data-floor="<%= @floor %>"]').addClass("currentButton");

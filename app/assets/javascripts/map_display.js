@@ -41,7 +41,7 @@ $(document).on('map_display#map:loaded', function(){
 
     $( "#help-info-not-yet" ).click(function() {
         $("#help-info").slideToggle();
-        helpInfo(5000);
+        helpInfo(10000);
 
         setTimeout(function () {
             if (state == "floor-question" || state == "recent-returns") {
