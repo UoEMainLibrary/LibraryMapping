@@ -122,10 +122,11 @@
   });
 
   // dimensions of the image
-  var w = 6000,
-      h = 4000,
+  var w = sizes["<%=@library%>"].width,
+      h = sizes["<%=@library%>"].height,
       url = '/assets/' + '<%= @library %>' + '_' + '<%= @floor %>' + '<%= @extension %>';
 
+  console.log(w,h);
   // calculate the edges of the image, in coordinate space
   var southWest = map.unproject([0, h], map.getMaxZoom()-1);
   var northEast = map.unproject([w, 0], map.getMaxZoom()-1);

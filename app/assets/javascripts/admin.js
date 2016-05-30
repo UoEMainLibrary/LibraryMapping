@@ -4,8 +4,8 @@ var sizes = {
         height: 4000
     },
     'murray': {
-        width: xxx,
-        height: yyy
+        width: 2500,
+        height: 2700
     }
 }
 
@@ -23,8 +23,8 @@ $(document).on('admin#map:loaded', function(){
 
     var boundingBox = new fabric.Rect({
         fill: "transparent",
-        width: 6000,
-        height: 4000,
+        width: sizes[library].width,
+        height: sizes[library].height,
         hasBorders: false,
         hasControls: false,
         lockMovementX: true,
@@ -43,21 +43,12 @@ $(document).on('admin#map:loaded', function(){
         canvas.renderAll();
     });
 
-    overlay_url = "";
-    switch(floor){
-        case 0: overlay_url = "/assets/overlay_ml_0.png"; break;
-        case 1: overlay_url = "/assets/overlay_ml_1.png"; break;
-        case 2: overlay_url = "/assets/overlay_ml_2.png"; break;
-        case 3: overlay_url = "/assets/overlay_ml_3.png"; break;
-        case 4: overlay_url = "/assets/overlay_ml_4.png"; break;
-        case 5: overlay_url = "/assets/overlay_ml_5.png"; break;
-    }
-
-    //canvas.setBackgroundImage(overlay_url, canvas.renderAll.bind(canvas), {
-    //    width: 6000,
-    //    height: 4000,
-    //    opacity: 0.3
-    //});
+    var overlay_url = "/assets/overlay_" + library + "_" + floor + ".png"
+    canvas.setBackgroundImage(overlay_url, canvas.renderAll.bind(canvas), {
+        width: sizes[library].width,
+        height: sizes[library].height,
+        opacity: 0.3
+    });
 
     wallCircles = [];
 
@@ -234,8 +225,8 @@ $(document).on('admin#map:loaded', function(){
         // Prepare canvas for publication
         canvas.setZoom(1);
 
-        canvas.setWidth(6003);
-        canvas.setHeight(4003);
+        canvas.setWidth(sizes[library].width+3);
+        canvas.setHeight(sizes[library].height+3);
 
         canvas.viewport.position.x = 0;
         canvas.viewport.position.y = 0;
@@ -270,8 +261,8 @@ $(document).on('admin#map:loaded', function(){
 
         // Restore canvas properties
         canvas.setBackgroundImage(overlay_url, canvas.renderAll.bind(canvas), {
-            width: 6000,
-            height: 4000,
+            width: sizes[library].width,
+            height: sizes[library].height,
             opacity: 0.3
         });
         restoreWallCircles();
