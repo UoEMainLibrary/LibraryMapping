@@ -20,4 +20,5 @@
 //= require bootstrap-sprockets
 //= require bootstrap-notify
 //= require leaflet
+//= require leaflet.awesome-markers
 //= require_tree .
