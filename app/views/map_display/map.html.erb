@@ -139,11 +139,16 @@
   // tell leaflet that the map is exactly as big as the image
   map.setMaxBounds(bounds);
 
-
+  L.AwesomeMarkers.Icon.prototype.options.prefix = 'fa';
   <% if @elements and @elements.length > 0
 
     @elements.each do |element| %>
-      L.marker(map.unproject([<%= element.left %>, <%= element.top %>], map.getMaxZoom()-1)).addTo(map).bindPopup("<b><%= @title %></b><br> <%= @author %><br> <%= @shelfmark%> ("+$('.btn-floor[data-floor="<%= @floor %>"]').text()+" floor)").openPopup();
+      L.marker(map.unproject([<%= element.left %>, <%= element.top %>], map.getMaxZoom()-1), {
+        icon: L.AwesomeMarkers.icon({
+          icon: 'book',
+          markerColor: 'red'
+        })
+      }).addTo(map).bindPopup("<b><%= @title %></b><br> <%= @author %><br> <%= @shelfmark%> ("+$('.btn-floor[data-floor="<%= @floor %>"]').text()+" floor)").openPopup();
     <%  end %>
 
     if($(window).width() < 1100) {
