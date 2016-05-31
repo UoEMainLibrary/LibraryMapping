@@ -733,3 +733,22 @@ CLASS_HASH.each do |key, klas|
     i = i + 1
   end
 end
+
+
+# Create Murray LC conversion table
+i = 1
+CLASS_HASH.each do |key, klas|
+  klas[:subclasses].each do |letter, body|
+    if letter[0] != 'N'
+      MurrayLcSection.create({letters: 'Folio ' + letter, token: i, name: 'Folio - ' + body[:name]})
+    end
+    i = i + 1
+  end
+end
+
+CLASS_HASH.each do |key, klas|
+  klas[:subclasses].each do |letter, body|
+    MurrayLcSection.create({letters: letter, token: i, name: body[:name]})
+    i = i + 1;
+  end
+end

@@ -27,7 +27,7 @@ var libraries_data = {
             {order: 4, name:'Third'}
         ]
     }
-}
+};
 
 $(document).on('admin#map:loaded', function(){
 
@@ -669,6 +669,9 @@ $(document).on('admin#map:loaded', function(){
                 $("#dewey-form .range_start_opt").prop('disabled', true);
                 $("#dewey-form .range_end_opt").val("Per. ");
                 $("#dewey-form .range_end_opt").prop('disabled', true);
+                break;
+            case "lc_murray":
+                $("#lc-form").show();
                 break;
         }
 
