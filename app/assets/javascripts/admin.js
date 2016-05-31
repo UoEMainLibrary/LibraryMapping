@@ -1,13 +1,31 @@
-// Define sizes of libraries here
+// Define data for each library here
 
-var sizes = {
+var libraries_data = {
     'main': {
-        width: 6000,
-        height: 4000
+        box_size: {
+            width: 6000,
+            height: 4000
+        },
+        floors: [
+            {order: 0, name:'Lower Ground'},
+            {order: 1, name:'Ground'},
+            {order: 2, name:'First'},
+            {order: 3, name:'Second'},
+            {order: 4, name:'Third'},
+            {order: 5, name:'Fourth'}
+        ]
     },
     'murray': {
-        width: 2500,
-        height: 2700
+        box_size: {
+            width: 2500,
+            height: 2700
+        },
+        floors: [
+            {order: 1, name:'Ground'},
+            {order: 2, name:'First'},
+            {order: 3, name:'Second'},
+            {order: 4, name:'Third'}
+        ]
     }
 }
 
@@ -20,13 +38,13 @@ $(document).on('admin#map:loaded', function(){
 
     $('#library_option').val(library);
     $('#library_option').on('change', function() {
-        window.location.replace(document.location.origin + "/admin/" + this.value + "/" + floor);
+        window.location.replace(document.location.origin + "/admin/" + this.value + "/1");
     });
 
     var boundingBox = new fabric.Rect({
         fill: "transparent",
-        width: sizes[library].width,
-        height: sizes[library].height,
+        width: libraries_data[library].box_size.width,
+        height: libraries_data[library].box_size.height,
         hasBorders: false,
         hasControls: false,
         lockMovementX: true,
@@ -47,8 +65,8 @@ $(document).on('admin#map:loaded', function(){
 
     var overlay_url = "/assets/overlay_" + library + "_" + floor + ".png"
     canvas.setBackgroundImage(overlay_url, canvas.renderAll.bind(canvas), {
-        width: sizes[library].width,
-        height: sizes[library].height,
+        width: libraries_data[library].box_size.width,
+        height: libraries_data[library].box_size.height,
         opacity: 0.3
     });
 
@@ -227,8 +245,8 @@ $(document).on('admin#map:loaded', function(){
         // Prepare canvas for publication
         canvas.setZoom(1);
 
-        canvas.setWidth(sizes[library].width+3);
-        canvas.setHeight(sizes[library].height+3);
+        canvas.setWidth(libraries_data[library].box_size.width+3);
+        canvas.setHeight(libraries_data[library].box_size.height+3);
 
         canvas.viewport.position.x = 0;
         canvas.viewport.position.y = 0;
@@ -263,8 +281,8 @@ $(document).on('admin#map:loaded', function(){
 
         // Restore canvas properties
         canvas.setBackgroundImage(overlay_url, canvas.renderAll.bind(canvas), {
-            width: sizes[library].width,
-            height: sizes[library].height,
+            width: libraries_data[library].box_size.width,
+            height: libraries_data[library].box_size.height,
             opacity: 0.3
         });
         restoreWallCircles();

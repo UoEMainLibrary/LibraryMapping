@@ -47,12 +47,8 @@
     </select>
 
     <label> Floors: </label>
-    <%= link_to "Lower Ground", {controller: "map_display", action: "map", floor: 0, library: @library}, class: "btn btn-default btn-sm btn-floor", data: { no_turbolink: true, floor: 0 } %>
-    <%= link_to "Ground", {controller: "map_display", action: "map", floor: 1, library: @library}, class: "btn btn-default btn-sm btn-floor", data: { no_turbolink: true, floor: 1 } %>
-    <%= link_to "First", {controller: "map_display", action: "map", floor: 2, library: @library}, class: "btn btn-default btn-sm btn-floor", data: { no_turbolink: true, floor: 2 } %>
-    <%= link_to "Second", {controller: "map_display", action: "map", floor: 3, library: @library}, class: "btn btn-default btn-sm btn-floor", data: { no_turbolink: true, floor: 3  } %>
-    <%= link_to "Third", {controller: "map_display", action: "map", floor: 4, library: @library}, class: "btn btn-default btn-sm btn-floor", data: { no_turbolink: true, floor: 4  } %>
-    <%= link_to "Fourth", {controller: "map_display", action: "map", floor: 5, library: @library}, class: "btn btn-default btn-sm btn-floor", data: { no_turbolink: true, floor: 5  } %>
+    <span id="floor_buttons">
+    </span>
 
     <% if @title %>
       <label> Title: </label>
@@ -124,8 +120,8 @@
   });
 
   // dimensions of the image
-  var w = sizes["<%=@library%>"].width,
-      h = sizes["<%=@library%>"].height,
+  var w = libraries_data["<%=@library%>"].box_size.width,
+      h = libraries_data["<%=@library%>"].box_size.height,
       url = '/assets/' + '<%= @library %>' + '_' + '<%= @floor %>' + '<%= @extension %>';
 
   console.log(w,h);
@@ -138,6 +134,12 @@
 
   // tell leaflet that the map is exactly as big as the image
   map.setMaxBounds(bounds);
+
+
+  // Load appropriate floors buttons into container
+  libraries_data["<%=@library%>"].floors.forEach(function(floor) {
+    $("#floor_buttons").append("<a class='btn btn-default btn-sm btn-floor' data-no-turbolink='true' data-floor='"+floor.order+"' href='/?floor="+floor.order+"&library=<%=@library%>'>"+floor.name+"</a>");
+  });
 
 
   <% if @elements and @elements.length > 0
@@ -161,7 +163,7 @@
   $('.btn-floor[data-floor="<%= @floor %>"]').addClass("currentButton");
   $('#library_option').val("<%= @library %>");
   $('#library_option').on('change', function() {
-    window.location.replace(document.location.origin + "?library=" + this.value);
+    window.location.replace(document.location.origin + "?library=" + this.value + "&floor=1");
   });
 
 </script>

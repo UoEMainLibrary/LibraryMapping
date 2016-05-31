@@ -39,12 +39,8 @@
       </select>
 
       <label class="optionsTopBarAdmin"> Floors: </label>
-      <%= link_to "Lower Ground", {controller: "admin", action: "map", floor: 0, library: @library}, class: "btn btn-default btn-floor", data: { no_turbolink: true, floor: 0 } %>
-      <%= link_to "Ground", {controller: "admin", action: "map", floor: 1, library: @library}, class: "btn btn-default btn-floor", data: { no_turbolink: true, floor: 1 } %>
-      <%= link_to "First", {controller: "admin", action: "map", floor: 2, library: @library}, class: "btn btn-default btn-floor", data: { no_turbolink: true, floor: 2 } %>
-      <%= link_to "Second", {controller: "admin", action: "map", floor: 3, library: @library}, class: "btn btn-default btn-floor", data: { no_turbolink: true, floor: 3 } %>
-      <%= link_to "Third", {controller: "admin", action: "map", floor: 4, library: @library}, class: "btn btn-default btn-floor", data: { no_turbolink: true, floor: 4 } %>
-      <%= link_to "Fourth", {controller: "admin", action: "map", floor: 5, library: @library}, class: "btn btn-default btn-floor", data: { no_turbolink: true, floor: 5 } %>
+      <span id="floor_buttons">
+      </span>
     </div>
 
     <div id="loading-container">
@@ -275,6 +271,14 @@
 
   var canvas = new fabric.CanvasWithViewport('canvas');
 
+  // Load appropriate floors buttons into container
+  libraries_data["<%=@library%>"].floors.forEach(function(floor) {
+    console.log(floor);
+    $("#floor_buttons").append("<a class='btn btn-default btn-floor' data-no-turbolink='true' data-floor='"+floor.order+"' href='/admin/<%=@library%>/"+floor.order+"'>"+floor.name+"</a>");
+  });
+
+
+  // Recursively load elements into canvas
   $(document).one("canvas:preloaded", function() {
     <%
     elements = Element.where("floor = :floor AND library = :library", {floor: @floor, library: @library}).order("identifier, range_end")
