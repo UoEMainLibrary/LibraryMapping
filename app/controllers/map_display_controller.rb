@@ -16,6 +16,7 @@ class MapDisplayController < ApplicationController
     @floor = params[:floor]
     @title = params[:title]
     @author = params[:author]
+    @element_name = params[:element_name]
 
     unless @floor
       @floor = 1
@@ -28,6 +29,7 @@ class MapDisplayController < ApplicationController
     unless identifier
       identifier = "lc_hub"
     end
+
 
     # If URL is passing paramenters
     if @shelfmark and @library and @floor
@@ -52,6 +54,13 @@ class MapDisplayController < ApplicationController
           @elements = Element.where("range_end >= :shelfmark AND range_start <= :shelfmark AND library = :library AND floor = :floor AND identifier = :identifier", {shelfmark: shelfmarkNumber, library: @library, floor: @floor, identifier: identifier})
         end
     end
+
+     #search for the icons
+    if @library and @floor and @element_name
+     @searching_element = true
+      @elementnames = Element.joins(:element_type).where("elements.library = :library AND elements.floor = :floor AND element_types.name like :name", {library: @library, floor: @floor, name: "%#{params[:element_name]}%"})
+    end
+
   end
 
   def save_statistics

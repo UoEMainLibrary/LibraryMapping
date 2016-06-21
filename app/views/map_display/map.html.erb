@@ -50,6 +50,12 @@
     <span id="floor_buttons">
     </span>
 
+    <label> Elements: </label>
+    <a class="btn btn-default btn-sm btn-floor" data-no-turbolink="true" href="/?floor=<%=@floor%>&library=<%=@library%>&element_name=Print">Printer</a>
+    <a class="btn btn-default btn-sm btn-floor" data-no-turbolink="true" href="/?floor=<%=@floor%>&library=<%=@library%>&element_name=toilet">Toilet</a>
+    <a class="btn btn-default btn-sm btn-floor" data-no-turbolink="true" href="/?floor=<%=@floor%>&library=<%=@library%>&element_name=pod">Group study</a>
+</span>
+
     <% if @title %>
       <label> Title: </label>
       <span><%= @title %></span>
@@ -164,6 +170,26 @@
       offset: 10
     });
   <% end %>
+
+  //check the elements
+  <% if @elementnames and @elementnames.length > 0
+    @elementnames.each do |elementname| %>
+    L.marker(map.unproject([<%= elementname.left %>, <%= elementname.top%>], map.getMaxZoom()-1), {
+        icon: L.AwesomeMarkers.icon({
+          icon: 'location-arrow',
+          markerColor: 'blue'
+        })
+      }).addTo(map)
+    <%  end %>
+  <% elsif @searching_element %>
+    $.notify({
+      message: 'We couldn\'t find this Elements in the maps. Find someone at the Helpdesk for help.'
+    },{
+      type: 'danger',
+      offset: 10
+    });
+  <% end %>
+
 
   $('.btn-floor[data-floor="<%= @floor %>"]').addClass("currentButton");
   $('#library_option').val("<%= @library %>");
