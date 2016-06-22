@@ -1,15 +1,11 @@
+<!-- Admin panel: UI for map building-->
+
 <body data-controller="<%= controller.controller_name %>" data-action="<%= controller.action_name %>" data-floor="<%= @floor %>" data-library="<%= @library %>">
 
 <div id="bd-wrapper">
   <nav class="bg-blue">
     <div class="container-fluid">
       <div class="navbar-header">
-        <button type="button" class="navbar-toggle" data-toggle="collapse" data-target="#myNavbar">
-          <span class="icon-bar"></span>
-          <span class="icon-bar"></span>
-          <span class="icon-bar"></span>
-        </button>
-
         <img class="logo" src="/assets/logo-01.png"><h2>LibraryMapping&middot; Admin panel</h2>
       </div>
     </div>
@@ -27,7 +23,7 @@
       <ul class="nav navbar navbar-nav">
         <li><button class="btn shortcutbtn green" onclick="saveCanvas()"><span class="glyphicon glyphicon-floppy-disk"></span></button></li>
         <li><button class="btn shortcutbtn orange" onclick="removeSelected()"><span class="glyphicon glyphicon-trash"></span></button></li>
-        <li><button class="btn shortcutbtn btn-primary" onclick="rasterizeSVG()"><span class="glyphicon glyphicon-export"></span> Publish</button></li>
+        <li><button class="btn shortcutbtn btn-primary" onclick="publishMap()"><span class="glyphicon glyphicon-export"></span> Publish</button></li>
       </ul>
 
       <label class="optionsTopBarAdmin"> Library: </label>
@@ -37,12 +33,8 @@
       </select>
 
       <label class="optionsTopBarAdmin"> Floors: </label>
-      <%= link_to "Lower Ground", {controller: "admin", action: "map", floor: 0, library: @library}, class: "btn btn-default btn-floor", data: { no_turbolink: true, floor: 0 } %>
-      <%= link_to "Ground", {controller: "admin", action: "map", floor: 1, library: @library}, class: "btn btn-default btn-floor", data: { no_turbolink: true, floor: 1 } %>
-      <%= link_to "First", {controller: "admin", action: "map", floor: 2, library: @library}, class: "btn btn-default btn-floor", data: { no_turbolink: true, floor: 2 } %>
-      <%= link_to "Second", {controller: "admin", action: "map", floor: 3, library: @library}, class: "btn btn-default btn-floor", data: { no_turbolink: true, floor: 3 } %>
-      <%= link_to "Third", {controller: "admin", action: "map", floor: 4, library: @library}, class: "btn btn-default btn-floor", data: { no_turbolink: true, floor: 4 } %>
-      <%= link_to "Fourth", {controller: "admin", action: "map", floor: 5, library: @library}, class: "btn btn-default btn-floor", data: { no_turbolink: true, floor: 5 } %>
+      <span id="floor_buttons">
+      </span>
     </div>
 
     <div id="loading-container">
@@ -121,38 +113,29 @@
         </div>
         <hr style="width:100%;">
         <div style="clear:both;"></div>
-        <!-- Enable grid: <input id="gridCheckbox" type="checkbox" checked/> -->
         <div class="row text-center">
-          <div class="col-sm-2"><button class="btn btn-zoom" id="zoomIn">+</button></div>
+          <div class="col-sm-2"> <button class="btn btn-zoom" id="zoomOut">-</button></div>
           <div class="progress-frame col-sm-6">
             <input type="range" value="0.3" step="0.05" min="0.1" max="1" id="zoomSlider"/>
           </div>
-          <div class="col-sm-2"> <button class="btn btn-zoom" id="zoomOut">-</button></div>
+          <div class="col-sm-2"><button class="btn btn-zoom" id="zoomIn">+</button></div>
         </div>
 
         <hr style="width:100%;">
         <div>
-          <!-- <span>Grab</span> -->
-          <!-- </div>
-            <a href="#" class="btn edit"><i class="fa fa-edit"></i> Edit mode</a>
-            <a href="#" class="btn grab"><i class="fa fa-arrows"></i> Grab mode</a>
-          </div> -->
           <p class="commandCtr text-center">
             <button class="btn btn-save clear" onclick="saveCanvas()"><span class="glyphicon glyphicon-floppy-disk"></span> Save elements</button>
           </p>
         </div>
 
-        <div class="commandCtr text-center">
+        <div >
 
-          <div style="margin-top:10px;">
-            <p>
+            <p class="commandCtr text-center">
               <button class="btn btn-object-action" id="remove-selected"
                       onclick="removeSelected()">
                 <span class="glyphicon glyphicon-trash"></span> Remove selected
               </button>
             </p>
-
-          </div>
         </div>
 
         <hr style="width:100%;">
@@ -160,62 +143,74 @@
         <div id="shelfData">
           <label for="identifier"> Identifier: </label>
           <br>
-          <select id="identifier" name="identifier">
+          <select id="identifier" class="form-control" name="identifier">
             <option value="lc_main" selected="selected">Main Library - Main Collection (LC)</option>
             <option value="lc_hub">Main Library - Hub (LC)</option>
-            <option value="dewey_main">Main Library - Main Dewey</option>
+            <option value="dewey_main">Main Library - Old Collection Dewey</option>
+            <option value="cwss_main">Main Library - C.A.S. / Watt / Smith / Serj. </option>
+            <option value="eas_main">Main Library - East Asian Studies (EAS) </option>
+            <option value="journal_main">Main Library - Journals</option>
+            <option value="lc_murray">Murray Library - Main Collection (LC)</option>
           </select>
           <br>
 
           <div class="range-form" id ="lc-form" style="display:none">
+            <div class="form-group">
             <label> Range Start: </label><br>
-
-            <select class="range_start_opt">
+            <div class="col-sm-4 marginSearch">
+            <select class="range_start_opt form-control">
               <option value=""></option>
               <option value="Folio ">Folio</option>
               <option value="Pamph. ">Pamph.</option>
               <option value="Ref. ">Ref.</option>
             </select>
-            <input type="text" class="range_start_letters" name="rangeDown" placeholder="e.g. QA">
-            <input type="text" class="range_start_digits" name="rangeDown" placeholder="e.g. 273">
+            </div>
+            <div class="col-sm-4"><input type="text" class="range_start_letters form-control" name="rangeDown" placeholder="e.g. QA"></div>
+            
+            <div class="col-sm-4"><input type="text" class="range_start_digits form-control" name="rangeDown" placeholder="e.g. 273"></div>
+            </div>
 
             <br>
-
+            <div class="form-group">
             <label> Range End: </label><br>
-
-            <select class="range_end_opt">
+            <div class="col-sm-4 marginSearch">
+            <select class="range_end_opt form-control">
               <option value=""></option>
               <option value="Folio ">Folio</option>
               <option value="Pamph. ">Pamph.</option>
               <option value="Ref. ">Ref.</option>
             </select>
-            <input type="text" class="range_end_letters" name="rangeUp" placeholder="e.g. QA">
-            <input type="text" class="range_end_digits" name="rangeUp" placeholder="e.g. 273">
-
+            </div>
+            <div class="col-sm-4"><input type="text" class="range_end_letters form-control" name="rangeUp" placeholder="e.g. QA"></div>
+            <div class="col-sm-4"><input type="text" class="range_end_digits form-control" name="rangeUp" placeholder="e.g. 273"></div>
+            </div>
             <br><br>
           </div>
 
           <div class="range-form" id="dewey-form" style="display:none">
+            <div class="form-group">
             <label> Range Start: </label><br>
-
-            <select class="range_start_opt">
+            <div class="col-sm-4 marginSearch">
+              <select class="range_start_opt form-control">
               <option value=""></option>
               <option value="P ">P</option>
               <option value="F ">F</option>
             </select>
-            <input type="text" class="range_start_digits" name="rangeDown" placeholder="e.g. .273">
-
+            </div>
+            <div class="col-sm-6"><input type="text" class="range_start_digits form-control" name="rangeDown" placeholder="e.g. .273"></div>
+            </div>
             <br>
-
+            <div class="form-group">
             <label> Range End: </label><br>
-
-            <select class="range_end_opt">
+            <div class="col-sm-4 marginSearch">
+              <select class="range_end_opt form-control">
               <option value=""></option>
               <option value="P ">P</option>
               <option value="F ">F</option>
             </select>
-            <input type="text" class="range_end_digits" name="rangeUp" placeholder="e.g. .273">
-
+            </div>
+            <div class="col-sm-6"><input type="text" class="range_end_digits form-control" name="rangeUp" placeholder="e.g. .273"></div>
+            </div>
             <br><br>
           </div>
 
@@ -227,7 +222,7 @@
         <table id="shelves-table">
           <tbody>
           <tr>
-            <th>Shelf id</th><th>Start range</th><th>End range</th><th>Edit</th><th>Select</th>
+            <th>Shelf id</th><th>Start range</th><th>End range</th><th>Identifier</th><th>Edit</th><th>Select</th>
           </tr>
 
           </tbody>
@@ -269,12 +264,19 @@
     $("#commands").css("right", 0);
   });
 
-
   var canvas = new fabric.CanvasWithViewport('canvas');
 
+  // Load appropriate floors buttons into container
+  libraries_data["<%=@library%>"].floors.forEach(function(floor) {
+    console.log(floor);
+    $("#floor_buttons").append("<a class='btn btn-default btn-floor' data-no-turbolink='true' data-floor='"+floor.order+"' href='/admin/<%=@library%>/"+floor.order+"'>"+floor.name+"</a>");
+  });
+
+
+  // Recursively load elements into canvas
   $(document).one("canvas:preloaded", function() {
     <%
-    elements = Element.where("floor = :floor AND library = :library", {floor: @floor, library: @library}).order("range_end")
+    elements = Element.where("floor = :floor AND library = :library", {floor: @floor, library: @library}).order("identifier, range_end")
     elements.each_with_index do |element, index| %>
 
     loadElementInCanvas(<%= element.to_json.html_safe %>, "<%= element.element_type.name %>", "<%= asset_path(element.element_type.svg_path) %>", <%= elements.size %>)
@@ -288,5 +290,5 @@
     console.log("renderOnAddRemove");
     <% end %>
 
-  })
+  });
 </script>

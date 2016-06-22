@@ -677,11 +677,15 @@ CLASS_HASH = {
         :name => 'Bibliography, Library Science',
         :subclasses => {
             'Z'   => { :name => 'Books (General). Writing. Paleography. Book industries and trade. Libraries. Bibliography' },
-            'ZA'  => { :name => 'Information resources (General)' }
+            'ZA'  => { :name => 'Information resources (General)' },
+            'ZW'   => { :name => 'NULL' },
+            'ZWZ'  => { :name => 'NULL' }
         }
     }
 }
 
+
+# Create Main LC conversion table
 i = 1;
 CLASS_HASH.each do |key, klas|
   klas[:subclasses].each do |letter, body|
@@ -727,5 +731,24 @@ CLASS_HASH.each do |key, klas|
     end
     HubLcSection.create({letters: letter, token: i, name: body[:name]})
     i = i + 1
+  end
+end
+
+
+# Create Murray LC conversion table
+i = 1
+CLASS_HASH.each do |key, klas|
+  klas[:subclasses].each do |letter, body|
+    if letter[0] != 'N'
+      MurrayLcSection.create({letters: 'Folio ' + letter, token: i, name: 'Folio - ' + body[:name]})
+    end
+    i = i + 1
+  end
+end
+
+CLASS_HASH.each do |key, klas|
+  klas[:subclasses].each do |letter, body|
+    MurrayLcSection.create({letters: letter, token: i, name: body[:name]})
+    i = i + 1;
   end
 end

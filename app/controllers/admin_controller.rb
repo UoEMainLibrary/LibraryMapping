@@ -1,6 +1,9 @@
 class AdminController < ApplicationController
   def index
-    redirect_to action: "map", floor: 1, library: "main"
+    #redirect_to action: "map", floor: 1, library: "main"
+    @total = UsageStatistic.count
+    @found = UsageStatistic.where(found: true).count
+    @feedback_messages = FeedbackMessage.all
   end
 
   def save_svg
@@ -25,6 +28,7 @@ class AdminController < ApplicationController
     head :ok
   end
 
+  #Save a single element
   def save_element
     if params[:element]
       element = JSON.parse params[:element]
@@ -45,15 +49,17 @@ class AdminController < ApplicationController
   end
 
 
-
   def map
     @floor = params[:floor]
     @library = params[:library]
 
+    # Saving the canvas
     if params[:elements] then
       @elements = JSON.parse params[:elements]
 
       newElementsCount = 0
+
+      # Loop through each element to save
       @elements.each do |element|
         unless Element.exists?(:id => element["id"])
           newElementsCount += 1
@@ -128,6 +134,7 @@ class AdminController < ApplicationController
       end
 
       if shelfmark_end == "" and shelfmark_start == ""
+        canvasElement.identifier = element["identifier"]
         if canvasElement.save
           return true
         else

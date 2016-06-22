@@ -308,13 +308,13 @@ input[type=radio] {
     float: left;
     position: relative;
 
-    width: 35px;
-    height: 15px;
+    width: 50px;
+    height: 22px;
 
     border: 1px solid #aaa;
     background-color: #1ABB9C;
 
-    margin: 1px 10px;
+    margin: 1px 18px;
 
     -webkit-border-radius: 10px;
     -moz-border-radius: 10px;
@@ -326,8 +326,8 @@ input[type=radio] {
 .switch-button-button {
     position: absolute;
 
-    width: 16px; 
-    height: 15px; 
+    width: 23px; 
+    height: 22px; 
     left: -1px;
 
     top : -1px;
@@ -340,7 +340,7 @@ input[type=radio] {
     border-radius: 20px;
 }
 .checked{
-  left : 20px;
+  left : 30px;
 }
 .commandCtr{
   float: left;

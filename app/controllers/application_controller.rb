@@ -3,9 +3,14 @@ class ApplicationController < ActionController::Base
   # For APIs, you may want to use :null_session instead.
   protect_from_forgery with: :exception
 
+
+
+  # Maps shelfmarks in different classification to LibraryMapping's ordering system
   def shelfmarkToOrder(shelfmark, identifier)
 
-    if identifier == "lc_main" || identifier == "lc_hub"
+    # Library of Congress classifications
+    # Add other LoC collections here
+    if identifier == "lc_main" || identifier == "lc_hub" || identifier = "lc_murray"
       letters = shelfmark.match(/^((Folio )|(Pamph. )|(Ref. ))?[A-Z]+/)[0]
 
      if letters[0..4] == "Ref. "
@@ -16,6 +21,8 @@ class ApplicationController < ActionController::Base
        subclass = LcSection.where(:letters => letters).first
      elsif identifier == "lc_hub"
        subclass = HubLcSection.where(:letters => letters).first
+     elsif identifier == "lc_murray"
+       subclass = MurrayLcSection.where(:letters => letters).first
      end
 
 
@@ -30,13 +37,18 @@ class ApplicationController < ActionController::Base
       res = Float(token.to_s + '.' + digits)
       return res
 
-    elsif identifier == "dewey_main"
+    # Dewey Decimal classifications
+    # Add other Dewey Decimal collections here
+    elsif identifier == "dewey_main" || identifier == "journal_main"
 
       offset = 0
 
+      # Add offsets if Folios or Pamphlets
       if shelfmark[0] == 'F'
         offset = 1
         shelfmark = shelfmark[2..-1]
+      elsif identifier == "journal_main"
+        shelfmark = shelfmark[5..-1]
       elsif shelfmark[0] == 'P'
         offset = 2
         shelfmark = shelfmark[2..-1]

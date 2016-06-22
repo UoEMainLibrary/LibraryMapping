@@ -9,10 +9,13 @@ Rails.application.routes.draw do
   post '/admin/:library/:floor' => 'admin#map'
   delete '/admin/:library/:floor' => 'admin#destroy'
   post '/admin/save_element/:library/:floor' => 'admin#save_element'
+  post '/save_statistics' => 'map_display#save_statistics'
+  post '/feedback' => 'map_display#create_feedback'
 
   get '/admin/:library/:floor', to: 'admin#map'
   get '/', to: 'map_display#map'
   get '/admin', to: 'admin#index'
+  get '/feedback', to: 'map_display#feedback'
 
   # Example of regular route:
   #   get 'products/:id' => 'catalog#view'

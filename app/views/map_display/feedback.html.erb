@@ -1,0 +1,63 @@
+<!-- User feedback interface -->
+
+<div id="main-container">
+  <!--nav-->
+ <nav class="bg-blue">
+    <div class="container-fluid">
+        <div class="navbar-header">
+          <img class="logo" src="/assets/logo-01.png"><h2>Library Maps | Feedback</h2>
+        </div>
+   </div>
+  </nav>
+<!--form-->
+  <div class="feedback-container text-center">
+     <img class="img-responsive pic" src="/assets/feedbackimg.png">
+  <%= form_for @message, url: '/feedback', html: {class: "form-horizontal text-center"} do |f| %>
+      <% if @success %>
+          Thank you for the valuable input!
+      <% end %>
+      <div class="form-group">
+        <%= f.label :name, :class=>'control-label col-sm-2' %>
+        <div class="col-sm-8">
+          <%= f.text_field :name, :class=> 'form-control' %>
+        </div>
+      </div>
+
+      <div class="form-group">
+        <%= f.label :email, :class=>'control-label col-sm-2' %>
+        <div class="col-sm-8">
+        <%= f.email_field :email, :class=> 'form-control'  %>
+        </div>
+      </div>
+
+      <div class="form-group">
+        <%= f.label :message, :class=>'control-label col-sm-2' %>
+        <div class="col-sm-8">
+        <%= f.text_area :message, :class=> 'form-control' %>
+        </div>
+      </div>
+
+      <div class="form-group">
+        <div class="col-sm-offset-2 col-sm-4">
+          <%= f.submit 'Send', class: 'btn btn-save marginTop' %>
+        </div>
+        <div class="col-sm-4">
+          <a href="/" data-no-turbolink="true"><button type="button" class="btn btn-object-action marginTop">Cancel</button></a>
+        </div>
+      </div>
+    <% end %>
+  </div>
+  <!--Footer-->
+  <div class="footerHolder">
+    <p>
+        Unless explicitly stated otherwise, all material is copyright © The University of Edinburgh
+
+        <script type="text/javascript">
+        var currentTime = new Date()
+        var year = currentTime.getFullYear()
+        document.write(+ year)
+        </script>
+                
+      </p>
+  </div>
+</div>

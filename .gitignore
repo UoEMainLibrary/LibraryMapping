@@ -59,3 +59,4 @@ config/database.yml
 public/assets/*
 !public/assets/logo-*
 !public/assets/overlay_*
+!public/assets/feedbackimg.png

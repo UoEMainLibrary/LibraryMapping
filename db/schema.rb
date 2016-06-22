@@ -11,7 +11,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20160503111110) do
+ActiveRecord::Schema.define(version: 20160531144833) do
 
   create_table "element_types", force: :cascade do |t|
     t.string   "name",       limit: 255, null: false
@@ -50,6 +50,14 @@ ActiveRecord::Schema.define(version: 20160503111110) do
 
   add_index "elements", ["element_type_id"], name: "index_elements_on_element_type_id", using: :btree
 
+  create_table "feedback_messages", force: :cascade do |t|
+    t.string   "name",       limit: 255
+    t.string   "email",      limit: 255
+    t.string   "message",    limit: 255
+    t.datetime "created_at",             null: false
+    t.datetime "updated_at",             null: false
+  end
+
   create_table "hub_lc_sections", force: :cascade do |t|
     t.string  "letters", limit: 255, null: false
     t.integer "token",   limit: 4,   null: false
@@ -67,5 +75,20 @@ ActiveRecord::Schema.define(version: 20160503111110) do
 
   add_index "lc_sections", ["letters"], name: "index_lc_sections_on_letters", unique: true, using: :btree
   add_index "lc_sections", ["token"], name: "index_lc_sections_on_token", unique: true, using: :btree
+
+  create_table "murray_lc_sections", force: :cascade do |t|
+    t.string  "letters", limit: 255, null: false
+    t.integer "token",   limit: 4,   null: false
+    t.string  "name",    limit: 255, null: false
+  end
+
+  add_index "murray_lc_sections", ["letters"], name: "index_murray_lc_sections_on_letters", unique: true, using: :btree
+  add_index "murray_lc_sections", ["token"], name: "index_murray_lc_sections_on_token", unique: true, using: :btree
+
+  create_table "usage_statistics", force: :cascade do |t|
+    t.boolean  "found",      null: false
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
+  end
 
 end
