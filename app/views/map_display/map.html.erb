@@ -52,8 +52,8 @@
 
     <label> Elements: </label>
     <a class="btn btn-default btn-sm btn-floor" data-no-turbolink="true" href="/?floor=<%=@floor%>&library=<%=@library%>&element_name=Print">Printer</a>
-    <a class="btn btn-default btn-sm btn-floor" data-no-turbolink="true" href="/?floor=<%=@floor%>&library=<%=@library%>&element_name=toilet">Toilet</a>
-    <a class="btn btn-default btn-sm btn-floor" data-no-turbolink="true" href="/?floor=<%=@floor%>&library=<%=@library%>&element_name=pod">Group study</a>
+    <a class="btn btn-default btn-sm btn-floor" data-no-turbolink="true" href="/?floor=<%=@floor%>&library=<%=@library%>&element_name=female">Toilet</a>
+    <a class="btn btn-default btn-sm btn-floor" data-no-turbolink="true" href="/?floor=<%=@floor%>&library=<%=@library%>&element_name=groupstudy">Group study</a>
 </span>
 
     <% if @title %>
@@ -183,7 +183,7 @@
     <%  end %>
   <% elsif @searching_element %>
     $.notify({
-      message: 'We couldn\'t find this Elements in the maps. Find someone at the Helpdesk for help.'
+      message: 'We couldn\'t find this Elements on this floor. Find someone at the Helpdesk for help.'
     },{
       type: 'danger',
       offset: 10
