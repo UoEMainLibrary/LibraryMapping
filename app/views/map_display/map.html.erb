@@ -20,7 +20,7 @@
             <span class="icon-bar"></span>
           </button>
 
-          <img class="logo" src="/assets/logo-01.png"><h2>Library Maps</h2>
+          <img class="logo" src="/assets/logo-01.png"><h2 id="floor_info"></h2>
         </div>
         <div class="collapse navbar-collapse" id="myNavbar">
           <ul class="nav navbar-nav navbar-right ">
@@ -40,22 +40,28 @@
   <link href='http://fonts.googleapis.com/css?family=Plaster' rel='stylesheet' type='text/css'>
   <link href='http://fonts.googleapis.com/css?family=Engagement' rel='stylesheet' type='text/css'>
   <div class="navbar-collapse optionsTopBar" <% if @elements %> style="display: none;" <% end %>>
-    <label> Library: </label>
-    <select id="library_option">
-      <option value="main">Main Library</option>
-      <option value="murray">Murray Library</option>
-    </select>
+    <div class="col-sm-3">
+      <label> Library: </label>
+      <select id="library_option">
+        <option value="main">Main Library</option>
+        <option value="murray">Murray Library</option>
+      </select>
+    </div>
+    
+    <div class="col-sm-3">
+        <label> Floors: </label>
+        <select id="floor_buttons">
+        </select>
+        <!-- <span id="floor_buttons"> -->
+        <!-- </span> -->
+    </div>
 
-    <label> Floors: </label>
-    <span id="floor_buttons">
-    </span>
-
+<div class="col-sm-6">
     <label> Elements: </label>
     <a class="btn btn-default btn-sm btn-floor" data-no-turbolink="true" href="/?floor=<%=@floor%>&library=<%=@library%>&element_name=Print">Printer</a>
     <a class="btn btn-default btn-sm btn-floor" data-no-turbolink="true" href="/?floor=<%=@floor%>&library=<%=@library%>&element_name=female">Toilet</a>
     <a class="btn btn-default btn-sm btn-floor" data-no-turbolink="true" href="/?floor=<%=@floor%>&library=<%=@library%>&element_name=groupstudy">Group study</a>
-</span>
-
+</div>
     <% if @title %>
       <label> Title: </label>
       <span><%= @title %></span>
@@ -144,7 +150,8 @@
 
   // Load appropriate floors buttons into container
   libraries_data["<%=@library%>"].floors.forEach(function(floor) {
-    $("#floor_buttons").append("<a class='btn btn-default btn-sm btn-floor' data-no-turbolink='true' data-floor='"+floor.order+"' href='/?floor="+floor.order+"&library=<%=@library%>'>"+floor.name+"</a>");
+    // $("#floor_buttons").append("<a class='btn btn-default btn-sm btn-floor' data-no-turbolink='true' data-floor='"+floor.order+"' href='/?floor="+floor.order+"&library=<%=@library%>'>"+floor.name+"</a>");
+    $("#floor_buttons").append("<option value='"+floor.order+"'>"+floor.name+"</option>");
   });
 
   L.AwesomeMarkers.Icon.prototype.options.prefix = 'fa';
@@ -192,9 +199,14 @@
 
 
   $('.btn-floor[data-floor="<%= @floor %>"]').addClass("currentButton");
+  $('#floor_info').html(libraries_data["<%=@library%>"].floors[<%= @floor%>].name + " Floor");
   $('#library_option').val("<%= @library %>");
   $('#library_option').on('change', function() {
     window.location.replace(document.location.origin + "?library=" + this.value + "&floor=1");
+  });
+  $('#floor_buttons').val("<%= @floor%>")
+  $('#floor_buttons').on('change', function() {
+    window.location.replace(document.location.origin + "?floor=" + this.value + "&library=<%=@library%>");
   });
 
 </script>
