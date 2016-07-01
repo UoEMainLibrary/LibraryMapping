@@ -16,7 +16,6 @@ body, html {
   height: calc(100% - 120px)!important;
 }
 
-
 #main-container{
 	height: 100%;
 }
@@ -34,12 +33,14 @@ body, html {
     margin: 5px 0px;
   }
 }
+
 #i-label{
 	margin: 0;
 	font-size: 1em;
 	color: #1B325E;
 	float: left;
 }
+
 #tip-close{
 	margin: 0;
 	font-size: 1em;
@@ -47,10 +48,12 @@ body, html {
 	float: right;
 	cursor: pointer;
 }
+
 .tip{
 	background-color: #ECEAD0;
 	width: 100%;
 }
+
 .tip-btn{
 	background-color: #ECEAD0;
     position: fixed;
@@ -81,14 +84,16 @@ body, html {
   left: 40%;
   z-index: 100;
 }
+
 .compass-down{
   position: absolute;
   bottom: 150px;
   left: 40%;
   z-index: 100;
 }
+
 .compass{
-      display: inline-block;
+    display: inline-block;
     margin-bottom: 0;
     font-weight: normal;
     text-align: center;
@@ -198,7 +203,6 @@ body, html {
     padding: 12px;
     font-size: 1.3em;
   }
-
 }
 
 #qr-container td.black { border-color: #000; }
