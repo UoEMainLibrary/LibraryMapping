@@ -22,7 +22,6 @@
           <img class="logo" src="/assets/logo-01.png"><h2 id="floor_info"></h2>
         </div>
         <div class="collapse navbar-collapse" id="myNavbar">
-        	<div class="hidden-xs visible-sm visible-md visible-lg ">
           		<ul class="nav navbar-nav navbar-right ">
             		<li>
               		<a class="white-font" id="compass_btn" href="javascript:;" alt="Show Direction" title="Show Direction"><i class="fa fa-compass" aria-hidden="true"></i> Direction</a>
@@ -33,19 +32,6 @@
             		<% end %>
             		<li><%= link_to '<span class="glyphicon glyphicon-send"></span>Feedback'.html_safe, {controller: "map_display", action: "feedback"}, class: "white-font", data: { no_turbolink: true } %></li>
           		</ul>
-          	</div>
-          	<div class="visible-xs hidden-sm hidden-md hidden-lg">
-          		<ul class="nav navbar-nav navbar-right ">
-            		<li>
-              		<a class="white-font" id="compass_btn" href="javascript:;" alt="Show Direction" title="Show Direction"><i class="fa fa-compass" aria-hidden="true"></i></a>
-            		</li>
-            		<li><a class="white-font" id="libraries-and-floors" href="javascript:;"  alt="Show Direction" title="Show Direction"><span class="glyphicon glyphicon-menu-hamburger"></span></a></li>
-            		<% if @qr %>
-              			<li><a class="white-font" id="qr-code" href="javascript:;" alt="Show Direction" title="Show Direction"><span class="glyphicon glyphicon glyphicon-phone"></span></a></li>
-            		<% end %>
-            		<li><%= link_to '<span class="glyphicon glyphicon-send"></span>Feedback'.html_safe, {controller: "map_display", action: "feedback"}, class: "white-font", data: { no_turbolink: true } %></li>
-          		</ul>
-          	</div>
         </div>
    </div>
   </nav>
@@ -97,7 +83,7 @@
 <!--Image map canvas-->
 <div id="image-map" class="<% unless @elements %> image-map-open <% end %>">
   <div id="compass">
-    <div class="compass-up">
+    <div class="compass-down">
       <span class="compass"><i class="fa fa-chevron-down" aria-hidden="true"></i> City Centre</span>
     </div>
   </div>
