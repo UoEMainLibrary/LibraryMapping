@@ -75,6 +75,37 @@ body, html {
 
 }
 
+.compass-up{
+  position: absolute;
+  top: 50px;
+  left: 40%;
+  z-index: 100;
+}
+.compass-down{
+  position: absolute;
+  bottom: 150px;
+  left: 40%;
+  z-index: 100;
+}
+.compass{
+      display: inline-block;
+    margin-bottom: 0;
+    font-weight: normal;
+    text-align: center;
+    vertical-align: middle;
+    touch-action: manipulation;
+    background-image: none;
+    border: 1px solid transparent;
+    white-space: nowrap;
+    padding: 6px 12px;
+    font-size: 14px;
+    line-height: 1.42857143;
+    border-radius: 4px;
+    color: #fff;
+    background-color: rgba(255,0,0,0.5);
+    border-color: #eea236;
+}
+
 .btn-floor{
   margin-top: -3px;
   margin-right: 3px;

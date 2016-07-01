@@ -24,6 +24,9 @@
         </div>
         <div class="collapse navbar-collapse" id="myNavbar">
           <ul class="nav navbar-nav navbar-right ">
+            <li>
+              <a class="white-font" id="compass_btn" href="javascript:;"><i class="fa fa-compass" aria-hidden="true"></i> Show direction</a>
+            </li>
             <li><a class="white-font" id="libraries-and-floors" href="javascript:;"><span class="glyphicon glyphicon-menu-hamburger"></span> Libraries and Floors </a></li>
             <% if @qr %>
               <li><a class="white-font" id="qr-code" href="javascript:;"><span class="glyphicon glyphicon glyphicon-phone"></span> Get it on mobile </a></li>
@@ -83,7 +86,16 @@
 
 
 <!--Image map canvas-->
-<div id="image-map" class="<% unless @elements %> image-map-open <% end %>"></div>
+<div id="image-map" class="<% unless @elements %> image-map-open <% end %>">
+  <div id="compass">
+    <div class="compass-up">
+        <span class="compass"><i class="fa fa-chevron-up" aria-hidden="true"></i> Meadows</span><br>
+    </div>
+    <div class="compass-down">
+      <span class="compass"><i class="fa fa-chevron-down" aria-hidden="true"></i> George Square</span>
+    </div>
+  </div>
+</div>
 
 <div id="help-info">
   <div id="help-info-text">
@@ -208,5 +220,10 @@
   $('#floor_buttons').on('change', function() {
     window.location.replace(document.location.origin + "?floor=" + this.value + "&library=<%=@library%>");
   });
+
+  //toggle button for show direction
+  $('#compass_btn').click(function(){
+    $('#compass').toggle();
+  })
 
 </script>
