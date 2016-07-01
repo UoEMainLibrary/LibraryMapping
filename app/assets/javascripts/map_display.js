@@ -26,7 +26,7 @@ $(document).on('map_display#map:loaded', function(){
                 data: {found: true},
             });
         }else if(state == "floor-question"){
-            $("#help-info-text").text("Have you checked the recent return shelf?");
+            $("#help-info-text").text("Please check the recent return shelves (the blue ones on the map)?");
             state = "recent-returns"
         }else if(state == "recent-returns"){
             $("#help-info-text").css("padding", "45px");
