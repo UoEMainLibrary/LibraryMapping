@@ -26,7 +26,7 @@ $(document).on('map_display#map:loaded', function(){
                 data: {found: true},
             });
         }else if(state == "floor-question"){
-            $("#help-info-text").text("Please check the recent return shelves (the blue ones on the map)?");
+            $("#help-info-text").text("Have you checked the recent return shelf?");
             state = "recent-returns"
         }else if(state == "recent-returns"){
             $("#help-info-text").css("padding", "45px");
@@ -41,7 +41,7 @@ $(document).on('map_display#map:loaded', function(){
 
     $( "#help-info-not-yet" ).click(function() {
         $("#help-info").slideToggle();
-        helpInfo(10000);
+        helpInfo(60000);
 
         setTimeout(function () {
             if (state == "floor-question" || state == "recent-returns") {
@@ -51,7 +51,7 @@ $(document).on('map_display#map:loaded', function(){
                 $("#help-info-text").text("Have you found your book?");
                 state = "searching"
             }
-        }, 1000);
+        }, 60000);
     });
 
     $( "#help-info-no" ).click(function() {
