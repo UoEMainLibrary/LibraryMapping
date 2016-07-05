@@ -8,7 +8,6 @@
 <link rel="stylesheet" href="//maxcdn.bootstrapcdn.com/font-awesome/4.5.0/css/font-awesome.min.css">
 <link rel="stylesheet" href="https://domoritz.github.io/leaflet-locatecontrol/dist/L.Control.Locate.min.css" />
 
-
 <div id="main-container">
   <!--nav-->
  <nav class="bg-blue">
@@ -23,27 +22,25 @@
           <img class="logo" src="/assets/logo-01.png"><h2 id="floor_info"></h2>
         </div>
         <div class="collapse navbar-collapse" id="myNavbar">
-          <ul class="nav navbar-nav navbar-right ">
-            <li>
-              <a class="white-font" id="compass_btn" href="javascript:;"><i class="fa fa-compass" aria-hidden="true"></i> Show direction</a>
-            </li>
-            <li><a class="white-font" id="libraries-and-floors" href="javascript:;"><span class="glyphicon glyphicon-menu-hamburger"></span> Libraries and Floors </a></li>
-            <% if @qr %>
-              <li><a class="white-font" id="qr-code" href="javascript:;"><span class="glyphicon glyphicon glyphicon-phone"></span> Get it on mobile </a></li>
-            <% end %>
-            <li><%= link_to '<span class="glyphicon glyphicon-send"></span>Feedback'.html_safe, {controller: "map_display", action: "feedback"}, class: "white-font", data: { no_turbolink: true } %></li>
-          </ul>
+          		<ul class="nav navbar-nav navbar-right ">
+            		<li>
+              		<a class="white-font" id="compass_btn" href="javascript:;" alt="Show Direction" title="Show Direction"><i class="fa fa-compass" aria-hidden="true"></i> Direction</a>
+            		</li>
+            		<li><a class="white-font" id="libraries-and-floors" href="javascript:;"  alt="Show Direction" title="Show Direction"><span class="glyphicon glyphicon-menu-hamburger"></span>Libraries</a></li>
+            		<% if @qr %>
+              			<li><a class="white-font" id="qr-code" href="javascript:;" alt="Show Direction" title="Show Direction"><span class="glyphicon glyphicon glyphicon-phone"></span>Get on mobile</a></li>
+            		<% end %>
+            		<li><%= link_to '<span class="glyphicon glyphicon-send"></span>Feedback'.html_safe, {controller: "map_display", action: "feedback"}, class: "white-font", data: { no_turbolink: true } %></li>
+          		</ul>
         </div>
    </div>
   </nav>
   <!--[if IE]><script src="http://fabricjs.com/lib/fonts/Delicious.font.js"></script><![endif]-->
 
-
-
   <link href='http://fonts.googleapis.com/css?family=Plaster' rel='stylesheet' type='text/css'>
   <link href='http://fonts.googleapis.com/css?family=Engagement' rel='stylesheet' type='text/css'>
   <div class="navbar-collapse optionsTopBar" <% if @elements %> style="display: none;" <% end %>>
-    <div class="col-sm-3">
+    <div class="col-xs-6 col-sm-3">
       <label> Library: </label>
       <select id="library_option">
         <option value="main">Main Library</option>
@@ -51,7 +48,7 @@
       </select>
     </div>
     
-    <div class="col-sm-3">
+    <div class="col-xs-6 col-sm-3">
         <label> Floors: </label>
         <select id="floor_buttons">
         </select>
@@ -59,11 +56,11 @@
         <!-- </span> -->
     </div>
 
-<div class="col-sm-6">
+<div class="col-xs-12 col-sm-6">
     <label> Elements: </label>
-    <a class="btn btn-default btn-sm btn-floor" data-no-turbolink="true" href="/?floor=<%=@floor%>&library=<%=@library%>&element_name=Print">Printer</a>
-    <a class="btn btn-default btn-sm btn-floor" data-no-turbolink="true" href="/?floor=<%=@floor%>&library=<%=@library%>&element_name=female">Toilet</a>
-    <a class="btn btn-default btn-sm btn-floor" data-no-turbolink="true" href="/?floor=<%=@floor%>&library=<%=@library%>&element_name=groupstudy">Group study</a>
+    <a class="btn btn-default btn-sm btn-floor" data-no-turbolink="true" href="/?floor=<%=@floor%>&library=<%=@library%>&element_name=Print" alt="Printers" title="Printers">Printers</a>
+    <a class="btn btn-default btn-sm btn-floor" data-no-turbolink="true" href="/?floor=<%=@floor%>&library=<%=@library%>&element_name=female" alt="Toilets" title="Toilets">Toilets</a>
+    <a class="btn btn-default btn-sm btn-floor" data-no-turbolink="true" href="/?floor=<%=@floor%>&library=<%=@library%>&element_name=groupstudy" alt="Group study" title="Group study">Group study</a>
 </div>
     <% if @title %>
       <label> Title: </label>
@@ -80,19 +77,22 @@
     <% if @qr %>
       <%= raw @qr.as_html %>
     <% end %>
-
     <div>Scan the QR Code <br> using your mobile device! </div>
   </div>
-
 
 <!--Image map canvas-->
 <div id="image-map" class="<% unless @elements %> image-map-open <% end %>">
   <div id="compass">
+<<<<<<< HEAD
     <div class="compass-up">
         <span class="compass"><i class="fa fa-chevron-up" aria-hidden="true"></i> North</span><br>
     </div>
     <div class="compass-down">
       <span class="compass"><i class="fa fa-chevron-down" aria-hidden="true"></i> South</span>
+=======
+    <div class="compass-down">
+      <span class="compass"><i class="fa fa-chevron-down" aria-hidden="true"></i> City Centre</span>
+>>>>>>> upstream/master
     </div>
   </div>
 </div>
@@ -113,7 +113,7 @@
   </a>
   <a href="#">
   <div class="bottom-menu" id="help-info-no">
-    I cannot find it!
+    I cannot find it
   </div>
   </a>
 </div>
@@ -127,8 +127,7 @@
       var currentTime = new Date()
       var year = currentTime.getFullYear()
       document.write(+ year)
-      </script>
-              
+      </script>              
     </p>
 </div>
 </div>
