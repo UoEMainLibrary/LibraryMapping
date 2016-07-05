@@ -40,7 +40,7 @@
   <link href='http://fonts.googleapis.com/css?family=Plaster' rel='stylesheet' type='text/css'>
   <link href='http://fonts.googleapis.com/css?family=Engagement' rel='stylesheet' type='text/css'>
   <div class="navbar-collapse optionsTopBar" <% if @elements %> style="display: none;" <% end %>>
-    <div class="col-xs-6 col-sm-3">
+    <div class="col-xs-6 col-sm-3 label-style">
       <label> Library: </label>
       <select id="library_option">
         <option value="main">Main Library</option>
@@ -48,7 +48,7 @@
       </select>
     </div>
     
-    <div class="col-xs-6 col-sm-3">
+    <div class="col-xs-6 col-sm-3 label-style">
         <label> Floors: </label>
         <select id="floor_buttons">
         </select>
@@ -56,7 +56,7 @@
         <!-- </span> -->
     </div>
 
-<div class="col-xs-12 col-sm-6">
+<div class="col-xs-12 col-sm-6 padding-0">
     <label> Elements: </label>
     <a class="btn btn-default btn-sm btn-floor" data-no-turbolink="true" href="/?floor=<%=@floor%>&library=<%=@library%>&element_name=Print" alt="Printers" title="Printers">Printers</a>
     <a class="btn btn-default btn-sm btn-floor" data-no-turbolink="true" href="/?floor=<%=@floor%>&library=<%=@library%>&element_name=female" alt="Toilets" title="Toilets">Toilets</a>
