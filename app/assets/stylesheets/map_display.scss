@@ -71,13 +71,12 @@ body, html {
   height: 40px;
   padding: 9px 0px 6px 0px;
   height: auto;
-
- /* label{
-    margin-left: 30px;
-  }*/
-
 }
 
+.label-style{
+    margin-bottom: 8px;
+
+}
 .compass-up{
   position: absolute;
   top: 50px;
@@ -114,6 +113,7 @@ body, html {
 .btn-floor{
   margin-top: -3px;
   margin-right: 3px;
+  padding: 3px 10px !important;
 }
 
 .currentButton{
@@ -209,6 +209,12 @@ body, html {
 #qr-container td.white { border-color: #fff; }
 
 @media screen and (max-width: 767px) {
+  .nav>li {
+    position: relative;
+    display: block;
+    width: 50%;
+    float: left;
+  }
   #image-map {
     height: calc(100% - 50px);
   }
