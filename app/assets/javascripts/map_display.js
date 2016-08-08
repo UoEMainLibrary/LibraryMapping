@@ -1,5 +1,5 @@
 $(document).on('map_display#map:loaded', function(){
-    // Add geolocation button
+    // Add geolocation button TURN on or OFF
     //L.control.locate().addTo(map);
 
     /* ------- TIPS LOGIC ------- */
@@ -41,7 +41,7 @@ $(document).on('map_display#map:loaded', function(){
 
     $( "#help-info-not-yet" ).click(function() {
         $("#help-info").slideToggle();
-        helpInfo(60000);
+        helpInfo(120000);
 
         setTimeout(function () {
             if (state == "floor-question" || state == "recent-returns") {
@@ -51,7 +51,7 @@ $(document).on('map_display#map:loaded', function(){
                 $("#help-info-text").text("Have you found your book?");
                 state = "searching"
             }
-        }, 60000);
+        }, 120000);
     });
 
     $( "#help-info-no" ).click(function() {
