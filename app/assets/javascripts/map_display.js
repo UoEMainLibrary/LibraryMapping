@@ -1,6 +1,6 @@
 $(document).on('map_display#map:loaded', function(){
     // Add geolocation button
-    L.control.locate().addTo(map);
+    //L.control.locate().addTo(map);
 
     /* ------- TIPS LOGIC ------- */
     var h = $('#main-container').height();
