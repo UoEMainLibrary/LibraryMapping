@@ -32,6 +32,15 @@ body, html {
   p {
     margin: 5px 0px;
   }
+
+  a{
+    text-decoration: underline;
+    color: #fff;
+  }
+  a:hover{
+    text-decoration: none;
+    color: #ccc;
+  }
 }
 
 #i-label{
