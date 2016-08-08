@@ -220,6 +220,14 @@ input[type=radio] {
 
   margin-top: 17px;
   margin-bottom: 15px;
+  a{
+    text-decoration: underline;
+    color: #fff;
+  }
+  a:hover{
+    text-decoration: none;
+    color: #ccc;
+  }
 }
 .nav-bar{
   position: relative;
