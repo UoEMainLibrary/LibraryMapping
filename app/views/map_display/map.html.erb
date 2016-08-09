@@ -35,7 +35,7 @@
         </div>
    </div>
   </nav>
-  <!--[if IE]><script src="http://fabricjs.com/lib/fonts/Delicious.font.js"></script><![endif]-->
+  <!--[if IE]><script src="/assets/Delicious.font.js"></script><![endif]-->
 
   <link href='http://fonts.googleapis.com/css?family=Plaster' rel='stylesheet' type='text/css'>
   <link href='http://fonts.googleapis.com/css?family=Engagement' rel='stylesheet' type='text/css'>
@@ -116,14 +116,17 @@
 <!--Footer-->
 <div class="footerHolder">
   <p>
-      Unless explicitly stated otherwise, all material is copyright © The University of Edinburgh
-
+      Unless explicitly stated otherwise, all material is copyright © <a href="www.ed.ac.uk" target="_blank">The University of Edinburgh</a>
       <script type="text/javascript">
       var currentTime = new Date()
       var year = currentTime.getFullYear()
       document.write(+ year)
-      </script>              
-    </p>
+      </script>
+  </p>
+  <p>
+    <a href="http://www.ed.ac.uk/about/website/accessibility" title="Website Accessibility" target="_blank">Website accessibility</a>&nbsp;|
+    <a href="http://www.ed.ac.uk/about/website/privacy" title="Privacy & Cookies" target="_blank">Privacy & Cookies</a>
+  </p>
 </div>
 </div>
 </body>
@@ -142,7 +145,7 @@
       h = libraries_data["<%=@library%>"].box_size.height,
       url = '/assets/' + '<%= @library %>' + '_' + '<%= @floor %>' + '<%= @extension %>';
 
-  console.log(w,h);
+  //console.log(w,h);
   // calculate the edges of the image, in coordinate space
   var southWest = map.unproject([0, h], map.getMaxZoom()-1);
   var northEast = map.unproject([w, 0], map.getMaxZoom()-1);
