@@ -41,7 +41,7 @@
   <link href='http://fonts.googleapis.com/css?family=Engagement' rel='stylesheet' type='text/css'>
   <div class="navbar-collapse optionsTopBar" <% if @elements %> style="display: none;" <% end %>>
     <div class="col-xs-6 col-sm-3 label-style">
-      <label> Library: </label>
+      <label>Library:</label>
       <select id="library_option">
         <option value="main">Main Library</option>
         <option value="murray">Murray Library</option>
@@ -49,18 +49,29 @@
     </div>
     
     <div class="col-xs-6 col-sm-3 label-style">
-        <label> Floors: </label>
+        <label>Floors:</label>
         <select id="floor_buttons">
         </select>
         <!-- <span id="floor_buttons"> -->
         <!-- </span> -->
     </div>
 
-<div class="col-xs-12 col-sm-6">
-    <label> Elements: </label>
-    <a class="btn btn-default btn-sm btn-floor" data-no-turbolink="true" href="/?floor=<%=@floor%>&library=<%=@library%>&element_name=Print" alt="Printers" title="Printers">Printers</a>
-    <a class="btn btn-default btn-sm btn-floor" data-no-turbolink="true" href="/?floor=<%=@floor%>&library=<%=@library%>&element_name=female" alt="Toilets" title="Toilets">Toilets</a>
-    <a class="btn btn-default btn-sm btn-floor" data-no-turbolink="true" href="/?floor=<%=@floor%>&library=<%=@library%>&element_name=groupstudy" alt="Group study" title="Group study">Group study</a>
+<div class="col-xs-12 col-sm-6 label-style">
+    <label> Find on floor:</label>
+    <select id="element_name">
+        <option disabled selected value> -- select -- </option>
+        <option value="print">Printers</option>
+        <option value="toilet">Toilets</option>
+        <option value="groupstudy">Group study</option>
+        <option value="recent">Recent returns</option>
+        <option value="lift">Lifts</option>
+    </select>
+ <!-- <a class="btn btn-default btn-sm btn-floor" data-no-turbolink="true" href="/?floor=<%=@floor%>&library=<%=@library%>&element_name=print" alt="Printers" title="Printers">Printers</a>
+  <a class="btn btn-default btn-sm btn-floor" data-no-turbolink="true" href="/?floor=<%=@floor%>&library=<%=@library%>&element_name=toilet" alt="Toilets" title="Toilets">Toilets</a>
+  <a class="btn btn-default btn-sm btn-floor" data-no-turbolink="true" href="/?floor=<%=@floor%>&library=<%=@library%>&element_name=groupstudy" alt="Group study" title="Group study">Group study</a>
+  <a class="btn btn-default btn-sm btn-floor" data-no-turbolink="true" href="/?floor=<%=@floor%>&library=<%=@library%>&element_name=recent" alt="Recent Returns" title="Recent returns">Recent returns</a>
+  <a class="btn btn-default btn-sm btn-floor" data-no-turbolink="true" href="/?floor=<%=@floor%>&library=<%=@library%>&element_name=lift" alt="Lifts" title="Lifts">Lifts</a>
+-->
 </div>
     <% if @title %>
       <label> Title: </label>
@@ -181,7 +192,7 @@
     }
   <% elsif @is_searching %>
     $.notify({
-      message: 'We couldn\'t find this book in the maps. Find someone at the Helpdesk for help.'
+      message: 'We couldn\'t find this book in the maps. Please ask someone at the Helpdesk.'
     },{
       type: 'danger',
       offset: 10
@@ -200,23 +211,31 @@
     <%  end %>
   <% elsif @searching_element %>
     $.notify({
-      message: 'We couldn\'t find this Elements on this floor. Find someone at the Helpdesk for help.'
+      message: 'We couldn\'t find <%=@element_name%> in this location. Please ask someone at the Helpdesk.'
     },{
-      type: 'danger',
+      type: 'info',
       offset: 10
     });
   <% end %>
 
 
   $('.btn-floor[data-floor="<%= @floor %>"]').addClass("currentButton");
-  $('#floor_info').html(libraries_data["<%=@library%>"].floors[<%= @floor%>].name + " Floor");
+  $('#floor_info').html("<%=@library.capitalize%> Library: " + libraries_data["<%=@library%>"].floors[<%= @floor%>].name + " Floor");
   $('#library_option').val("<%= @library %>");
   $('#library_option').on('change', function() {
-    window.location.replace(document.location.origin + "?library=" + this.value + "&floor=1");
+    <% @floor = @floor.presence || '1'%>
+    window.location.replace(document.location.origin + "?library=" + this.value + "&floor=<%=@floor%>");
   });
   $('#floor_buttons').val("<%= @floor%>")
   $('#floor_buttons').on('change', function() {
-    window.location.replace(document.location.origin + "?floor=" + this.value + "&library=<%=@library%>");
+    <% @floor = @floor.presence || '1'%>
+    window.location.replace(document.location.origin + "?library=<%=@library%>&floor=" + this.value);
+  });
+
+  $('#element_name').val("<%= @element_name %>");
+  $('#element_name').on('change', function() {
+    <% @floor = @floor.presence || '1'%>
+    window.location.replace(document.location.origin + "?library=<%=@library%>&floor=<%=@floor%>&element_name=" +this.value);
   });
 
   //toggle button for show direction
