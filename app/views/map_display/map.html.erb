@@ -66,8 +66,8 @@
   <a class="btn btn-default btn-sm btn-floor" data-no-turbolink="true" href="/?floor=<%=@floor%>&library=<%=@library%>&element_name=print" alt="Printers" title="Printers">Printers</a>
   <a class="btn btn-default btn-sm btn-floor" data-no-turbolink="true" href="/?floor=<%=@floor%>&library=<%=@library%>&element_name=toilet" alt="Toilets" title="Toilets">Toilets</a>
   <a class="btn btn-default btn-sm btn-floor" data-no-turbolink="true" href="/?floor=<%=@floor%>&library=<%=@library%>&element_name=groupstudy" alt="Group study" title="Group study">Group study</a>
-  <!--<a class="btn btn-default btn-sm btn-floor" data-no-turbolink="true" href="/?floor=<%=@floor%>&library=<%=@library%>&element_name=recent" alt="Recent Returns" title="Recent returns">Recent returns</a>
-  <a class="btn btn-default btn-sm btn-floor" data-no-turbolink="true" href="/?floor=<%=@floor%>&library=<%=@library%>&element_name=lift" alt="Lifts" title="Lifts">Lifts</a>-->
+  <a class="btn btn-default btn-sm btn-floor" data-no-turbolink="true" href="/?floor=<%=@floor%>&library=<%=@library%>&element_name=recent" alt="Recent Returns" title="Recent returns">Recent returns</a>
+  <a class="btn btn-default btn-sm btn-floor" data-no-turbolink="true" href="/?floor=<%=@floor%>&library=<%=@library%>&element_name=lift" alt="Lifts" title="Lifts">Lifts</a>
 
 </div>
     <% if @title %>
@@ -124,14 +124,12 @@
 <!--Footer-->
 <div class="footerHolder">
   <p>
-      Unless explicitly stated otherwise, all material is copyright © <a href="www.ed.ac.uk" target="_blank">The University of Edinburgh</a>
+     &copy; <a href="www.ed.ac.uk" target="_blank">The University of Edinburgh</a>
       <script type="text/javascript">
       var currentTime = new Date()
       var year = currentTime.getFullYear()
       document.write(+ year)
-      </script>
-  </p>
-  <p>
+      </script>&nbsp;|
     <a href="http://www.ed.ac.uk/about/website/accessibility" title="Website Accessibility" target="_blank">Website accessibility</a>&nbsp;|
     <a href="http://www.ed.ac.uk/about/website/privacy" title="Privacy & Cookies" target="_blank">Privacy & Cookies</a>
   </p>
@@ -208,7 +206,7 @@
     <%  end %>
   <% elsif @searching_element %>
     $.notify({
-      message: 'We couldn\'t find <%=@element_name%> in this location. Please ask someone at the Helpdesk.'
+      message: 'This facility is not available on this floor.'
     },{
       type: 'info',
       offset: 10
