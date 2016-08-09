@@ -9,13 +9,6 @@
           <h2>Feedback</h2>
         </div>
       <ul class="nav navbar-nav navbar-right ">
-        <li>
-          <a class="white-font" id="compass_btn" href="javascript:;" alt="Show Direction" title="Show Direction"><i class="fa fa-compass" aria-hidden="true"></i> Direction</a>
-        </li>
-        <li><a class="white-font" id="libraries-and-floors" href="javascript:;"  alt="Show Direction" title="Show Direction"><span class="glyphicon glyphicon-menu-hamburger"></span>Find</a></li>
-        <% if @qr %>
-            <li><a class="white-font" id="qr-code" href="javascript:;" alt="Show Direction" title="Show Direction"><span class="glyphicon glyphicon glyphicon-phone"></span>Get on mobile</a></li>
-        <% end %>
         <li><%= link_to '<span class="glyphicon glyphicon-picture"></span>Maps'.html_safe, {controller: "map_display", action: "map"}, class: "white-font", data: { no_turbolink: true } %></li>
       </ul>
    </div>

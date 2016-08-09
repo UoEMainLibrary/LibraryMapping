@@ -18,19 +18,21 @@
  <nav id="mappingNavbar" class="bg-blue" role="navigation">
     <div class="container-fluid">
         <div class="navbar-header">
+          <p class="navbar-text visible-xs-inline-block"><span id="floor_info" title="Expand right menu to change library and floor"></span></p>
           <button type="button" class="navbar-toggle" data-toggle="collapse" data-target="#myNavbar">
             <span class="icon-bar"></span>
             <span class="icon-bar"></span>
             <span class="icon-bar"></span>
           </button>
           <img class="logo" src="/assets/logo-01.png" title="University of Edinburgh Library Maps" alt="University of Edinburgh Library Maps">
+
         </div>
         <div class="collapse navbar-collapse" id="myNavbar">
             <ul class="nav navbar-nav navbar-right ">
               <li>
                 <a class="white-font" id="compass_btn" href="javascript:;" alt="Show Direction" title="Show Direction"><i class="fa fa-compass" aria-hidden="true"></i> Direction</a>
               </li>
-              <li><a class="white-font" id="libraries-and-floors" href="javascript:;"  alt="Show Direction" title="Show Direction"><span class="glyphicon glyphicon-menu-hamburger"></span>Find</a></li>
+              <li><a class="white-font" id="libraries-and-floors" href="javascript:;"  alt="Show Direction" title="Show Direction"><span class="glyphicon glyphicon-search"></span>Find</a></li>
               <% if @qr %>
                   <li><a class="white-font" id="qr-code" href="javascript:;" alt="Show Direction" title="Show Direction"><span class="glyphicon glyphicon glyphicon-phone"></span>Get on mobile</a></li>
               <% end %>
@@ -61,19 +63,11 @@
 
   <div class="col-xs-12 col-sm-6 label-style">
     <label> Find on floor:</label>
-    <!--<select id="element_name">
-        <option disabled selected value> -- select -- </option>
-        <option value="print">Printers</option>
-        <option value="toilet">Toilets</option>
-        <option value="groupstudy">Group study</option>
-        <option value="recent">Recent returns</option>
-        <option value="lift">Lifts</option>
-    </select>-->
-<a class="btn btn-default btn-sm btn-floor" data-no-turbolink="true" href="/?floor=<%=@floor%>&library=<%=@library%>&element_name=print" alt="Printers" title="Printers">Printers</a>
+  <a class="btn btn-default btn-sm btn-floor" data-no-turbolink="true" href="/?floor=<%=@floor%>&library=<%=@library%>&element_name=print" alt="Printers" title="Printers">Printers</a>
   <a class="btn btn-default btn-sm btn-floor" data-no-turbolink="true" href="/?floor=<%=@floor%>&library=<%=@library%>&element_name=toilet" alt="Toilets" title="Toilets">Toilets</a>
   <a class="btn btn-default btn-sm btn-floor" data-no-turbolink="true" href="/?floor=<%=@floor%>&library=<%=@library%>&element_name=groupstudy" alt="Group study" title="Group study">Group study</a>
-  <a class="btn btn-default btn-sm btn-floor" data-no-turbolink="true" href="/?floor=<%=@floor%>&library=<%=@library%>&element_name=recent" alt="Recent Returns" title="Recent returns">Recent returns</a>
-  <a class="btn btn-default btn-sm btn-floor" data-no-turbolink="true" href="/?floor=<%=@floor%>&library=<%=@library%>&element_name=lift" alt="Lifts" title="Lifts">Lifts</a>
+  <!--<a class="btn btn-default btn-sm btn-floor" data-no-turbolink="true" href="/?floor=<%=@floor%>&library=<%=@library%>&element_name=recent" alt="Recent Returns" title="Recent returns">Recent returns</a>
+  <a class="btn btn-default btn-sm btn-floor" data-no-turbolink="true" href="/?floor=<%=@floor%>&library=<%=@library%>&element_name=lift" alt="Lifts" title="Lifts">Lifts</a>-->
 
 </div>
     <% if @title %>
@@ -220,6 +214,8 @@
       offset: 10
     });
   <% end %>
+
+  $('#floor_info').html("<%=@library.capitalize%> Library : " + libraries_data["<%=@library%>"].floors[<%= @floor%>].name + " Floor");
 
   $('#library_option_btn').html('<%=@library.capitalize%> Library <span class="caret"></span>');
   $('#library_option_btn').val('<%= @library %>');
