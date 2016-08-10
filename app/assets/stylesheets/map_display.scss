@@ -83,7 +83,7 @@ body, html {
 }
 
 .label-style{
-    margin-bottom: 8px;
+   margin-bottom: 8px;
 
 }
 .compass-up{
@@ -153,13 +153,33 @@ body, html {
   border-left: solid 3px #000;
   padding: 0;
   margin: 0;
-  width: 0px;
+  width: 0;
   height: 3px;
 }
 
-.navbar-header{
-  h2{
-    margin-top: 18px;
+.navbar-header {
+  img {
+    margin-right: 7px;
+  }
+}
+
+.navbar-left {
+
+  li {
+    background-color: #1B325E;
+  }
+
+  a{
+    color: #ffffff;
+  }
+
+  .dropdown-menu > li > a {
+     background-color: #1B325E;
+     color: #ffffff;
+   }
+
+  .dropdown-menu > li > a.hover {
+    color: #1B325E;
   }
 }
 
@@ -167,7 +187,6 @@ body, html {
   span{
     margin-right:7px;
   }
-
 
   .white-font:active,
   .white-font:focus {

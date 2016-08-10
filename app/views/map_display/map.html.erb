@@ -9,59 +9,67 @@
 <link rel="stylesheet" href="https://domoritz.github.io/leaflet-locatecontrol/dist/L.Control.Locate.min.css" />
 
 <div id="main-container">
+  <!--[if IE]><script src="/assets/Delicious.font.js"></script><![endif]-->
+
+  <link href='http://fonts.googleapis.com/css?family=Plaster' rel='stylesheet' type='text/css'>
+  <link href='http://fonts.googleapis.com/css?family=Engagement' rel='stylesheet' type='text/css'>
+
   <!--nav-->
- <nav class="bg-blue">
+ <nav id="mappingNavbar" class="bg-blue" role="navigation">
     <div class="container-fluid">
         <div class="navbar-header">
+          <p class="navbar-text visible-xs-inline-block"><span id="floor_info" title="Expand right menu to change library and floor"></span></p>
           <button type="button" class="navbar-toggle" data-toggle="collapse" data-target="#myNavbar">
             <span class="icon-bar"></span>
             <span class="icon-bar"></span>
             <span class="icon-bar"></span>
           </button>
+          <img class="logo" src="/assets/logo-01.png" title="University of Edinburgh Library Maps" alt="University of Edinburgh Library Maps">
 
-          <img class="logo" src="/assets/logo-01.png"><h2 id="floor_info"></h2>
         </div>
         <div class="collapse navbar-collapse" id="myNavbar">
-          		<ul class="nav navbar-nav navbar-right ">
-            		<li>
-              		<a class="white-font" id="compass_btn" href="javascript:;" alt="Show Direction" title="Show Direction"><i class="fa fa-compass" aria-hidden="true"></i> Direction</a>
-            		</li>
-            		<li><a class="white-font" id="libraries-and-floors" href="javascript:;"  alt="Show Direction" title="Show Direction"><span class="glyphicon glyphicon-menu-hamburger"></span>Libraries</a></li>
-            		<% if @qr %>
-              			<li><a class="white-font" id="qr-code" href="javascript:;" alt="Show Direction" title="Show Direction"><span class="glyphicon glyphicon glyphicon-phone"></span>Get on mobile</a></li>
-            		<% end %>
-            		<li><%= link_to '<span class="glyphicon glyphicon-send"></span>Feedback'.html_safe, {controller: "map_display", action: "feedback"}, class: "white-font", data: { no_turbolink: true } %></li>
-          		</ul>
+            <ul class="nav navbar-nav navbar-right ">
+              <li>
+                <a class="white-font" id="compass_btn" href="javascript:;" alt="Show Direction" title="Show Direction"><i class="fa fa-compass" aria-hidden="true"></i> Direction</a>
+              </li>
+              <li><a class="white-font" id="libraries-and-floors" href="javascript:;"  alt="Show Direction" title="Show Direction"><span class="glyphicon glyphicon-search"></span>Find</a></li>
+              <% if @qr %>
+                  <li><a class="white-font" id="qr-code" href="javascript:;" alt="Show Direction" title="Show Direction"><span class="glyphicon glyphicon glyphicon-phone"></span>Get on mobile</a></li>
+              <% end %>
+              <li><%= link_to '<span class="glyphicon glyphicon-send"></span>Feedback'.html_safe, {controller: "map_display", action: "feedback"}, class: "white-font", data: { no_turbolink: true } %></li>
+            </ul>
+              <ul class="nav navbar-nav navbar-left">
+                <li class="dropdown top_drop">
+                  <a href="#" class="dropdown-toggle" type="button" data-toggle="dropdown" aria-haspopup="true"
+                      aria-expanded="true" id="library_option_btn">Library
+                    <span class="caret"></span></a>
+                  <ul class="dropdown-menu" id="library_option">
+                    <li value="main"><a href="#" data-value="main">Main Library</a></li>
+                    <li value="murray"><a href="#" data-value="murray">Murray Library</a></li>
+                  </ul>
+                </li>
+                <li>
+                  <a href="#" class="dropdown-toggle" type="button" data-toggle="dropdown" aria-haspopup="true"
+                        aria-expanded="true" id="floor_btn">Floor
+                  <span class="caret"></span></a>
+                  <ul class="dropdown-menu" id="floor_buttons">
+                  </ul>
+                </li>
+              </ul>
         </div>
    </div>
   </nav>
-  <!--[if IE]><script src="/assets/Delicious.font.js"></script><![endif]-->
-
-  <link href='http://fonts.googleapis.com/css?family=Plaster' rel='stylesheet' type='text/css'>
-  <link href='http://fonts.googleapis.com/css?family=Engagement' rel='stylesheet' type='text/css'>
   <div class="navbar-collapse optionsTopBar" <% if @elements %> style="display: none;" <% end %>>
-    <div class="col-xs-6 col-sm-3 label-style">
-      <label> Library: </label>
-      <select id="library_option">
-        <option value="main">Main Library</option>
-        <option value="murray">Murray Library</option>
-      </select>
-    </div>
-    
-    <div class="col-xs-6 col-sm-3 label-style">
-        <label> Floors: </label>
-        <select id="floor_buttons">
-        </select>
-        <!-- <span id="floor_buttons"> -->
-        <!-- </span> -->
-    </div>
 
-<div class="col-xs-12 col-sm-6">
-    <label> Elements: </label>
-    <a class="btn btn-default btn-sm btn-floor" data-no-turbolink="true" href="/?floor=<%=@floor%>&library=<%=@library%>&element_name=Print%20copy" alt="Printers" title="Printers">Printers</a>
-    <a class="btn btn-default btn-sm btn-floor" data-no-turbolink="true" href="/?floor=<%=@floor%>&library=<%=@library%>&element_name=female" alt="Toilets" title="Toilets">Toilets</a>
+  <div class="col-xs-12 col-sm-6 label-style">
+    <label> Find on floor:</label>
+    <a class="btn btn-default btn-sm btn-floor" data-no-turbolink="true" href="/?floor=<%=@floor%>&library=<%=@library%>&element_name=print" alt="Printers" title="Printers">Printers</a>
+    <a class="btn btn-default btn-sm btn-floor" data-no-turbolink="true" href="/?floor=<%=@floor%>&library=<%=@library%>&element_name=toilet" alt="Toilets" title="Toilets">Toilets</a>
     <a class="btn btn-default btn-sm btn-floor" data-no-turbolink="true" href="/?floor=<%=@floor%>&library=<%=@library%>&element_name=groupstudy" alt="Group study" title="Group study">Group study</a>
-</div>
+    <a class="btn btn-default btn-sm btn-floor" data-no-turbolink="true" href="/?floor=<%=@floor%>&library=<%=@library%>&element_name=recent" alt="Recent Returns" title="Recent returns">Recent returns</a>
+    <a class="btn btn-default btn-sm btn-floor" data-no-turbolink="true" href="/?floor=<%=@floor%>&library=<%=@library%>&element_name=lift" alt="Lifts" title="Lifts">Lifts</a>
+
+  </div>
     <% if @title %>
       <label> Title: </label>
       <span><%= @title %></span>
@@ -116,14 +124,12 @@
 <!--Footer-->
 <div class="footerHolder">
   <p>
-      Unless explicitly stated otherwise, all material is copyright © <a href="www.ed.ac.uk" target="_blank">The University of Edinburgh</a>
+     &copy; <a href="www.ed.ac.uk" target="_blank">The University of Edinburgh</a>
       <script type="text/javascript">
       var currentTime = new Date()
       var year = currentTime.getFullYear()
       document.write(+ year)
-      </script>
-  </p>
-  <p>
+      </script>&nbsp;|
     <a href="http://www.ed.ac.uk/about/website/accessibility" title="Website Accessibility" target="_blank">Website accessibility</a>&nbsp;|
     <a href="http://www.ed.ac.uk/about/website/privacy" title="Privacy & Cookies" target="_blank">Privacy & Cookies</a>
   </p>
@@ -160,7 +166,7 @@
   // Load appropriate floors buttons into container
   libraries_data["<%=@library%>"].floors.forEach(function(floor) {
     // $("#floor_buttons").append("<a class='btn btn-default btn-sm btn-floor' data-no-turbolink='true' data-floor='"+floor.order+"' href='/?floor="+floor.order+"&library=<%=@library%>'>"+floor.name+"</a>");
-    $("#floor_buttons").append("<option value='"+floor.order+"'>"+floor.name+"</option>");
+    $("#floor_buttons").append("<li value='"+floor.order+"'><a href='#' data-value='"+floor.order+"'>"+floor.name+"</a></li>");
   });
 
   L.AwesomeMarkers.Icon.prototype.options.prefix = 'fa';
@@ -181,7 +187,7 @@
     }
   <% elsif @is_searching %>
     $.notify({
-      message: 'We couldn\'t find this book in the maps. Find someone at the Helpdesk for help.'
+      message: 'We couldn\'t find this book in the maps. Please ask someone at the Helpdesk.'
     },{
       type: 'danger',
       offset: 10
@@ -200,24 +206,35 @@
     <%  end %>
   <% elsif @searching_element %>
     $.notify({
-      message: 'We couldn\'t find this Elements on this floor. Find someone at the Helpdesk for help.'
+      message: 'This facility is not available on this floor.'
     },{
-      type: 'danger',
+      type: 'info',
       offset: 10
     });
   <% end %>
 
+  $('#floor_info').html("<%=@library.capitalize%> Library : " + libraries_data["<%=@library%>"].floors[<%= @floor%>].name + " Floor");
 
-  $('.btn-floor[data-floor="<%= @floor %>"]').addClass("currentButton");
-  $('#floor_info').html(libraries_data["<%=@library%>"].floors[<%= @floor%>].name + " Floor");
-  $('#library_option').val("<%= @library %>");
-  $('#library_option').on('change', function() {
-    window.location.replace(document.location.origin + "?library=" + this.value + "&floor=1");
+  $('#library_option_btn').html('<%=@library.capitalize%> Library <span class="caret"></span>');
+  $('#library_option_btn').val('<%= @library %>');
+  $('#library_option li a ').click(function() {
+
+    <% @floor = @floor.presence || '1'%>
+    window.location.replace(document.location.origin + "?library=" + $(this).data('value') + "&floor=<%=@floor%>");
+
+    $('#library_option_btn').html($(this).text() + ' <span class="caret"></span>');
+    $('#library_option_btn').val($(this).data('value'));
+   });
+
+  $('#floor_btn').html('' + libraries_data["<%=@library%>"].floors[<%= @floor%>].name + ' Floor <span class="caret"></span>');
+  $('#floor_btn').val('<%= @floor %>');
+  $('#floor_buttons li a').click(function() {
+    <% @floor = @floor.presence || '1'%>
+    window.location.replace(document.location.origin + "?library=<%=@library%>&floor=" + $(this).data('value'));
+    $('#floor_btn').html($(this).text() + ' <span class="caret"></span>');
+    $('#floor_btn').val($(this).data('value'));
   });
-  $('#floor_buttons').val("<%= @floor%>")
-  $('#floor_buttons').on('change', function() {
-    window.location.replace(document.location.origin + "?floor=" + this.value + "&library=<%=@library%>");
-  });
+
 
   //toggle button for show direction
   $('#compass_btn').click(function(){
