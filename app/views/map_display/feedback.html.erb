@@ -1,12 +1,18 @@
 <!-- User feedback interface -->
-
+<link rel="stylesheet" href="//maxcdn.bootstrapcdn.com/font-awesome/4.5.0/css/font-awesome.min.css">
 <div id="main-container">
   <!--nav-->
  <nav class="bg-blue">
     <div class="container-fluid">
         <div class="navbar-header">
-          <img class="logo" src="/assets/logo-01.png"><h2>Library Maps | Feedback</h2>
+            <img class="logo" src="/assets/logo-01.png" title="University of Edinburgh Library Maps" alt="University of Edinburgh Library Maps">
+            <h2>Feedback</h2>
         </div>
+      <div class="navbar" id="myNavbar">
+        <ul class="nav navbar-nav navbar-right ">
+          <li><%= link_to '<span class="glyphicon glyphicon-picture"></span>Maps'.html_safe, {controller: "map_display", action: "map"}, class: "white-font", data: { no_turbolink: true } %></li>
+        </ul>
+      </div>
    </div>
   </nav>
 <!--form-->
