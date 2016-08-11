@@ -37,6 +37,8 @@
                   <li><a class="white-font" id="qr-code" href="javascript:;" alt="Show Direction" title="Show Direction"><span class="glyphicon glyphicon glyphicon-phone"></span>Get on mobile</a></li>
               <% end %>
               <li><%= link_to '<span class="glyphicon glyphicon-send"></span>Feedback'.html_safe, {controller: "map_display", action: "feedback"}, class: "white-font", data: { no_turbolink: true } %></li>
+              <li><%= link_to '<i class="fa fa-question" aria-hidden="true"></i>&nbsp;FAQ'.html_safe, {controller: "map_display", action: "faq"}, class: "white-font", data: { no_turbolink: true } %></li>
+
             </ul>
               <ul class="nav navbar-nav navbar-left">
                 <li class="dropdown top_drop">
