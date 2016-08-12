@@ -1,0 +1,41 @@
+.faq-container{
+	max-width: 600px;
+	margin-right: auto;
+    margin-left: auto;
+    padding: 20px 5px;
+}
+.marginTop{
+	margin-top: 5px;
+}
+
+.blue{
+    background-color: #1B325E;
+    color: #fff;
+}
+.links{
+    background-color: #1B325E;
+    padding: 5px;
+    text-decoration: none;
+    border: 1px solid #fff;
+    color: #fff;
+}
+.links:hover{
+    background-color: #3B5992;
+    text-decoration: none;
+    color: #fff;
+}
+
+.container h5{
+    font-size: 1.5em;
+    font-weight: bold;
+    margin-top: 10px;
+    color: #1B325E;
+}
+
+.linkblock{
+    margin: 10px auto;
+}
+
+#myNavbar{
+  margin-bottom: 0;
+}

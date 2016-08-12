@@ -10,7 +10,8 @@
         </div>
       <div class="navbar" id="myNavbar">
         <ul class="nav navbar-nav navbar-right ">
-          <li><%= link_to '<span class="glyphicon glyphicon-picture"></span>Maps'.html_safe, {controller: "map_display", action: "map"}, class: "white-font", data: { no_turbolink: true } %></li>
+          <li><%= link_to '<i class="fa fa-map" aria-hidden="true"></i>&nbsp;Maps'.html_safe, {controller: "map_display", action: "map"}, class: "white-font", data: { no_turbolink: true } %></li>
+          <li><%= link_to '<i class="fa fa-question" aria-hidden="true"></i>&nbsp;FAQ'.html_safe, {controller: "map_display", action: "faq"}, class: "white-font", data: { no_turbolink: true } %></li>
         </ul>
       </div>
    </div>
