@@ -195,7 +195,10 @@ body, html {
     background-color: #eeeeee;
     color: #1B325E;
   }
+
+
 }
+
 
 #help-info{
   position: fixed;
@@ -236,7 +239,7 @@ body, html {
   .nav>li {
     position: relative;
     display: block;
-    width: 50%;
+    width: auto;
     float: left;
   }
   #image-map {
