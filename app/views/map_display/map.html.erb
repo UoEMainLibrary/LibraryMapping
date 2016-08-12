@@ -38,7 +38,7 @@
               <% end %>
               <li><%= link_to '<span class="glyphicon glyphicon-send"></span>Feedback'.html_safe, {controller: "map_display", action: "feedback"}, class: "white-font", data: { no_turbolink: true } %></li>
               <li><%= link_to '<i class="fa fa-question" aria-hidden="true"></i>&nbsp;FAQ'.html_safe, {controller: "map_display", action: "faq"}, class: "white-font", data: { no_turbolink: true } %></li>
-
+              <li><a class="white-font" id="compass_btn" href="http://discovered.ed.ac.uk" target="_blank" alt="DiscoverEd Link" title="DiscoverEd Link"><i class="fa fa-book" aria-hidden="true"></i> DiscoverEd</a></li>
             </ul>
               <ul class="nav navbar-nav navbar-left">
                 <li class="dropdown top_drop">
@@ -93,12 +93,21 @@
 <!--Image map canvas-->
 <div id="image-map" class="<% unless @elements %> image-map-open <% end %>">
   <div id="compass">
-    <div class="compass-up">
-        <span class="compass"><i class="fa fa-chevron-up" aria-hidden="true"></i> North</span><br>
-    </div>
-    <div class="compass-down">
-      <span class="compass"><i class="fa fa-chevron-down" aria-hidden="true"></i> South</span>
-    </div>
+    <% if @library == 'main' then %>
+        <div class="compass-up">
+          <span class="compass"><i class="fa fa-chevron-up" aria-hidden="true"></i> Meadows</span><br>
+        </div>
+        <div class="compass-down">
+          <span class="compass"><i class="fa fa-chevron-down" aria-hidden="true"></i> George Square</span>
+        </div>
+    <% else %>
+        <div class="compass-up">
+          <span class="compass"><i class="fa fa-chevron-up" aria-hidden="true"></i> North</span><br>
+        </div>
+        <div class="compass-down">
+          <span class="compass"><i class="fa fa-chevron-down" aria-hidden="true"></i> South</span>
+        </div>
+    <% end %>
   </div>
 </div>
 
