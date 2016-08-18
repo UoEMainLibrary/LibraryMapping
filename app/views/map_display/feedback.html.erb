@@ -19,10 +19,11 @@
   </nav>
 <!--form-->
   <div class="feedback-container text-center">
+    <h4>If your want to report a problem with the site please email: <a href="mailto:IS.Helpline@ed.ac.uk">IS.Helpline@ed.ac.uk</a></h4>
      <img class="img-responsive pic" src="/assets/feedbackimg.png">
   <%= form_for @message, url: '/feedback', html: {class: "form-horizontal text-center"} do |f| %>
       <% if @success %>
-          Thank you for the valuable input!
+          Thank you for the valuable input.
       <% end %>
       <div class="form-group">
         <%= f.label :name, :class=>'control-label col-sm-2' %>
@@ -63,9 +64,7 @@
         var currentTime = new Date()
         var year = currentTime.getFullYear()
         document.write(+ year)
-      </script>
-      </p>
-    <p>
+      </script>&nbsp;|
       <a href="http://www.ed.ac.uk/about/website/accessibility" title="Website Accessibility" target="_blank">Website accessibility</a>&nbsp;|
       <a href="http://www.ed.ac.uk/about/website/privacy" title="Privacy & Cookies" target="_blank">Privacy & Cookies</a>
     </p>
