@@ -157,98 +157,115 @@
     crs: L.CRS.Simple
   });
 
-  // dimensions of the image
-  var w = libraries_data["<%=@library%>"].box_size.width,
-      h = libraries_data["<%=@library%>"].box_size.height,
-      url = '/assets/' + '<%= @library %>' + '_' + '<%= @floor %>' + '<%= @extension %>';
+  // if the library does not exist in the data set - reset to main library ground floor and display message
+  if (!libraries_data["<%=@library%>"]) {
 
-  //console.log(w,h);
-  // calculate the edges of the image, in coordinate space
-  var southWest = map.unproject([0, h], map.getMaxZoom()-1);
-  var northEast = map.unproject([w, 0], map.getMaxZoom()-1);
-  var bounds = new L.LatLngBounds(southWest, northEast);
+    <%
+    @library = 'main'
+    @floor = 1
+    %>
 
-  L.imageOverlay(url, bounds).addTo(map);
-
-  // tell leaflet that the map is exactly as big as the image
-  map.setMaxBounds(bounds);
-
-
-  // Load appropriate floors buttons into container
-  libraries_data["<%=@library%>"].floors.forEach(function(floor) {
-    // $("#floor_buttons").append("<a class='btn btn-default btn-sm btn-floor' data-no-turbolink='true' data-floor='"+floor.order+"' href='/?floor="+floor.order+"&library=<%=@library%>'>"+floor.name+"</a>");
-    $("#floor_buttons").append("<li value='"+floor.order+"'><a href='#' data-value='"+floor.order+"'>"+floor.name+"</a></li>");
-  });
-
-  L.AwesomeMarkers.Icon.prototype.options.prefix = 'fa';
-  <% if @elements and @elements.length > 0
-
-    @elements.each do |element| %>
-      L.marker(map.unproject([<%= element.left %>, <%= element.top %>], map.getMaxZoom()-1), {
-        icon: L.AwesomeMarkers.icon({
-          icon: 'book',
-          markerColor: 'red'
-        })
-      }).addTo(map).bindPopup("<b><%= @title %></b><br> <%= @author %><br> <%= @shelfmark%> ("+libraries_data["<%=@library%>"].floors[<%= @floor%>].name +" floor)").openPopup();
-    <%  end %>
-
-    if($(window).width() < 1100) {
-      helpInfo(10000);
-    }
-  <% elsif @is_searching %>
     $.notify({
-      message: 'We could not locate this item on this floorß. Please ask someone at the Helpdesk.'
-    },{
-      type: 'danger',
-      offset: 10
-    });
-  <% end %>
-
-  //check the elements
-  <% if @elementnames and @elementnames.length > 0
-    @elementnames.each do |elementname| %>
-    L.marker(map.unproject([<%= elementname.left %>, <%= elementname.top%>], map.getMaxZoom()-1), {
-        icon: L.AwesomeMarkers.icon({
-          icon: 'location-arrow',
-          markerColor: 'blue'
-        })
-      }).addTo(map)
-    <%  end %>
-  <% elsif @searching_element %>
-    $.notify({
-      message: 'This facility is not available on this floor.'
+      message: 'This location is not mapped, please try another.'
     },{
       type: 'info',
       offset: 10
     });
-  <% end %>
 
-  $('#floor_info').html("<%=@library.capitalize%> Library : " + libraries_data["<%=@library%>"].floors[<%= @floor%>].name + " Floor");
+  }
 
-  $('#library_option_btn').html('<%=@library.capitalize%> Library <span class="caret"></span>');
-  $('#library_option_btn').val('<%= @library %>');
-  $('#library_option li a ').click(function() {
+  // dimensions of the image
+    var w = libraries_data["<%=@library%>"].box_size.width,
+        h = libraries_data["<%=@library%>"].box_size.height,
+        url = '/assets/' + '<%= @library %>' + '_' + '<%= @floor %>' + '<%= @extension %>';
 
-    <% @floor = @floor.presence || '1'%>
-    window.location.replace(document.location.origin + "?library=" + $(this).data('value') + "&floor=<%=@floor%>");
+    //console.log(w,h);
+    // calculate the edges of the image, in coordinate space
+    var southWest = map.unproject([0, h], map.getMaxZoom()-1);
+    var northEast = map.unproject([w, 0], map.getMaxZoom()-1);
+    var bounds = new L.LatLngBounds(southWest, northEast);
 
-    $('#library_option_btn').html($(this).text() + ' <span class="caret"></span>');
-    $('#library_option_btn').val($(this).data('value'));
-   });
+    L.imageOverlay(url, bounds).addTo(map);
 
-  $('#floor_btn').html('' + libraries_data["<%=@library%>"].floors[<%= @floor%>].name + ' Floor <span class="caret"></span>');
-  $('#floor_btn').val('<%= @floor %>');
-  $('#floor_buttons li a').click(function() {
-    <% @floor = @floor.presence || '1'%>
-    window.location.replace(document.location.origin + "?library=<%=@library%>&floor=" + $(this).data('value'));
-    $('#floor_btn').html($(this).text() + ' <span class="caret"></span>');
-    $('#floor_btn').val($(this).data('value'));
-  });
+    // tell leaflet that the map is exactly as big as the image
+    map.setMaxBounds(bounds);
 
 
-  //toggle button for show direction
-  $('#compass_btn').click(function(){
-    $('#compass').toggle();
-  })
+    // Load appropriate floors buttons into container
+    libraries_data["<%=@library%>"].floors.forEach(function(floor) {
+      // $("#floor_buttons").append("<a class='btn btn-default btn-sm btn-floor' data-no-turbolink='true' data-floor='"+floor.order+"' href='/?floor="+floor.order+"&library=<%=@library%>'>"+floor.name+"</a>");
+      $("#floor_buttons").append("<li value='"+floor.order+"'><a href='#' data-value='"+floor.order+"'>"+floor.name+"</a></li>");
+    });
+
+    L.AwesomeMarkers.Icon.prototype.options.prefix = 'fa';
+    <% if @elements and @elements.length > 0
+
+      @elements.each do |element| %>
+        L.marker(map.unproject([<%= element.left %>, <%= element.top %>], map.getMaxZoom()-1), {
+          icon: L.AwesomeMarkers.icon({
+            icon: 'book',
+            markerColor: 'red'
+          })
+        }).addTo(map).bindPopup("<b><%= @title %></b><br> <%= @author %><br> <%= @shelfmark%> ("+libraries_data["<%=@library%>"].floors[<%= @floor%>].name +" floor)").openPopup();
+      <%  end %>
+
+      if($(window).width() < 1100) {
+        helpInfo(10000);
+      }
+    <% elsif @is_searching %>
+      $.notify({
+        message: 'We could not locate this item on this floor. Please ask someone at the Helpdesk.'
+      },{
+        type: 'danger',
+        offset: 10
+      });
+    <% end %>
+
+    //check the elements
+    <% if @elementnames and @elementnames.length > 0
+      @elementnames.each do |elementname| %>
+      L.marker(map.unproject([<%= elementname.left %>, <%= elementname.top%>], map.getMaxZoom()-1), {
+          icon: L.AwesomeMarkers.icon({
+            icon: 'location-arrow',
+            markerColor: 'blue'
+          })
+        }).addTo(map)
+      <%  end %>
+    <% elsif @searching_element %>
+      $.notify({
+        message: 'This facility is not available on this floor.'
+      },{
+        type: 'info',
+        offset: 10
+      });
+    <% end %>
+
+    $('#floor_info').html("<%=@library.capitalize%> Library : " + libraries_data["<%=@library%>"].floors[<%= @floor%>].name + " Floor");
+
+    $('#library_option_btn').html('<%=@library.capitalize%> Library <span class="caret"></span>');
+    $('#library_option_btn').val('<%= @library %>');
+    $('#library_option li a ').click(function() {
+
+      <% @floor = @floor.presence || '1'%>
+      window.location.replace(document.location.origin + "?library=" + $(this).data('value') + "&floor=<%=@floor%>");
+
+      $('#library_option_btn').html($(this).text() + ' <span class="caret"></span>');
+      $('#library_option_btn').val($(this).data('value'));
+     });
+
+    $('#floor_btn').html('' + libraries_data["<%=@library%>"].floors[<%= @floor%>].name + ' Floor <span class="caret"></span>');
+    $('#floor_btn').val('<%= @floor %>');
+    $('#floor_buttons li a').click(function() {
+      <% @floor = @floor.presence || '1'%>
+      window.location.replace(document.location.origin + "?library=<%=@library%>&floor=" + $(this).data('value'));
+      $('#floor_btn').html($(this).text() + ' <span class="caret"></span>');
+      $('#floor_btn').val($(this).data('value'));
+    });
+
+    //toggle button for show direction
+    $('#compass_btn').click(function(){
+      $('#compass').toggle();
+    })
+
 
 </script>
