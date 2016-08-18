@@ -30,7 +30,7 @@ $(document).on('map_display#map:loaded', function(){
             state = "recent-returns"
         }else if(state == "recent-returns"){
             $("#help-info-text").css("padding", "45px");
-            $("#help-info-text").text("Apologies for the inconvenience. Please contact the help desk services in the library if you have further questions.");
+            $("#help-info-text").text("Apologies for the inconvenience. Please contact the helpdesk in the library, if you have further questions.");
             $.ajax({
                 url: "/save_statistics",
                 type: "post",
@@ -57,7 +57,7 @@ $(document).on('map_display#map:loaded', function(){
     $( "#help-info-no" ).click(function() {
         $("#help-info-yes div").width("50%");
         $("#help-info-not-yet div").width("50%");
-        $("#help-info-not-yet div").text("No!");
+        $("#help-info-not-yet div").text("No");
         $("#help-info-text").text("Are you on the " + $('.btn-floor[data-floor="<%= @floor %>"]').text() + " floor?");
         state = "floor-question";
     });

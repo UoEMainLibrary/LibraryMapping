@@ -87,7 +87,7 @@
     <% if @qr %>
       <%= raw @qr.as_html %>
     <% end %>
-    <div>Scan the QR Code <br> using your mobile device! </div>
+    <div>Scan the QR Code <br> using your mobile device. </div>
   </div>
 
 <!--Image map canvas-->
@@ -189,8 +189,7 @@
           icon: 'book',
           markerColor: 'red'
         })
-      // }).addTo(map).bindPopup("<b><%= @title %></b><br> <%= @author %><br> <%= @shelfmark%> ("+$('.btn-floor[data-floor="<%= @floor %>"]').text()+" floor)").openPopup();
-        }).addTo(map).bindPopup("<b><%= @title %></b><br> <%= @author %><br> <%= @shelfmark%> ("+libraries_data["<%=@library%>"].floors[<%= @floor%>].name +" floor)").openPopup();
+      }).addTo(map).bindPopup("<b><%= @title %></b><br> <%= @author %><br> <%= @shelfmark%> ("+libraries_data["<%=@library%>"].floors[<%= @floor%>].name +" floor)").openPopup();
     <%  end %>
 
     if($(window).width() < 1100) {
@@ -198,7 +197,7 @@
     }
   <% elsif @is_searching %>
     $.notify({
-      message: 'We couldn\'t find this book in the maps. Please ask someone at the Helpdesk.'
+      message: 'We could not locate this item on this floorß. Please ask someone at the Helpdesk.'
     },{
       type: 'danger',
       offset: 10
