@@ -70,6 +70,7 @@
     <a class="btn btn-default btn-sm btn-floor" data-no-turbolink="true" href="/?floor=<%=@floor%>&library=<%=@library%>&element_name=groupstudy" alt="Group study" title="Group study">Group study</a>
     <a class="btn btn-default btn-sm btn-floor" data-no-turbolink="true" href="/?floor=<%=@floor%>&library=<%=@library%>&element_name=recent" alt="Recent Returns" title="Recent returns">Recent returns</a>
     <a class="btn btn-default btn-sm btn-floor" data-no-turbolink="true" href="/?floor=<%=@floor%>&library=<%=@library%>&element_name=lift" alt="Lifts" title="Lifts">Lifts</a>
+    <a class="btn btn-default btn-sm btn-floor" data-no-turbolink="true" href="/?floor=<%=@floor%>&library=<%=@library%>&element_name=water" alt="Water Fountains" title="Water Fountains">Water Fountains</a>
 
   </div>
     <% if @title %>
@@ -162,16 +163,17 @@
 
     <%
     @library = 'main'
-    @floor = 1
+    @floor = '1'
     %>
 
+    window.location.replace(document.location.origin + "?library=main&floor=1");
+
     $.notify({
-      message: 'This location is not mapped, please try another.'
+      message: 'This location is not mapped, please try another. <%=@library%> <%=@floor%>'
     },{
       type: 'info',
       offset: 10
     });
-
   }
 
   // dimensions of the image
