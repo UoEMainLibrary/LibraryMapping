@@ -1,6 +1,5 @@
 class AdminController < ApplicationController
-
-  http_basic_authenticate_with :name => APP_CONFIG["name"], :password => APP_CONFIG["password"]
+  http_basic_authenticate_with :name => APP_CONFIG["name"], :password => APP_CONFIG["password"], realm: "Contact the Library Digital Development Team digital.library@ed.ac.uk for access"
 
   def index
     #redirect_to action: "map", floor: 1, library: "main"
@@ -8,6 +7,7 @@ class AdminController < ApplicationController
     @found = UsageStatistic.where(found: true).count
     @feedback_messages = FeedbackMessage.all
   end
+
 
   def save_svg
     if params[:svg_data] and params[:library] and params[:floor]
