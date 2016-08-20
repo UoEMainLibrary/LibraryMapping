@@ -1,4 +1,7 @@
 class AdminController < ApplicationController
+
+  http_basic_authenticate_with :name => APP_CONFIG["name"], :password => APP_CONFIG["password"]
+
   def index
     #redirect_to action: "map", floor: 1, library: "main"
     @total = UsageStatistic.count
