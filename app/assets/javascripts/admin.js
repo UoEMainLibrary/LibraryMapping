@@ -127,7 +127,7 @@ $(document).on('admin#map:loaded', function(){
                     }
                 });
                 $.notify({
-                    message: 'The canvas has been saved successfully!',
+                    message: 'The canvas has been saved successfully',
                 },{
                     type: 'success',
                     offset: 10
@@ -164,7 +164,7 @@ $(document).on('admin#map:loaded', function(){
                 }
 
                 $.notify({
-                    message: 'Shelf attributes saved successfully!'
+                    message: 'Shelf attributes saved successfully'
                 },{
                     type: 'success',
                     offset: 10
@@ -188,7 +188,7 @@ $(document).on('admin#map:loaded', function(){
         var activeObject = canvas.getActiveObject(),
             activeGroup = canvas.getActiveGroup();
 
-        if ((activeObject || activeGroup) && confirm('Are you sure?')) {
+        if ((activeObject || activeGroup) && confirm('Are you sure you wish to remove?')) {
             var toRemove = [];
 
             if (activeGroup) {
