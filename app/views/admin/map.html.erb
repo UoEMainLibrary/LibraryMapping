@@ -269,7 +269,7 @@
 
   // Load appropriate floors buttons into container
   libraries_data["<%=@library%>"].floors.forEach(function(floor) {
-    console.log(floor);
+    //console.log(floor);
     $("#floor_buttons").append("<a class='btn btn-default btn-floor' data-no-turbolink='true' data-floor='"+floor.order+"' href='/admin/<%=@library%>/"+floor.order+"'>"+floor.name+"</a>");
   });
 
@@ -279,7 +279,7 @@
     <%
     elements = Element.where("floor = :floor AND library = :library", {floor: @floor, library: @library}).order("identifier, range_end")
     elements.each_with_index do |element, index| %>
-
+    //console.log(element);
     loadElementInCanvas(<%= element.to_json.html_safe %>, "<%= element.element_type.name %>", "<%= asset_path(element.element_type.svg_path) %>", <%= elements.size %>)
 
     <% end %>
@@ -288,7 +288,7 @@
     canvas.renderOnAddRemove = true;
     $('#loading-container').hide();
     $('#canvas-container').fadeIn(500);
-    console.log("renderOnAddRemove");
+    //console.log("renderOnAddRemove");
     <% end %>
 
   });
