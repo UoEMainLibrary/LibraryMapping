@@ -167,11 +167,6 @@
   // if the library does not exist in the data set - reset to main library ground floor and display message
   if (!libraries_data["<%=@library%>"]) {
 
-    <%
-    @library = 'main'
-    @floor = '1'
-    %>
-
     window.location.replace(document.location.origin + "?library=main&floor=1");
 
     $.notify({
