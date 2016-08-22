@@ -30,15 +30,21 @@
         <div class="collapse navbar-collapse" id="myNavbar">
             <ul class="nav navbar-nav navbar-right ">
               <li>
-                <a class="white-font" id="compass_btn" href="javascript:;" alt="Show Direction" title="Show Direction"><i class="fa fa-compass" aria-hidden="true"></i> Direction</a>
+                <a class="white-font" id="compass_btn" href="javascript:;" title="Show Direction"><i class="fa fa-compass" aria-hidden="true"></i> Direction</a>
               </li>
-              <li><a class="white-font" id="libraries-and-floors" href="javascript:;"  alt="Show Direction" title="Show Direction"><span class="glyphicon glyphicon-search"></span>Find</a></li>
+              <li><a class="white-font" id="libraries-and-floors" href="javascript:;" title="Show Direction"><span class="glyphicon glyphicon-search"></span>Find</a></li>
               <% if @qr %>
-                  <li><a class="white-font" id="qr-code" href="javascript:;" alt="Show Direction" title="Show Direction"><span class="glyphicon glyphicon glyphicon-phone"></span>Get on mobile</a></li>
+                  <li><a class="white-font" id="qr-code" href="javascript:;" title="Show Direction"><span class="glyphicon glyphicon glyphicon-phone"></span>Get on mobile</a></li>
               <% end %>
               <li><%= link_to '<span class="glyphicon glyphicon-send"></span>Feedback'.html_safe, {controller: "map_display", action: "feedback"}, class: "white-font", data: { no_turbolink: true } %></li>
               <li><%= link_to '<i class="fa fa-question" aria-hidden="true"></i>&nbsp;FAQ'.html_safe, {controller: "map_display", action: "faq"}, class: "white-font", data: { no_turbolink: true } %></li>
-              <li><a class="white-font" id="compass_btn" href="http://discovered.ed.ac.uk" target="_blank" alt="DiscoverEd Link" title="DiscoverEd Link"><i class="fa fa-book" aria-hidden="true"></i> DiscoverEd</a></li>
+              <li><a class="white-font" id="compass_btn" href="http://discovered.ed.ac.uk" target="_blank"  title="DiscoverEd Link"><i class="fa fa-book" aria-hidden="true"></i> DiscoverEd</a></li>
+              <script>
+                var objParent = window.opener;
+                if(objParent) {
+                  document.write('<li><a href="#" onclick="window.close();" class="white-font" id="close_btn" title="Close Window"><i class="fa fa-close" aria-hidden="true"></i></a></li>');
+              }
+              </script>
             </ul>
               <ul class="nav navbar-nav navbar-left">
                 <li class="dropdown top_drop">
