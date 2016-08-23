@@ -12,7 +12,15 @@
         <ul class="nav navbar-nav navbar-right ">
           <li><%= link_to '<i class="fa fa-map" aria-hidden="true"></i>&nbsp;Maps'.html_safe, {controller: "map_display", action: "map"}, class: "white-font", data: { no_turbolink: true } %></li>
           <li><%= link_to '<span class="glyphicon glyphicon-send"></span>Feedback'.html_safe, {controller: "map_display", action: "feedback"}, class: "white-font", data: { no_turbolink: true } %></li>
-          <li><a class="white-font" id="compass_btn" href="http://discovered.ed.ac.uk" target="_blank" alt="DiscoverEd Link" title="DiscoverEd Link"><i class="fa fa-book" aria-hidden="true"></i> DiscoverEd</a></li>
+          <script>
+            var objParent = window.opener;
+            if(objParent) {
+              document.write('<li><a href="#" onclick="window.close();" class="white-font" id="close_btn" title="Close Window"><i class="fa fa-close" aria-hidden="true"></i></a></li>');
+            }
+              else {
+              document.write('<li><a class="white-font" id="compass_btn" href="http://discovered.ed.ac.uk" target="_blank"  title="DiscoverEd Link"><i class="fa fa-book" aria-hidden="true"></i> DiscoverEd</a></li>');
+            }
+          </script>
         </ul>
       </div>
    </div>
@@ -23,8 +31,8 @@
     <p>Please report any problems with this site to <a href="http://www.ed.ac.uk/is" target="_blank">Information Services</a> Helpine at: <a href="mailto:IS.Helpline@ed.ac.uk">IS.Helpline@ed.ac.uk</a>.</p>
 
     <h3>Known Issues</h3>
-    <p>The identification of items through pinpoints from <a href="http://discovered.ed.ac.uk" target="_blank">DiscoverEd</a>
-      is currently not available in <b>Internet Explorer</b>, please use DiscoverEd in another browser to locate your item. </p>
+    <p>The identification of items through pinpoints from DiscoverEd is currently not available in <b>Internet Explorer</b>,
+      please use DiscoverEd in another browser to locate your item. </p>
 
     <h3>The item is not on the shelf</h3>
     <p>The item you are looking for may not be on the shelf as it is being used by someone else within the Library, is

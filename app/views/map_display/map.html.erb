@@ -38,12 +38,14 @@
               <% end %>
               <li><%= link_to '<span class="glyphicon glyphicon-send"></span>Feedback'.html_safe, {controller: "map_display", action: "feedback"}, class: "white-font", data: { no_turbolink: true } %></li>
               <li><%= link_to '<i class="fa fa-question" aria-hidden="true"></i>&nbsp;FAQ'.html_safe, {controller: "map_display", action: "faq"}, class: "white-font", data: { no_turbolink: true } %></li>
-              <li><a class="white-font" id="compass_btn" href="http://discovered.ed.ac.uk" target="_blank"  title="DiscoverEd Link"><i class="fa fa-book" aria-hidden="true"></i> DiscoverEd</a></li>
               <script>
                 var objParent = window.opener;
                 if(objParent) {
                   document.write('<li><a href="#" onclick="window.close();" class="white-font" id="close_btn" title="Close Window"><i class="fa fa-close" aria-hidden="true"></i></a></li>');
-              }
+                }
+                else {
+                  document.write('<li><a class="white-font" id="compass_btn" href="http://discovered.ed.ac.uk" target="_blank"  title="DiscoverEd Link"><i class="fa fa-book" aria-hidden="true"></i> DiscoverEd</a></li>');
+                }
               </script>
             </ul>
               <ul class="nav navbar-nav navbar-left">
@@ -100,7 +102,7 @@
 <!--Image map canvas-->
 <div id="image-map" class="<% unless @elements %> image-map-open <% end %>">
   <div id="compass">
-    <% if @library == 'main' then %>
+;    <% if @library == 'main' then %>
         <div class="compass-up">
           <span class="compass"><i class="fa fa-chevron-up" aria-hidden="true"></i> Meadows</span><br>
         </div>
