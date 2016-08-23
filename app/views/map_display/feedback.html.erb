@@ -12,7 +12,15 @@
         <ul class="nav navbar-nav navbar-right ">
           <li><%= link_to '<i class="fa fa-map" aria-hidden="true"></i>&nbsp;Maps'.html_safe, {controller: "map_display", action: "map"}, class: "white-font", data: { no_turbolink: true } %></li>
           <li><%= link_to '<i class="fa fa-question" aria-hidden="true"></i>&nbsp;FAQ'.html_safe, {controller: "map_display", action: "faq"}, class: "white-font", data: { no_turbolink: true } %></li>
-          <li><a class="white-font" id="compass_btn" href="http://discovered.ed.ac.uk" target="_blank" alt="DiscoverEd Link" title="DiscoverEd Link"><i class="fa fa-book" aria-hidden="true"></i> DiscoverEd</a></li>
+          <script>
+            var objParent = window.opener;
+            if(objParent) {
+              document.write('<li><a href="#" onclick="window.close();" class="white-font" id="close_btn" title="Close Window"><i class="fa fa-close" aria-hidden="true"></i></a></li>');
+            }
+            else {
+              document.write('<li><a class="white-font" id="compass_btn" href="http://discovered.ed.ac.uk" target="_blank"  title="DiscoverEd Link"><i class="fa fa-book" aria-hidden="true"></i> DiscoverEd</a></li>');
+            }
+          </script>
         </ul>
       </div>
    </div>
