@@ -104,17 +104,17 @@
   <div id="compass">
 ;    <% if @library == 'main' then %>
         <div class="compass-up">
-          <span class="compass"><i class="fa fa-chevron-up" aria-hidden="true"></i> Meadows</span><br>
+          <span class="compass">Meadows</span>
         </div>
         <div class="compass-down">
-          <span class="compass"><i class="fa fa-chevron-down" aria-hidden="true"></i> George Square</span>
+          <span class="compass">George Square</span>
         </div>
     <% else %>
         <div class="compass-up">
-          <span class="compass"><i class="fa fa-chevron-up" aria-hidden="true"></i> North</span><br>
+          <span class="compass">North</span>
         </div>
         <div class="compass-down">
-          <span class="compass"><i class="fa fa-chevron-down" aria-hidden="true"></i> South</span>
+          <span class="compass">South</span>
         </div>
     <% end %>
   </div>
@@ -140,20 +140,6 @@
   </div>
   </a>
 </div>
-
-<!--Footer-->
-<div class="footerHolder">
-  <p>
-     &copy; <a href="http://www.ed.ac.uk" target="_blank">The University of Edinburgh</a>
-      <script type="text/javascript">
-      var currentTime = new Date()
-      var year = currentTime.getFullYear()
-      document.write(+ year)
-      </script>&nbsp;|
-    <a href="http://www.ed.ac.uk/about/website/accessibility" title="Website Accessibility" target="_blank">Website accessibility</a>&nbsp;|
-    <a href="http://www.ed.ac.uk/about/website/privacy" title="Privacy & Cookies" target="_blank">Privacy & Cookies</a>
-  </p>
-</div>
 </div>
 </body>
 <script>
@@ -178,22 +164,21 @@
       offset: 10
     });
   }
-
   // dimensions of the image
-    var w = libraries_data["<%=@library%>"].box_size.width,
-        h = libraries_data["<%=@library%>"].box_size.height,
-        url = '/assets/' + '<%= @library %>' + '_' + '<%= @floor %>' + '<%= @extension %>';
+  var w = libraries_data["<%=@library%>"].box_size.width,
+      h = libraries_data["<%=@library%>"].box_size.height,
+      url = '/assets/' + '<%= @library %>' + '_' + '<%= @floor %>' + '<%= @extension %>';
 
-    //console.log(w,h);
-    // calculate the edges of the image, in coordinate space
-    var southWest = map.unproject([0, h], map.getMaxZoom()-1);
-    var northEast = map.unproject([w, 0], map.getMaxZoom()-1);
-    var bounds = new L.LatLngBounds(southWest, northEast);
+  //console.log(w,h);
+  // calculate the edges of the image, in coordinate space
+  var southWest = map.unproject([0, h], map.getMaxZoom()-1);
+  var northEast = map.unproject([w, 0], map.getMaxZoom()-1);
+  var bounds = new L.LatLngBounds(southWest, northEast);
 
-    L.imageOverlay(url, bounds).addTo(map);
+  L.imageOverlay(url, bounds).addTo(map);
 
-    // tell leaflet that the map is exactly as big as the image
-    map.setMaxBounds(bounds);
+  // tell leaflet that the map is exactly as big as the image
+  map.setMaxBounds(bounds);
 
 
     // Load appropriate floors buttons into container
@@ -205,7 +190,34 @@
     L.AwesomeMarkers.Icon.prototype.options.prefix = 'fa';
     <% if @elements and @elements.length > 0
 
-      @elements.each do |element| %>
+      @elements.each do |element|
+
+      #todo check if empty
+        #if @floor.nil?
+         #puts 'before'
+         #puts @floor
+         #@floor = element.floor
+         #puts 'after'
+         #puts @floor
+        #end
+        %>
+  //reload map
+  // dimensions of the image
+  var w = libraries_data["<%=@library%>"].box_size.width,
+      h = libraries_data["<%=@library%>"].box_size.height,
+      url = '/assets/' + '<%= @library %>' + '_' + '<%= @floor %>' + '<%= @extension %>';
+
+  //console.log(w,h);
+  // calculate the edges of the image, in coordinate space
+  var southWest = map.unproject([0, h], map.getMaxZoom()-1);
+  var northEast = map.unproject([w, 0], map.getMaxZoom()-1);
+  var bounds = new L.LatLngBounds(southWest, northEast);
+
+  L.imageOverlay(url, bounds).addTo(map);
+
+  // tell leaflet that the map is exactly as big as the image
+  map.setMaxBounds(bounds);
+
         L.marker(map.unproject([<%= element.left %>, <%= element.top %>], map.getMaxZoom()-1), {
           icon: L.AwesomeMarkers.icon({
             icon: 'book',
