@@ -421,8 +421,8 @@ $(document).on('admin#map:loaded', function(){
 
         if (count == 2) {
             // Generate PDF of shelfmarks
-            console.log($(".print_col input:checked:eq(0)").data("id"));
-            console.log($(".print_col input:checked:eq(1)").data("id"));
+            // console.log($(".print_col input:checked:eq(0)").data("id"));
+            // console.log($(".print_col input:checked:eq(1)").data("id"));
             var element1 = canvas.getObjects().find(function(o) {return o.id == $(".print_col input:checked:eq(0)").data("id")});
             var element2 = canvas.getObjects().find(function(o) {return o.id == $(".print_col input:checked:eq(1)").data("id")});
 
