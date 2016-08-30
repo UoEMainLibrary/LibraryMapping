@@ -21,10 +21,10 @@ var libraries_data = {
             height: 2700
         },
         floors: [
-            {order: 1, name:'Ground'},
-            {order: 2, name:'First'},
-            {order: 3, name:'Second'},
-            {order: 4, name:'Third'}
+            {order: 0, name:'Ground'},
+            {order: 1, name:'First'},
+            {order: 2, name:'Second'},
+            {order: 3, name:'Third'}
         ]
     }
 };
