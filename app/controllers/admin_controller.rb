@@ -40,6 +40,7 @@ class AdminController < ApplicationController
       p res
       if res != true
         respond_to do |format|
+          console.log(res['error'])
           format.json {render :json => { :errors => res['error'] }, :status => 422}
         end
         return
@@ -147,6 +148,7 @@ class AdminController < ApplicationController
 
       if shelfmark_start != ""
         shelfmark_start = shelfmarkToOrder(shelfmark_start, element["identifier"])
+        puts shelfmark_start
         if shelfmark_start == -1
           return {"error" => "Invalid start shelfmark"}
         end
@@ -156,6 +158,7 @@ class AdminController < ApplicationController
 
       if shelfmark_end != ""
         shelfmark_end = shelfmarkToOrder(shelfmark_end, element["identifier"])
+        puts shelfmark_start
         if shelfmark_end == -1
           return {"error" => "Invalid end shelfmark"}
         end

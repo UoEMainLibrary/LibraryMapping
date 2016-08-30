@@ -10,7 +10,7 @@ class ApplicationController < ActionController::Base
 
     # Library of Congress classifications
     # Add other LoC collections here
-    if identifier == "lc_main" || identifier == "lc_hub" || identifier == "lc_murray"
+    if identifier == "lc_main" || identifier == "lc_hub" || identifier == "lc_murray" || identifier == "lc_murray_hub"
       letters = shelfmark.match(/^((Folio )|(Pamph. )|(Ref. ))?[A-Z]+/)[0]
 
      if letters[0..4] == "Ref. "
@@ -22,6 +22,8 @@ class ApplicationController < ActionController::Base
      elsif identifier == "lc_hub"
        subclass = HubLcSection.where(:letters => letters).first
      elsif identifier == "lc_murray"
+       subclass = MurrayLcSection.where(:letters => letters).first
+     elsif identifier == "lc_murray_hub"
        subclass = MurrayLcSection.where(:letters => letters).first
      end
 

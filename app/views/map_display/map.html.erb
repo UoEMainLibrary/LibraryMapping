@@ -180,10 +180,8 @@
   // tell leaflet that the map is exactly as big as the image
   map.setMaxBounds(bounds);
 
-
     // Load appropriate floors buttons into container
     libraries_data["<%=@library%>"].floors.forEach(function(floor) {
-      // $("#floor_buttons").append("<a class='btn btn-default btn-sm btn-floor' data-no-turbolink='true' data-floor='"+floor.order+"' href='/?floor="+floor.order+"&library=<%=@library%>'>"+floor.name+"</a>");
       $("#floor_buttons").append("<li value='"+floor.order+"'><a href='#' data-value='"+floor.order+"'>"+floor.name+"</a></li>");
     });
 
@@ -193,14 +191,7 @@
       @elements.each do |element|
 
       #todo check if empty
-        #if @floor.nil?
-         #puts 'before'
-         #puts @floor
-         #@floor = element.floor
-         #puts 'after'
-         #puts @floor
-        #end
-        %>
+       %>
   //reload map
   // dimensions of the image
   var w = libraries_data["<%=@library%>"].box_size.width,
@@ -257,13 +248,12 @@
       });
     <% end %>
 
-    $('#floor_info').html("<%=@library.capitalize%> Library : " + libraries_data["<%=@library%>"].floors[<%= @floor%>].name + " Floor");
+    $('#floor_info').html("<%=@library.capitalize%> Library : " + libraries_data["<%=@library%>"].floors["<%= @floor%>"].name + " Floor");
 
     $('#library_option_btn').html('<%=@library.capitalize%> Library <span class="caret"></span>');
     $('#library_option_btn').val('<%= @library %>');
     $('#library_option li a ').click(function() {
-
-      <% @floor = @floor.presence || '1'%>
+      <% @floor = '1'%>
       window.location.replace(document.location.origin + "?library=" + $(this).data('value') + "&floor=<%=@floor%>");
 
       $('#library_option_btn').html($(this).text() + ' <span class="caret"></span>');

@@ -109,7 +109,7 @@ $(document).on('admin#map:loaded', function(){
             return o.modified == true
         } );
 
-        console.log(JSON.stringify(objs));
+        // console.log(JSON.stringify(objs));
         restoreWallCircles();
 
         return $.ajax({
@@ -643,7 +643,7 @@ $(document).on('admin#map:loaded', function(){
     // Load the correct form according to the identifier chosen
     $("#identifier").change(function(){
         var val = $("#identifier").val();
-        console.log(val);
+        // console.log(val);
 
         $(".range-form").hide();
 
@@ -673,6 +673,10 @@ $(document).on('admin#map:loaded', function(){
             case "lc_murray":
                 $("#lc-form").show();
                 break;
+            case "lc_murray_hub":
+                $("#lc-form").show();
+                break;
+
         }
 
     });
@@ -910,7 +914,7 @@ function loadElementInCanvas(element, element_type, svg_path, last) {
                 canvas.renderAll();
                 $('#loading-container').hide();
                 $('#canvas-container').fadeIn(500);
-                console.log("renderOnAddRemove")
+                // console.log("renderOnAddRemove")
             }
             counter++;
         });
