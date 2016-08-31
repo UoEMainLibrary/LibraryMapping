@@ -151,7 +151,7 @@ $(document).on('admin#map:loaded', function(){
         obj.range_start_letters = $(".range-form:visible .range_start_letters").val();
 
         obj.identifier = $("#identifier").val();
-        console.log("saving element data");
+        //console.log("saving element data");
 
         // Send parameters to controller with an AJAX call
         $.ajax({
