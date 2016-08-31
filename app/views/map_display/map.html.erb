@@ -11,8 +11,8 @@
 <div id="main-container">
   <!--[if IE]><script src="/assets/Delicious.font.js"></script><![endif]-->
 
-  <link href='http://fonts.googleapis.com/css?family=Plaster' rel='stylesheet' type='text/css'>
-  <link href='http://fonts.googleapis.com/css?family=Engagement' rel='stylesheet' type='text/css'>
+  <link href='https://fonts.googleapis.com/css?family=Plaster' rel='stylesheet' type='text/css'>
+  <link href='https://fonts.googleapis.com/css?family=Engagement' rel='stylesheet' type='text/css'>
 
   <!--nav-->
  <nav id="mappingNavbar" class="bg-blue" role="navigation">
@@ -41,7 +41,7 @@
               <script>
                 var objParent = window.opener;
                 if(objParent) {
-                  document.write('<li><a href="#" onclick="window.close();" class="white-font" id="close_btn" title="Close Window"><i class="fa fa-close" aria-hidden="true"></i></a></li>');
+                  document.write('<li><a href="#" onclick="window.close();" class="white-font" id="close_btn" title="Close Window"><i class="fa fa-close" aria-hidden="true"></i> Close</a></li>');
                 }
                 else {
                   document.write('<li><a class="white-font" id="compass_btn" href="http://discovered.ed.ac.uk" target="_blank"  title="DiscoverEd Link"><i class="fa fa-book" aria-hidden="true"></i> DiscoverEd</a></li>');
@@ -104,17 +104,17 @@
   <div id="compass">
 ;    <% if @library == 'main' then %>
         <div class="compass-up">
-          <span class="compass"><i class="fa fa-chevron-up" aria-hidden="true"></i> Meadows</span><br>
+          <span class="compass">Meadows</span>
         </div>
         <div class="compass-down">
-          <span class="compass"><i class="fa fa-chevron-down" aria-hidden="true"></i> George Square</span>
+          <span class="compass">George Square</span>
         </div>
     <% else %>
         <div class="compass-up">
-          <span class="compass"><i class="fa fa-chevron-up" aria-hidden="true"></i> North</span><br>
+          <span class="compass">North</span>
         </div>
         <div class="compass-down">
-          <span class="compass"><i class="fa fa-chevron-down" aria-hidden="true"></i> South</span>
+          <span class="compass">South</span>
         </div>
     <% end %>
   </div>
@@ -140,20 +140,6 @@
   </div>
   </a>
 </div>
-
-<!--Footer-->
-<div class="footerHolder">
-  <p>
-     &copy; <a href="http://www.ed.ac.uk" target="_blank">The University of Edinburgh</a>
-      <script type="text/javascript">
-      var currentTime = new Date()
-      var year = currentTime.getFullYear()
-      document.write(+ year)
-      </script>&nbsp;|
-    <a href="http://www.ed.ac.uk/about/website/accessibility" title="Website Accessibility" target="_blank">Website accessibility</a>&nbsp;|
-    <a href="http://www.ed.ac.uk/about/website/privacy" title="Privacy & Cookies" target="_blank">Privacy & Cookies</a>
-  </p>
-</div>
 </div>
 </body>
 <script>
@@ -178,34 +164,51 @@
       offset: 10
     });
   }
-
   // dimensions of the image
-    var w = libraries_data["<%=@library%>"].box_size.width,
-        h = libraries_data["<%=@library%>"].box_size.height,
-        url = '/assets/' + '<%= @library %>' + '_' + '<%= @floor %>' + '<%= @extension %>';
+  var w = libraries_data["<%=@library%>"].box_size.width,
+      h = libraries_data["<%=@library%>"].box_size.height,
+      url = '/assets/' + '<%= @library %>' + '_' + '<%= @floor %>' + '<%= @extension %>';
 
-    //console.log(w,h);
-    // calculate the edges of the image, in coordinate space
-    var southWest = map.unproject([0, h], map.getMaxZoom()-1);
-    var northEast = map.unproject([w, 0], map.getMaxZoom()-1);
-    var bounds = new L.LatLngBounds(southWest, northEast);
+  //console.log(w,h);
+  // calculate the edges of the image, in coordinate space
+  var southWest = map.unproject([0, h], map.getMaxZoom()-1);
+  var northEast = map.unproject([w, 0], map.getMaxZoom()-1);
+  var bounds = new L.LatLngBounds(southWest, northEast);
 
-    L.imageOverlay(url, bounds).addTo(map);
+  L.imageOverlay(url, bounds).addTo(map);
 
-    // tell leaflet that the map is exactly as big as the image
-    map.setMaxBounds(bounds);
-
+  // tell leaflet that the map is exactly as big as the image
+  map.setMaxBounds(bounds);
 
     // Load appropriate floors buttons into container
     libraries_data["<%=@library%>"].floors.forEach(function(floor) {
-      // $("#floor_buttons").append("<a class='btn btn-default btn-sm btn-floor' data-no-turbolink='true' data-floor='"+floor.order+"' href='/?floor="+floor.order+"&library=<%=@library%>'>"+floor.name+"</a>");
       $("#floor_buttons").append("<li value='"+floor.order+"'><a href='#' data-value='"+floor.order+"'>"+floor.name+"</a></li>");
     });
 
     L.AwesomeMarkers.Icon.prototype.options.prefix = 'fa';
     <% if @elements and @elements.length > 0
 
-      @elements.each do |element| %>
+      @elements.each do |element|
+
+      #todo check if empty
+       %>
+  //reload map
+  // dimensions of the image
+  var w = libraries_data["<%=@library%>"].box_size.width,
+      h = libraries_data["<%=@library%>"].box_size.height,
+      url = '/assets/' + '<%= @library %>' + '_' + '<%= @floor %>' + '<%= @extension %>';
+
+  //console.log(w,h);
+  // calculate the edges of the image, in coordinate space
+  var southWest = map.unproject([0, h], map.getMaxZoom()-1);
+  var northEast = map.unproject([w, 0], map.getMaxZoom()-1);
+  var bounds = new L.LatLngBounds(southWest, northEast);
+
+  L.imageOverlay(url, bounds).addTo(map);
+
+  // tell leaflet that the map is exactly as big as the image
+  map.setMaxBounds(bounds);
+
         L.marker(map.unproject([<%= element.left %>, <%= element.top %>], map.getMaxZoom()-1), {
           icon: L.AwesomeMarkers.icon({
             icon: 'book',
@@ -245,13 +248,12 @@
       });
     <% end %>
 
-    $('#floor_info').html("<%=@library.capitalize%> Library : " + libraries_data["<%=@library%>"].floors[<%= @floor%>].name + " Floor");
+    $('#floor_info').html("<%=@library.capitalize%> Library : " + libraries_data["<%=@library%>"].floors["<%= @floor%>"].name + " Floor");
 
     $('#library_option_btn').html('<%=@library.capitalize%> Library <span class="caret"></span>');
     $('#library_option_btn').val('<%= @library %>');
     $('#library_option li a ').click(function() {
-
-      <% @floor = @floor.presence || '1'%>
+      <% @floor = '1'%>
       window.location.replace(document.location.origin + "?library=" + $(this).data('value') + "&floor=<%=@floor%>");
 
       $('#library_option_btn').html($(this).text() + ' <span class="caret"></span>');
@@ -271,6 +273,5 @@
     $('#compass_btn').click(function(){
       $('#compass').toggle();
     })
-
 
 </script>

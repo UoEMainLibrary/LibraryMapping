@@ -21,10 +21,10 @@ var libraries_data = {
             height: 2700
         },
         floors: [
-            {order: 1, name:'Ground'},
-            {order: 2, name:'First'},
-            {order: 3, name:'Second'},
-            {order: 4, name:'Third'}
+            {order: 0, name:'Ground'},
+            {order: 1, name:'First'},
+            {order: 2, name:'Second'},
+            {order: 3, name:'Third'}
         ]
     }
 };
@@ -109,7 +109,7 @@ $(document).on('admin#map:loaded', function(){
             return o.modified == true
         } );
 
-        console.log(JSON.stringify(objs));
+        // console.log(JSON.stringify(objs));
         restoreWallCircles();
 
         return $.ajax({
@@ -151,6 +151,7 @@ $(document).on('admin#map:loaded', function(){
         obj.range_start_letters = $(".range-form:visible .range_start_letters").val();
 
         obj.identifier = $("#identifier").val();
+        //console.log("saving element data");
 
         // Send parameters to controller with an AJAX call
         $.ajax({
@@ -170,11 +171,9 @@ $(document).on('admin#map:loaded', function(){
                     offset: 10
                 });
             },
-            error: function(xhr) {
-
-                var errors = $.parseJSON(xhr.responseText).errors;
+            error: function(data) {
                 $.notify({
-                    message: errors
+                    message: "Error saving element " + data.error + ""
                 },{
                     type: 'danger',
                     offset: 10
@@ -421,8 +420,8 @@ $(document).on('admin#map:loaded', function(){
 
         if (count == 2) {
             // Generate PDF of shelfmarks
-            console.log($(".print_col input:checked:eq(0)").data("id"));
-            console.log($(".print_col input:checked:eq(1)").data("id"));
+            // console.log($(".print_col input:checked:eq(0)").data("id"));
+            // console.log($(".print_col input:checked:eq(1)").data("id"));
             var element1 = canvas.getObjects().find(function(o) {return o.id == $(".print_col input:checked:eq(0)").data("id")});
             var element2 = canvas.getObjects().find(function(o) {return o.id == $(".print_col input:checked:eq(1)").data("id")});
 
@@ -601,7 +600,7 @@ $(document).on('admin#map:loaded', function(){
                 data: {element_id: options.target.id},
                 success: function(){
                     $.notify({
-                        message: 'Element removed successfully from records!'
+                        message: 'Element removed successfully from records'
                     },{
                         type: 'success',
                         offset: 10
@@ -643,7 +642,7 @@ $(document).on('admin#map:loaded', function(){
     // Load the correct form according to the identifier chosen
     $("#identifier").change(function(){
         var val = $("#identifier").val();
-        console.log(val);
+        // console.log(val);
 
         $(".range-form").hide();
 
@@ -673,6 +672,10 @@ $(document).on('admin#map:loaded', function(){
             case "lc_murray":
                 $("#lc-form").show();
                 break;
+            case "lc_murray_hub":
+                $("#lc-form").show();
+                break;
+
         }
 
     });
@@ -910,7 +913,7 @@ function loadElementInCanvas(element, element_type, svg_path, last) {
                 canvas.renderAll();
                 $('#loading-container').hide();
                 $('#canvas-container').fadeIn(500);
-                console.log("renderOnAddRemove")
+                // console.log("renderOnAddRemove")
             }
             counter++;
         });

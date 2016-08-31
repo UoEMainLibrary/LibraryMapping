@@ -17,6 +17,9 @@ class MapDisplayController < ApplicationController
     @title = params[:title]
     @author = params[:author]
     @element_name = params[:element_name]
+    if session[:ui_view].nil? then
+      session[:ui_view] = params[:view]
+    end
 
     unless @floor
       @floor = 1
@@ -30,7 +33,6 @@ class MapDisplayController < ApplicationController
       identifier = "lc_hub"
     end
 
-
     # If URL is passing paramenters
     if @shelfmark and @library and @floor
         @is_searching = true
@@ -39,19 +41,26 @@ class MapDisplayController < ApplicationController
           @qr = RQRCode::QRCode.new(request.original_url)
         end
 
-        # Matches all the shelves in the EAS Collection
-        if identifier == "eas_main"
-          @elements = Element.where("identifier = :identifier AND library = :library AND floor = :floor", {identifier: identifier, library: @library, floor: @floor})
+        #If Main Library Floor is passed through, else floor needs to be calculated
+        if @library == "main"
+          # Matches all the shelves in the EAS Collection
+          if identifier == "eas_main"
+            @elements = Element.where("identifier = :identifier AND library = :library AND floor = :floor", {identifier: identifier, library: @library, floor: @floor})
 
-        # Matches all the file in special collections (C.A.S., Watt, Smith, Serjeant)
-        elsif @shelfmark.match(/^(Smith Coll.|Watt Coll.|Serj. Coll.|C.A.S.)/)
-          identifier = "cwss_main"
-          @elements = Element.where("identifier = :identifier AND library = :library AND floor = :floor", {identifier: identifier, library: @library, floor: @floor})
+            # Matches all the file in special collections (C.A.S., Watt, Smith, Serjeant)
+          elsif @shelfmark.match(/^(Smith Coll.|Watt Coll.|Serj. Coll.|C.A.S.)/)
+            identifier = "cwss_main"
+            @elements = Element.where("identifier = :identifier AND library = :library AND floor = :floor", {identifier: identifier, library: @library, floor: @floor})
 
-        # Matches all other shelves (HUB, Library of Congress, Dewey Decimal...)
+            # Matches all other shelves (HUB, Library of Congress, Dewey Decimal...)
+          else
+            shelfmarkNumber = shelfmarkToOrder(@shelfmark, identifier)
+            @elements = Element.where("range_end >= :shelfmark AND range_start <= :shelfmark AND library = :library AND floor = :floor AND identifier = :identifier", {shelfmark: shelfmarkNumber, library: @library, floor: @floor, identifier: identifier})
+          end
         else
           shelfmarkNumber = shelfmarkToOrder(@shelfmark, identifier)
-          @elements = Element.where("range_end >= :shelfmark AND range_start <= :shelfmark AND library = :library AND floor = :floor AND identifier = :identifier", {shelfmark: shelfmarkNumber, library: @library, floor: @floor, identifier: identifier})
+          @elements = Element.where("range_end >= :shelfmark AND range_start <= :shelfmark AND library = :library AND identifier = :identifier", {shelfmark: shelfmarkNumber, library: @library, identifier: identifier})
+          @floor = @elements[0].floor
         end
     end
 

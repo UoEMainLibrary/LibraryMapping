@@ -39,16 +39,17 @@ class AdminController < ApplicationController
       res = save_single_element(element)
       p res
       if res != true
-        respond_to do |format|
-          format.json {render :json => { :errors => res['error'] }, :status => 422}
-        end
-        return
+        response = { error: 'Could not save element' }
+        status = :unprocessable_entity
+
+      else
+        response = {:next_id => Element.maximum(:id).to_i }
+        status = :ok
       end
+      render json: response, status: status
     end
 
-    render :json => {
-        :next_id => Element.maximum(:id).to_i
-    }
+
   end
 
 
@@ -156,6 +157,7 @@ class AdminController < ApplicationController
 
       if shelfmark_end != ""
         shelfmark_end = shelfmarkToOrder(shelfmark_end, element["identifier"])
+        puts shelfmark_start
         if shelfmark_end == -1
           return {"error" => "Invalid end shelfmark"}
         end
