@@ -11,7 +11,14 @@ class ApplicationController < ActionController::Base
     # Library of Congress classifications
     # Add other LoC collections here
     if identifier == "lc_main" || identifier == "lc_hub" || identifier == "lc_murray" || identifier == "lc_murray_hub"
-      letters = shelfmark.match(/^((Folio )|(Pamph. )|(Ref. ))?[A-Z]+/)[0]
+
+      #todo catch errors here
+      begin
+        letters = shelfmark.match(/^((Folio )|(Pamph. )|(Ref. ))?[A-Z]+/)[0]
+      rescue
+        return -1
+      end
+
 
      if letters[0..4] == "Ref. "
        letters = letters[5..letters.length]

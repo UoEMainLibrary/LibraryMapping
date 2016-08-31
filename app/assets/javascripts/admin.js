@@ -151,6 +151,7 @@ $(document).on('admin#map:loaded', function(){
         obj.range_start_letters = $(".range-form:visible .range_start_letters").val();
 
         obj.identifier = $("#identifier").val();
+        console.log("saving element data");
 
         // Send parameters to controller with an AJAX call
         $.ajax({
@@ -170,11 +171,9 @@ $(document).on('admin#map:loaded', function(){
                     offset: 10
                 });
             },
-            error: function(xhr) {
-
-                var errors = $.parseJSON(xhr.responseText).errors;
+            error: function(data) {
                 $.notify({
-                    message: errors
+                    message: "Error saving element " + data.error + ""
                 },{
                     type: 'danger',
                     offset: 10
@@ -601,7 +600,7 @@ $(document).on('admin#map:loaded', function(){
                 data: {element_id: options.target.id},
                 success: function(){
                     $.notify({
-                        message: 'Element removed successfully from records!'
+                        message: 'Element removed successfully from records'
                     },{
                         type: 'success',
                         offset: 10
