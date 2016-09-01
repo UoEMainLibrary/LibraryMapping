@@ -60,7 +60,9 @@ class MapDisplayController < ApplicationController
         else
           shelfmarkNumber = shelfmarkToOrder(@shelfmark, identifier)
           @elements = Element.where("range_end >= :shelfmark AND range_start <= :shelfmark AND library = :library AND identifier = :identifier", {shelfmark: shelfmarkNumber, library: @library, identifier: identifier})
-          @floor = @elements[0].floor
+          if @elements.any?
+            @floor = @elements[0].floor
+          end
         end
     end
 
