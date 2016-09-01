@@ -7,12 +7,12 @@ var libraries_data = {
             height: 4000
         },
         floors: [
-            {order: 0, name:'Lower Ground'},
-            {order: 1, name:'Ground'},
-            {order: 2, name:'First'},
-            {order: 3, name:'Second'},
-            {order: 4, name:'Third'},
-            {order: 5, name:'Fourth'}
+            {order: 0, name:'Lower Ground Floor'},
+            {order: 1, name:'Ground Floor'},
+            {order: 2, name:'First Floor'},
+            {order: 3, name:'Second Floor'},
+            {order: 4, name:'Third Floor'},
+            {order: 5, name:'Fourth Floor'}
         ]
     },
     'murray': {
@@ -21,10 +21,10 @@ var libraries_data = {
             height: 2700
         },
         floors: [
-            {order: 0, name:'Ground'},
-            {order: 1, name:'First'},
-            {order: 2, name:'Second'},
-            {order: 3, name:'Third'}
+            {order: 0, name:'Ground Floor'},
+            {order: 1, name:'First Floor'},
+            {order: 2, name:'Second Floor'},
+            {order: 3, name:'Third Floor'}
         ]
     }
 };
