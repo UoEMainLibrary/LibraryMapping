@@ -248,19 +248,18 @@
       });
     <% end %>
 
-    $('#floor_info').html("<%=@library.capitalize%> Library : " + libraries_data["<%=@library%>"].floors["<%= @floor%>"].name + " Floor");
+    $('#floor_info').html("<%=@library.capitalize%> Library : " + libraries_data["<%=@library%>"].floors["<%= @floor%>"].name);
 
     $('#library_option_btn').html('<%=@library.capitalize%> Library <span class="caret"></span>');
     $('#library_option_btn').val('<%= @library %>');
     $('#library_option li a ').click(function() {
-      <% @floor = '1'%>
-      window.location.replace(document.location.origin + "?library=" + $(this).data('value') + "&floor=<%=@floor%>");
+      window.location.replace(document.location.origin + "?library=" + $(this).data('value') + "&floor=1");
 
       $('#library_option_btn').html($(this).text() + ' <span class="caret"></span>');
       $('#library_option_btn').val($(this).data('value'));
      });
 
-    $('#floor_btn').html('' + libraries_data["<%=@library%>"].floors[<%= @floor%>].name + ' Floor <span class="caret"></span>');
+    $('#floor_btn').html('' + libraries_data["<%=@library%>"].floors[<%= @floor%>].name + ' <span class="caret"></span>');
     $('#floor_btn').val('<%= @floor %>');
     $('#floor_buttons li a').click(function() {
       <% @floor = @floor.presence || '1'%>
