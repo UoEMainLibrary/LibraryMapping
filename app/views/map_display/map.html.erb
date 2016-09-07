@@ -99,47 +99,48 @@
     <div>Scan the QR Code <br> using your mobile device. </div>
   </div>
 
-<!--Image map canvas-->
-<div id="image-map" class="<% unless @elements %> image-map-open <% end %>">
-  <div id="compass">
-    <% if @library == 'main' then %>
-        <div class="compass-up">
-          <span class="compass">Meadows</span>
-        </div>
-        <div class="compass-down">
-          <span class="compass">George Square</span>
-        </div>
-    <% else %>
-        <div class="compass-up">
-          <span class="compass">North</span>
-        </div>
-        <div class="compass-down">
-          <span class="compass">South</span>
-        </div>
-    <% end %>
+  <!--Image map canvas-->
+  <div id="image-map" class="<% unless @elements %> image-map-open <% end %>">
+    <div id="compass">
+      <% if @library == 'main' then %>
+          <div class="compass-up">
+            <span class="compass">Meadows</span>
+          </div>
+          <div class="compass-down">
+            <span class="compass">George Square</span>
+          </div>
+      <% else %>
+          <div class="compass-up">
+            <span class="compass">North</span>
+          </div>
+          <div class="compass-down">
+            <span class="compass">South</span>
+          </div>
+      <% end %>
+    </div>
   </div>
-</div>
 
-<div id="help-info">
-  <div id="help-info-text">
-    Have you found your book yet?
+  <div id="help-info">
+    <div id="help-info-text">
+      Have you found your book yet?
+    </div>
+    <a href="#" id="help-info-yes">
+    <div class="bottom-menu">
+      Yes!
+    </div>
+    </a>
+    <a href="#" id="help-info-not-yet">
+    <div class="bottom-menu">
+      Not yet...
+    </div>
+    </a>
+    <a href="#">
+    <div class="bottom-menu" id="help-info-no">
+      I cannot find it
+    </div>
+    </a>
   </div>
-  <a href="#" id="help-info-yes">
-  <div class="bottom-menu">
-    Yes!
-  </div>
-  </a>
-  <a href="#" id="help-info-not-yet">
-  <div class="bottom-menu">
-    Not yet...
-  </div>
-  </a>
-  <a href="#">
-  <div class="bottom-menu" id="help-info-no">
-    I cannot find it
-  </div>
-  </a>
-</div>
+
 </div>
 </body>
 <script>
@@ -192,34 +193,37 @@
 
       #todo check if empty
        %>
-  //reload map
-  // dimensions of the image
-  var w = libraries_data["<%=@library%>"].box_size.width,
-      h = libraries_data["<%=@library%>"].box_size.height,
-      url = '/assets/' + '<%= @library %>' + '_' + '<%= @floor %>' + '<%= @extension %>';
+        //reload map
+        // dimensions of the image
+        var w = libraries_data["<%=@library%>"].box_size.width,
+            h = libraries_data["<%=@library%>"].box_size.height,
+            url = '/assets/' + '<%= @library %>' + '_' + '<%= @floor %>' + '<%= @extension %>';
 
-  //console.log(w,h);
-  // calculate the edges of the image, in coordinate space
-  var southWest = map.unproject([0, h], map.getMaxZoom()-1);
-  var northEast = map.unproject([w, 0], map.getMaxZoom()-1);
-  var bounds = new L.LatLngBounds(southWest, northEast);
+        //console.log(w,h);
+        // calculate the edges of the image, in coordinate space
+        var southWest = map.unproject([0, h], map.getMaxZoom()-1);
+        var northEast = map.unproject([w, 0], map.getMaxZoom()-1);
+        var bounds = new L.LatLngBounds(southWest, northEast);
 
-  L.imageOverlay(url, bounds).addTo(map);
+        L.imageOverlay(url, bounds).addTo(map);
 
-  // tell leaflet that the map is exactly as big as the image
-  map.setMaxBounds(bounds);
+        // tell leaflet that the map is exactly as big as the image
+        map.setMaxBounds(bounds);
 
-        L.marker(map.unproject([<%= element.left %>, <%= element.top %>], map.getMaxZoom()-1), {
-          icon: L.AwesomeMarkers.icon({
-            icon: 'book',
-            markerColor: 'red'
-          })
-        }).addTo(map).bindPopup("<b><%= @title %></b><br> <%= @author %><br> <%= @shelfmark%> ("+libraries_data["<%=@library%>"].floors[<%= @floor%>].name +" floor)").openPopup();
-      <%  end %>
+              L.marker(map.unproject([<%= element.left %>, <%= element.top %>], map.getMaxZoom()-1), {
+                icon: L.AwesomeMarkers.icon({
+                  icon: 'book',
+                  markerColor: 'red'
+                })
+              }).addTo(map).bindPopup("<b><%= @title %></b><br> <%= @author %><br> <%= @shelfmark%> ("+libraries_data["<%=@library%>"].floors[<%= @floor%>].name +" floor)").openPopup();
+            <%  end %>
 
-      if($(window).width() < 1100) {
-        helpInfo(10000);
-      }
+            <% if session[:ui_view] != 'kiosk' then%>
+             // if($(window).width() < 1100) {
+                helpInfo(90000);
+             // }
+            <%  end %>
+
     <% elsif @is_searching %>
       $.notify({
         message: 'We could not locate this item on this floor. Please ask someone at the Helpdesk.'
