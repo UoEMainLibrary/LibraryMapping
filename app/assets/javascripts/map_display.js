@@ -41,8 +41,8 @@ $(document).on('map_display#map:loaded', function(){
 
     $( "#help-info-not-yet" ).click(function() {
         $("#help-info").slideToggle();
-        helpInfo(120000);
-
+        helpInfo(90000);
+        
         setTimeout(function () {
             if (state == "floor-question" || state == "recent-returns") {
                 $("#help-info-yes div").width("33.33%");
@@ -51,7 +51,7 @@ $(document).on('map_display#map:loaded', function(){
                 $("#help-info-text").text("Have you found your book?");
                 state = "searching"
             }
-        }, 120000);
+        }, 90000);
     });
 
     $( "#help-info-no" ).click(function() {
