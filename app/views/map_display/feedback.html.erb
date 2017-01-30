@@ -1,20 +1,37 @@
 <!-- User feedback interface -->
-
+<link rel="stylesheet" href="//maxcdn.bootstrapcdn.com/font-awesome/4.5.0/css/font-awesome.min.css">
 <div id="main-container">
   <!--nav-->
  <nav class="bg-blue">
     <div class="container-fluid">
         <div class="navbar-header">
-          <img class="logo" src="/assets/logo-01.png"><h2>Library Maps | Feedback</h2>
+            <img class="logo" src="/assets/logo-01.png" title="University of Edinburgh Library Maps" alt="University of Edinburgh Library Maps">
+            <h2>Feedback</h2>
         </div>
+      <div class="navbar" id="myNavbar">
+        <ul class="nav navbar-nav navbar-right ">
+          <li><%= link_to '<i class="fa fa-map" aria-hidden="true"></i>&nbsp;Maps'.html_safe, {controller: "map_display", action: "map"}, class: "white-font", data: { no_turbolink: true } %></li>
+          <li><%= link_to '<i class="fa fa-question" aria-hidden="true"></i>&nbsp;FAQ'.html_safe, {controller: "map_display", action: "faq"}, class: "white-font", data: { no_turbolink: true } %></li>
+          <script>
+            var objParent = window.opener;
+            if(objParent) {
+              document.write('<li><a href="#" onclick="window.close();" class="white-font" id="close_btn" title="Close Window"><i class="fa fa-close" aria-hidden="true"> Close</i></a></li>');
+            }
+            else {
+              document.write('<li><a class="white-font" id="compass_btn" href="http://discovered.ed.ac.uk" target="_blank"  title="DiscoverEd Link"><i class="fa fa-book" aria-hidden="true"></i> DiscoverEd</a></li>');
+            }
+          </script>
+        </ul>
+      </div>
    </div>
   </nav>
 <!--form-->
   <div class="feedback-container text-center">
+    <h4>If your want to report a problem with the site please email: <a href="mailto:IS.Helpline@ed.ac.uk">IS.Helpline@ed.ac.uk</a></h4>
      <img class="img-responsive pic" src="/assets/feedbackimg.png">
   <%= form_for @message, url: '/feedback', html: {class: "form-horizontal text-center"} do |f| %>
       <% if @success %>
-          Thank you for the valuable input!
+          Thank you for the valuable input.
       <% end %>
       <div class="form-group">
         <%= f.label :name, :class=>'control-label col-sm-2' %>
@@ -48,18 +65,4 @@
     <% end %>
   </div>
   <!--Footer-->
-  <div class="footerHolder">
-    <p>
-      Unless explicitly stated otherwise, all material is copyright © <a href="www.ed.ac.uk" target="_blank">The University of Edinburgh</a>
-      <script type="text/javascript">
-        var currentTime = new Date()
-        var year = currentTime.getFullYear()
-        document.write(+ year)
-      </script>
-      </p>
-    <p>
-      <a href="http://www.ed.ac.uk/about/website/accessibility" title="Website Accessibility" target="_blank">Website accessibility</a>&nbsp;|
-      <a href="http://www.ed.ac.uk/about/website/privacy" title="Privacy & Cookies" target="_blank">Privacy & Cookies</a>
-    </p>
-  </div>
 </div>
