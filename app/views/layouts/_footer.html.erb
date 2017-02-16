@@ -1,3 +1,29 @@
+<!--Footer include-->
+<% if session[:ui_view] == 'kiosk' then%>
+    <div class="footerHolder">
+      <p>
+        &copy; The University of Edinburgh
+        <script type="text/javascript">
+          var currentTime = new Date()
+          var year = currentTime.getFullYear()
+          document.write(+ year)
+        </script>
+      </p>
+    </div>
+<% else %>
+    <div class="footerHolder">
+      <p>
+        &copy; <a href="http://www.ed.ac.uk" target="_blank">The University of Edinburgh</a>
+        <script type="text/javascript">
+          var currentTime = new Date()
+          var year = currentTime.getFullYear()
+          document.write(+ year)
+        </script>&nbsp;|
+        <a href="http://www.ed.ac.uk/about/website/accessibility" title="Website Accessibility" target="_blank">Website accessibility</a>&nbsp;|
+        <a href="http://www.ed.ac.uk/about/website/privacy" title="Privacy & Cookies" target="_blank">Privacy & Cookies</a>
+      </p>
+    </div>
+<% end %>
 <script>
   // Google Analytics tracking
 

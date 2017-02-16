@@ -6,16 +6,17 @@
   <nav class="bg-blue">
     <div class="container-fluid">
       <div class="navbar-header">
-        <img class="logo" src="/assets/logo-01.png"><h2>LibraryMapping&middot; Admin panel</h2>
+        <img class="logo" src="/assets/logo-01.png"><h2>Library Maps | Admin panel |
+        <a href="/admin">Review Feedback</a></h2>
       </div>
     </div>
   </nav>
-  <!--[if IE]><script src="http://fabricjs.com/lib/fonts/Delicious.font.js"></script><![endif]-->
+  <!--[if IE]><script src="/assets/Delicious.font.js"></script><![endif]-->
 
 
 
-  <link href='http://fonts.googleapis.com/css?family=Plaster' rel='stylesheet' type='text/css'>
-  <link href='http://fonts.googleapis.com/css?family=Engagement' rel='stylesheet' type='text/css'>
+  <link href='https://fonts.googleapis.com/css?family=Plaster' rel='stylesheet' type='text/css'>
+  <link href='https://fonts.googleapis.com/css?family=Engagement' rel='stylesheet' type='text/css'>
 
   <div style="position:relative;width:100%;float:left;" id="canvas-wrapper">
 
@@ -28,7 +29,7 @@
 
       <label class="optionsTopBarAdmin"> Library: </label>
       <select id="library_option">
-        <option value="main">Main Library</option>
+        <option value="main" selected>Main Library</option>
         <option value="murray">Murray Library</option>
       </select>
 
@@ -150,6 +151,7 @@
             <option value="cwss_main">Main Library - C.A.S. / Watt / Smith / Serj. </option>
             <option value="eas_main">Main Library - East Asian Studies (EAS) </option>
             <option value="journal_main">Main Library - Journals</option>
+            <option value="lc_murray_hub">Murray Library - Reserve Collection (LC)</option>
             <option value="lc_murray">Murray Library - Main Collection (LC)</option>
           </select>
           <br>
@@ -268,7 +270,7 @@
 
   // Load appropriate floors buttons into container
   libraries_data["<%=@library%>"].floors.forEach(function(floor) {
-    console.log(floor);
+    //console.log(floor);
     $("#floor_buttons").append("<a class='btn btn-default btn-floor' data-no-turbolink='true' data-floor='"+floor.order+"' href='/admin/<%=@library%>/"+floor.order+"'>"+floor.name+"</a>");
   });
 
@@ -278,7 +280,7 @@
     <%
     elements = Element.where("floor = :floor AND library = :library", {floor: @floor, library: @library}).order("identifier, range_end")
     elements.each_with_index do |element, index| %>
-
+    //console.log(element);
     loadElementInCanvas(<%= element.to_json.html_safe %>, "<%= element.element_type.name %>", "<%= asset_path(element.element_type.svg_path) %>", <%= elements.size %>)
 
     <% end %>
@@ -287,7 +289,7 @@
     canvas.renderOnAddRemove = true;
     $('#loading-container').hide();
     $('#canvas-container').fadeIn(500);
-    console.log("renderOnAddRemove");
+    //console.log("renderOnAddRemove");
     <% end %>
 
   });

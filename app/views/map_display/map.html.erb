@@ -9,59 +9,78 @@
 <link rel="stylesheet" href="https://domoritz.github.io/leaflet-locatecontrol/dist/L.Control.Locate.min.css" />
 
 <div id="main-container">
+  <!--[if IE]><script src="/assets/Delicious.font.js"></script><![endif]-->
+
+  <link href='https://fonts.googleapis.com/css?family=Plaster' rel='stylesheet' type='text/css'>
+  <link href='https://fonts.googleapis.com/css?family=Engagement' rel='stylesheet' type='text/css'>
+
   <!--nav-->
- <nav class="bg-blue">
+ <nav id="mappingNavbar" class="bg-blue" role="navigation">
     <div class="container-fluid">
         <div class="navbar-header">
+          <p class="navbar-text visible-xs-inline-block"><span id="floor_info" title="Expand right menu to change library and floor"></span></p>
           <button type="button" class="navbar-toggle" data-toggle="collapse" data-target="#myNavbar">
             <span class="icon-bar"></span>
             <span class="icon-bar"></span>
             <span class="icon-bar"></span>
           </button>
+          <img class="logo" src="/assets/logo-01.png" title="University of Edinburgh Library Maps" alt="University of Edinburgh Library Maps">
 
-          <img class="logo" src="/assets/logo-01.png"><h2 id="floor_info"></h2>
         </div>
         <div class="collapse navbar-collapse" id="myNavbar">
-          		<ul class="nav navbar-nav navbar-right ">
-            		<li>
-              		<a class="white-font" id="compass_btn" href="javascript:;" alt="Show Direction" title="Show Direction"><i class="fa fa-compass" aria-hidden="true"></i> Direction</a>
-            		</li>
-            		<li><a class="white-font" id="libraries-and-floors" href="javascript:;"  alt="Show Direction" title="Show Direction"><span class="glyphicon glyphicon-menu-hamburger"></span>Libraries</a></li>
-            		<% if @qr %>
-              			<li><a class="white-font" id="qr-code" href="javascript:;" alt="Show Direction" title="Show Direction"><span class="glyphicon glyphicon glyphicon-phone"></span>Get on mobile</a></li>
-            		<% end %>
-            		<li><%= link_to '<span class="glyphicon glyphicon-send"></span>Feedback'.html_safe, {controller: "map_display", action: "feedback"}, class: "white-font", data: { no_turbolink: true } %></li>
-          		</ul>
+            <ul class="nav navbar-nav navbar-right ">
+              <li>
+                <a class="white-font" id="compass_btn" href="javascript:;" title="Show Direction"><i class="fa fa-compass" aria-hidden="true"></i> Direction</a>
+              </li>
+              <li><a class="white-font" id="libraries-and-floors" href="javascript:;" title="Show Direction"><span class="glyphicon glyphicon-search"></span>Find</a></li>
+              <% if @qr %>
+                  <li><a class="white-font" id="qr-code" href="javascript:;" title="Show Direction"><span class="glyphicon glyphicon glyphicon-phone"></span>Get on mobile</a></li>
+              <% end %>
+              <li><%= link_to '<span class="glyphicon glyphicon-send"></span>Feedback'.html_safe, {controller: "map_display", action: "feedback"}, class: "white-font", data: { no_turbolink: true } %></li>
+              <li><%= link_to '<i class="fa fa-question" aria-hidden="true"></i>&nbsp;FAQ'.html_safe, {controller: "map_display", action: "faq"}, class: "white-font", data: { no_turbolink: true } %></li>
+              <script>
+                var objParent = window.opener;
+                if(objParent) {
+                  document.write('<li><a href="#" onclick="window.close();" class="white-font" id="close_btn" title="Close Window"><i class="fa fa-close" aria-hidden="true"></i> Close</a></li>');
+                }
+                else {
+                  document.write('<li><a class="white-font" id="compass_btn" href="http://discovered.ed.ac.uk" target="_blank"  title="DiscoverEd Link"><i class="fa fa-book" aria-hidden="true"></i> DiscoverEd</a></li>');
+                }
+              </script>
+            </ul>
+              <ul class="nav navbar-nav navbar-left">
+                <li class="dropdown top_drop">
+                  <a href="#" class="dropdown-toggle" type="button" data-toggle="dropdown" aria-haspopup="true"
+                      aria-expanded="true" id="library_option_btn">Library
+                    <span class="caret"></span></a>
+                  <ul class="dropdown-menu" id="library_option">
+                    <li value="main"><a href="#" data-value="main">Main Library</a></li>
+                    <li value="murray"><a href="#" data-value="murray">Murray Library</a></li>
+                  </ul>
+                </li>
+                <li>
+                  <a href="#" class="dropdown-toggle" type="button" data-toggle="dropdown" aria-haspopup="true"
+                        aria-expanded="true" id="floor_btn">Floor
+                  <span class="caret"></span></a>
+                  <ul class="dropdown-menu" id="floor_buttons">
+                  </ul>
+                </li>
+              </ul>
         </div>
    </div>
   </nav>
-  <!--[if IE]><script src="http://fabricjs.com/lib/fonts/Delicious.font.js"></script><![endif]-->
-
-  <link href='http://fonts.googleapis.com/css?family=Plaster' rel='stylesheet' type='text/css'>
-  <link href='http://fonts.googleapis.com/css?family=Engagement' rel='stylesheet' type='text/css'>
   <div class="navbar-collapse optionsTopBar" <% if @elements %> style="display: none;" <% end %>>
-    <div class="col-xs-6 col-sm-3">
-      <label> Library: </label>
-      <select id="library_option">
-        <option value="main">Main Library</option>
-        <option value="murray">Murray Library</option>
-      </select>
-    </div>
-    
-    <div class="col-xs-6 col-sm-3">
-        <label> Floors: </label>
-        <select id="floor_buttons">
-        </select>
-        <!-- <span id="floor_buttons"> -->
-        <!-- </span> -->
-    </div>
 
-<div class="col-xs-12 col-sm-6">
-    <label> Elements: </label>
-    <a class="btn btn-default btn-sm btn-floor" data-no-turbolink="true" href="/?floor=<%=@floor%>&library=<%=@library%>&element_name=Print" alt="Printers" title="Printers">Printers</a>
-    <a class="btn btn-default btn-sm btn-floor" data-no-turbolink="true" href="/?floor=<%=@floor%>&library=<%=@library%>&element_name=female" alt="Toilets" title="Toilets">Toilets</a>
+  <div class="col-xs-12 col-sm-6 label-style">
+    <label> Find on floor:</label>
+    <a class="btn btn-default btn-sm btn-floor" data-no-turbolink="true" href="/?floor=<%=@floor%>&library=<%=@library%>&element_name=print" alt="Printers" title="Printers">Printers</a>
+    <a class="btn btn-default btn-sm btn-floor" data-no-turbolink="true" href="/?floor=<%=@floor%>&library=<%=@library%>&element_name=toilet" alt="Toilets" title="Toilets">Toilets</a>
     <a class="btn btn-default btn-sm btn-floor" data-no-turbolink="true" href="/?floor=<%=@floor%>&library=<%=@library%>&element_name=groupstudy" alt="Group study" title="Group study">Group study</a>
-</div>
+    <a class="btn btn-default btn-sm btn-floor" data-no-turbolink="true" href="/?floor=<%=@floor%>&library=<%=@library%>&element_name=recent" alt="Recent Returns" title="Recent returns">Recent returns</a>
+    <a class="btn btn-default btn-sm btn-floor" data-no-turbolink="true" href="/?floor=<%=@floor%>&library=<%=@library%>&element_name=lift" alt="Lifts" title="Lifts">Lifts</a>
+    <a class="btn btn-default btn-sm btn-floor" data-no-turbolink="true" href="/?floor=<%=@floor%>&library=<%=@library%>&element_name=water" alt="Water Fountains" title="Water Fountains">Water Fountains</a>
+
+  </div>
     <% if @title %>
       <label> Title: </label>
       <span><%= @title %></span>
@@ -77,51 +96,51 @@
     <% if @qr %>
       <%= raw @qr.as_html %>
     <% end %>
-    <div>Scan the QR Code <br> using your mobile device! </div>
+    <div>Scan the QR Code <br> using your mobile device. </div>
   </div>
 
-<!--Image map canvas-->
-<div id="image-map" class="<% unless @elements %> image-map-open <% end %>">
-  <div id="compass">
-    <div class="compass-down">
-      <span class="compass"><i class="fa fa-chevron-down" aria-hidden="true"></i> City Centre</span>
+  <!--Image map canvas-->
+  <div id="image-map" class="<% unless @elements %> image-map-open <% end %>">
+    <div id="compass">
+      <% if @library == 'main' then %>
+          <div class="compass-up">
+            <span class="compass">Meadows</span>
+          </div>
+          <div class="compass-down">
+            <span class="compass">George Square</span>
+          </div>
+      <% else %>
+          <div class="compass-up">
+            <span class="compass">North</span>
+          </div>
+          <div class="compass-down">
+            <span class="compass">South</span>
+          </div>
+      <% end %>
     </div>
   </div>
-</div>
 
-<div id="help-info">
-  <div id="help-info-text">
-    Have you found your book yet?
+  <div id="help-info">
+    <div id="help-info-text">
+      Have you found your book yet?
+    </div>
+    <a href="#" id="help-info-yes">
+    <div class="bottom-menu">
+      Yes!
+    </div>
+    </a>
+    <a href="#" id="help-info-not-yet">
+    <div class="bottom-menu">
+      Not yet...
+    </div>
+    </a>
+    <a href="#">
+    <div class="bottom-menu" id="help-info-no">
+      I cannot find it
+    </div>
+    </a>
   </div>
-  <a href="#" id="help-info-yes">
-  <div class="bottom-menu">
-    Yes!
-  </div>
-  </a>
-  <a href="#" id="help-info-not-yet">
-  <div class="bottom-menu">
-    Not yet...
-  </div>
-  </a>
-  <a href="#">
-  <div class="bottom-menu" id="help-info-no">
-    I cannot find it
-  </div>
-  </a>
-</div>
 
-<!--Footer-->
-<div class="footerHolder">
-  <p>
-      Unless explicitly stated otherwise, all material is copyright © The University of Edinburgh
-
-      <script type="text/javascript">
-      var currentTime = new Date()
-      var year = currentTime.getFullYear()
-      document.write(+ year)
-      </script>              
-    </p>
-</div>
 </div>
 </body>
 <script>
@@ -134,12 +153,24 @@
     crs: L.CRS.Simple
   });
 
+  // if the library does not exist in the data set - reset to main library ground floor and display message
+  if (!libraries_data["<%=@library%>"]) {
+
+    window.location.replace(document.location.origin + "?library=main&floor=1");
+
+    $.notify({
+      message: 'This location is not mapped, please try another. <%=@library%> <%=@floor%>'
+    },{
+      type: 'info',
+      offset: 10
+    });
+  }
   // dimensions of the image
   var w = libraries_data["<%=@library%>"].box_size.width,
       h = libraries_data["<%=@library%>"].box_size.height,
       url = '/assets/' + '<%= @library %>' + '_' + '<%= @floor %>' + '<%= @extension %>';
 
-  console.log(w,h);
+  //console.log(w,h);
   // calculate the edges of the image, in coordinate space
   var southWest = map.unproject([0, h], map.getMaxZoom()-1);
   var northEast = map.unproject([w, 0], map.getMaxZoom()-1);
@@ -150,71 +181,100 @@
   // tell leaflet that the map is exactly as big as the image
   map.setMaxBounds(bounds);
 
-
-  // Load appropriate floors buttons into container
-  libraries_data["<%=@library%>"].floors.forEach(function(floor) {
-    // $("#floor_buttons").append("<a class='btn btn-default btn-sm btn-floor' data-no-turbolink='true' data-floor='"+floor.order+"' href='/?floor="+floor.order+"&library=<%=@library%>'>"+floor.name+"</a>");
-    $("#floor_buttons").append("<option value='"+floor.order+"'>"+floor.name+"</option>");
-  });
-
-  L.AwesomeMarkers.Icon.prototype.options.prefix = 'fa';
-  <% if @elements and @elements.length > 0
-
-    @elements.each do |element| %>
-      L.marker(map.unproject([<%= element.left %>, <%= element.top %>], map.getMaxZoom()-1), {
-        icon: L.AwesomeMarkers.icon({
-          icon: 'book',
-          markerColor: 'red'
-        })
-      }).addTo(map).bindPopup("<b><%= @title %></b><br> <%= @author %><br> <%= @shelfmark%> ("+$('.btn-floor[data-floor="<%= @floor %>"]').text()+" floor)").openPopup();
-    <%  end %>
-
-    if($(window).width() < 1100) {
-      helpInfo(10000);
-    }
-  <% elsif @is_searching %>
-    $.notify({
-      message: 'We couldn\'t find this book in the maps. Find someone at the Helpdesk for help.'
-    },{
-      type: 'danger',
-      offset: 10
+    // Load appropriate floors buttons into container
+    libraries_data["<%=@library%>"].floors.forEach(function(floor) {
+      $("#floor_buttons").append("<li value='"+floor.order+"'><a href='#' data-value='"+floor.order+"'>"+floor.name+"</a></li>");
     });
-  <% end %>
 
-  //check the elements
-  <% if @elementnames and @elementnames.length > 0
-    @elementnames.each do |elementname| %>
-    L.marker(map.unproject([<%= elementname.left %>, <%= elementname.top%>], map.getMaxZoom()-1), {
-        icon: L.AwesomeMarkers.icon({
-          icon: 'location-arrow',
-          markerColor: 'blue'
-        })
-      }).addTo(map)
-    <%  end %>
-  <% elsif @searching_element %>
-    $.notify({
-      message: 'We couldn\'t find this Elements on this floor. Find someone at the Helpdesk for help.'
-    },{
-      type: 'danger',
-      offset: 10
+    L.AwesomeMarkers.Icon.prototype.options.prefix = 'fa';
+    <% if @elements and @elements.length > 0
+
+      @elements.each do |element|
+
+      #todo check if empty
+       %>
+        //reload map
+        // dimensions of the image
+        var w = libraries_data["<%=@library%>"].box_size.width,
+            h = libraries_data["<%=@library%>"].box_size.height,
+            url = '/assets/' + '<%= @library %>' + '_' + '<%= @floor %>' + '<%= @extension %>';
+
+        //console.log(w,h);
+        // calculate the edges of the image, in coordinate space
+        var southWest = map.unproject([0, h], map.getMaxZoom()-1);
+        var northEast = map.unproject([w, 0], map.getMaxZoom()-1);
+        var bounds = new L.LatLngBounds(southWest, northEast);
+
+        L.imageOverlay(url, bounds).addTo(map);
+
+        // tell leaflet that the map is exactly as big as the image
+        map.setMaxBounds(bounds);
+
+              L.marker(map.unproject([<%= element.left %>, <%= element.top %>], map.getMaxZoom()-1), {
+                icon: L.AwesomeMarkers.icon({
+                  icon: 'book',
+                  markerColor: 'red'
+                })
+              }).addTo(map).bindPopup("<b><%= @title %></b><br> <%= @author %><br> <%= @shelfmark%> ("+libraries_data["<%=@library%>"].floors[<%= @floor%>].name +" floor)").openPopup();
+            <%  end %>
+
+            <% if session[:ui_view] != 'kiosk' then%>
+             // if($(window).width() < 1100) {
+                helpInfo(90000);
+             // }
+            <%  end %>
+
+    <% elsif @is_searching %>
+      $.notify({
+        message: 'We could not locate this item on this floor. Please ask someone at the Helpdesk.'
+      },{
+        type: 'danger',
+        offset: 10
+      });
+    <% end %>
+
+    //check the elements
+    <% if @elementnames and @elementnames.length > 0
+      @elementnames.each do |elementname| %>
+      L.marker(map.unproject([<%= elementname.left %>, <%= elementname.top%>], map.getMaxZoom()-1), {
+          icon: L.AwesomeMarkers.icon({
+            icon: 'location-arrow',
+            markerColor: 'blue'
+          })
+        }).addTo(map)
+      <%  end %>
+    <% elsif @searching_element %>
+      $.notify({
+        message: 'This facility is not available on this floor.'
+      },{
+        type: 'info',
+        offset: 10
+      });
+    <% end %>
+
+    $('#floor_info').html("<%=@library.capitalize%> Library : " + libraries_data["<%=@library%>"].floors["<%= @floor%>"].name);
+
+    $('#library_option_btn').html('<%=@library.capitalize%> Library <span class="caret"></span>');
+    $('#library_option_btn').val('<%= @library %>');
+    $('#library_option li a ').click(function() {
+      window.location.replace(document.location.origin + "?library=" + $(this).data('value') + "&floor=1");
+
+      $('#library_option_btn').html($(this).text() + ' <span class="caret"></span>');
+      $('#library_option_btn').val($(this).data('value'));
+     });
+
+    $('#floor_btn').html('' + libraries_data["<%=@library%>"].floors[<%= @floor%>].name + ' <span class="caret"></span>');
+    $('#floor_btn').val('<%= @floor %>');
+    $('#floor_buttons li a').click(function() {
+      <% @floor = @floor.presence || '1'%>
+      window.location.replace(document.location.origin + "?library=<%=@library%>&floor=" + $(this).data('value'));
+      $('#floor_btn').html($(this).text() + ' <span class="caret"></span>');
+      $('#floor_btn').val($(this).data('value'));
     });
-  <% end %>
 
-
-  $('.btn-floor[data-floor="<%= @floor %>"]').addClass("currentButton");
-  $('#floor_info').html(libraries_data["<%=@library%>"].floors[<%= @floor%>].name + " Floor");
-  $('#library_option').val("<%= @library %>");
-  $('#library_option').on('change', function() {
-    window.location.replace(document.location.origin + "?library=" + this.value + "&floor=1");
-  });
-  $('#floor_buttons').val("<%= @floor%>")
-  $('#floor_buttons').on('change', function() {
-    window.location.replace(document.location.origin + "?floor=" + this.value + "&library=<%=@library%>");
-  });
-
-  //toggle button for show direction
-  $('#compass_btn').click(function(){
-    $('#compass').toggle();
-  })
+    //toggle button for show direction
+    $('#compass_btn').click(function(){
+      $('#compass').toggle();
+    })
 
 </script>

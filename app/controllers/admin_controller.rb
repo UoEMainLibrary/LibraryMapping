@@ -1,10 +1,13 @@
 class AdminController < ApplicationController
+  http_basic_authenticate_with :name => APP_CONFIG["name"], :password => APP_CONFIG["password"], realm: "Contact the Library Digital Development Team digital.library@ed.ac.uk for access"
+
   def index
     #redirect_to action: "map", floor: 1, library: "main"
     @total = UsageStatistic.count
     @found = UsageStatistic.where(found: true).count
     @feedback_messages = FeedbackMessage.all
   end
+
 
   def save_svg
     if params[:svg_data] and params[:library] and params[:floor]
@@ -36,16 +39,17 @@ class AdminController < ApplicationController
       res = save_single_element(element)
       p res
       if res != true
-        respond_to do |format|
-          format.json {render :json => { :errors => res['error'] }, :status => 422}
-        end
-        return
+        response = { error: 'Could not save element' }
+        status = :unprocessable_entity
+
+      else
+        response = {:next_id => Element.maximum(:id).to_i }
+        status = :ok
       end
+      render json: response, status: status
     end
 
-    render :json => {
-        :next_id => Element.maximum(:id).to_i
-    }
+
   end
 
 
@@ -153,6 +157,7 @@ class AdminController < ApplicationController
 
       if shelfmark_end != ""
         shelfmark_end = shelfmarkToOrder(shelfmark_end, element["identifier"])
+        puts shelfmark_start
         if shelfmark_end == -1
           return {"error" => "Invalid end shelfmark"}
         end
