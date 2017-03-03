@@ -6,8 +6,19 @@
 #   cities = City.create([{ name: 'Chicago' }, { name: 'Copenhagen' }])
 #   Mayor.create(name: 'Emanuel', city: cities.first)
 
-HubLcSection.destroy_all
-LcSection.destroy_all
+if (HubLcSection.exists?)
+  HubLcSection.destroy_all
+end
+if (LcSection.exists?)
+  LcSection.destroy_all
+end
+if (MurrayLcSection.exists?)
+  MurrayLcSection.destroy_all
+end
+if (NewcollegeLcSection.exists?)
+  NewcollegeLcSection.destroy_all
+end
+
 
 unless ElementType.exists?(:name => "Wall")
   ElementType.create({id:1, name: "Wall"})
@@ -757,14 +768,14 @@ end
 i = 1
 CLASS_HASH.each do |key, klas|
   klas[:subclasses].each do |letter, body|
-    NewcollegeSection.create({letters: 'Pamph. ' + letter, token: i, name: 'Pamphlet - ' + body[:name]})
+    NewcollegeLcSection.create({letters: 'Pamph. ' + letter, token: i, name: 'Pamphlet - ' + body[:name]})
     i = i + 1
   end
 end
 CLASS_HASH.each do |key, klas|
   klas[:subclasses].each do |letter, body|
     if letter[0] != 'N'
-      NewcollegeSection.create({letters: 'Folio ' + letter, token: i, name: 'Folio - ' + body[:name]})
+      NewcollegeLcSection.create({letters: 'Folio ' + letter, token: i, name: 'Folio - ' + body[:name]})
     end
     i = i + 1
   end
@@ -772,7 +783,7 @@ end
 
 CLASS_HASH.each do |key, klas|
   klas[:subclasses].each do |letter, body|
-    NewcollegeSection.create({letters: letter, token: i, name: body[:name]})
+    NewcollegeLcSection.create({letters: letter, token: i, name: body[:name]})
     i = i + 1;
   end
 end

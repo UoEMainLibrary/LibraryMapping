@@ -10,7 +10,7 @@ class ApplicationController < ActionController::Base
 
     # Library of Congress classifications
     # Add other LoC collections here
-    if identifier == "lc_main" || identifier == "lc_hub" || identifier == "lc_murray" || identifier == "lc_murray_hub"
+    if identifier == "lc_main" || identifier == "lc_hub" || identifier == "lc_murray" || identifier == "lc_murray_hub" || identifier == "lc_newcollege" || identifier == "lc_newcollege_hub"
 
       #todo catch errors here
       begin
@@ -33,9 +33,9 @@ class ApplicationController < ActionController::Base
      elsif identifier == "lc_murray_hub"
        subclass = MurrayLcSection.where(:letters => letters).first
      elsif identifier == "lc_newcollege_hub"
-       subclass = MurrayLcSection.where(:letters => letters).first
-      elsif identifier == "lc_newcollege"
-       subclass = NewCollegeSection.where(:letters => letters).first
+       subclass = NewcollegeLcSection.where(:letters => letters).first
+     elsif identifier == "lc_newcollege"
+       subclass = NewcollegeLcSection.where(:letters => letters).first
      end
 
 
