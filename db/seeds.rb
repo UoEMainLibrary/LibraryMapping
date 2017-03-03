@@ -757,14 +757,14 @@ end
 i = 1
 CLASS_HASH.each do |key, klas|
   klas[:subclasses].each do |letter, body|
-    NewcollegeSection.create({letters: 'Pamph. ' + letter, token: i, name: 'Pamphlet - ' + body[:name]})
+    NewcollegeLcSection.create({letters: 'Pamph. ' + letter, token: i, name: 'Pamphlet - ' + body[:name]})
     i = i + 1
   end
 end
 CLASS_HASH.each do |key, klas|
   klas[:subclasses].each do |letter, body|
     if letter[0] != 'N'
-      NewcollegeSection.create({letters: 'Folio ' + letter, token: i, name: 'Folio - ' + body[:name]})
+      NewcollegeLcSection.create({letters: 'Folio ' + letter, token: i, name: 'Folio - ' + body[:name]})
     end
     i = i + 1
   end
@@ -772,7 +772,7 @@ end
 
 CLASS_HASH.each do |key, klas|
   klas[:subclasses].each do |letter, body|
-    NewcollegeSection.create({letters: letter, token: i, name: body[:name]})
+    NewcollegeLcSection.create({letters: letter, token: i, name: body[:name]})
     i = i + 1;
   end
 end
