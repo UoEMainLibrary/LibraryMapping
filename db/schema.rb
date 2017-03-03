@@ -11,7 +11,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20160531144833) do
+ActiveRecord::Schema.define(version: 20170303114550) do
 
   create_table "element_types", force: :cascade do |t|
     t.string   "name",       limit: 255, null: false
@@ -31,8 +31,8 @@ ActiveRecord::Schema.define(version: 20160531144833) do
     t.float    "angle",               limit: 24,                          default: 0.0, null: false
     t.string   "fill",                limit: 255,                         default: "0"
     t.float    "opacity",             limit: 24,                          default: 1.0, null: false
-    t.datetime "created_at",                                                            null: false
-    t.datetime "updated_at",                                                            null: false
+    t.datetime "created_at"
+    t.datetime "updated_at"
     t.integer  "floor",               limit: 4
     t.float    "scaleX",              limit: 24
     t.float    "scaleY",              limit: 24
@@ -84,6 +84,15 @@ ActiveRecord::Schema.define(version: 20160531144833) do
 
   add_index "murray_lc_sections", ["letters"], name: "index_murray_lc_sections_on_letters", unique: true, using: :btree
   add_index "murray_lc_sections", ["token"], name: "index_murray_lc_sections_on_token", unique: true, using: :btree
+
+  create_table "newcollege_lc_sections", force: :cascade do |t|
+    t.string  "letters", limit: 255, null: false
+    t.integer "token",   limit: 4,   null: false
+    t.string  "name",    limit: 255, null: false
+  end
+
+  add_index "newcollege_lc_sections", ["letters"], name: "index_newcollege_lc_sections_on_letters", unique: true, using: :btree
+  add_index "newcollege_lc_sections", ["token"], name: "index_newcollege_lc_sections_on_token", unique: true, using: :btree
 
   create_table "usage_statistics", force: :cascade do |t|
     t.boolean  "found",      null: false
