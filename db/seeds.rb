@@ -6,8 +6,19 @@
 #   cities = City.create([{ name: 'Chicago' }, { name: 'Copenhagen' }])
 #   Mayor.create(name: 'Emanuel', city: cities.first)
 
-HubLcSection.destroy_all
-LcSection.destroy_all
+if (HubLcSection.exists?)
+  HubLcSection.destroy_all
+end
+if (LcSection.exists?)
+  LcSection.destroy_all
+end
+if (MurrayLcSection.exists?)
+  MurrayLcSection.destroy_all
+end
+if (NewcollegeLcSection.exists?)
+  NewcollegeLcSection.destroy_all
+end
+
 
 unless ElementType.exists?(:name => "Wall")
   ElementType.create({id:1, name: "Wall"})
