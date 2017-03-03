@@ -32,6 +32,10 @@ class ApplicationController < ActionController::Base
        subclass = MurrayLcSection.where(:letters => letters).first
      elsif identifier == "lc_murray_hub"
        subclass = MurrayLcSection.where(:letters => letters).first
+     elsif identifier == "lc_newcollege_hub"
+       subclass = MurrayLcSection.where(:letters => letters).first
+      elsif identifier == "lc_newcollege"
+       subclass = NewCollegeSection.where(:letters => letters).first
      end
 
 

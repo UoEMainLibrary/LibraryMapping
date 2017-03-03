@@ -26,6 +26,18 @@ var libraries_data = {
             {order: 2, name:'Second Floor'},
             {order: 3, name:'Third Floor'}
         ]
+    },
+    'newcollege': {
+        box_size: {
+            width: 972,
+            height: 1338
+        },
+        floors: [
+            {order: 0, name:'Stack 2'},
+            {order: 1, name:'Stack 1'},
+            {order: 2, name:'Hall'},
+            {order: 3, name:'First Floor'}
+        ]
     }
 };
 
@@ -675,7 +687,14 @@ $(document).on('admin#map:loaded', function(){
             case "lc_murray_hub":
                 $("#lc-form").show();
                 break;
-
+            case "new_college":
+                $("#lc-form").show();
+                break;
+            case "new_college_hub":
+                $("#lc-form").show();
+                break;
+            
+               
         }
 
     });
