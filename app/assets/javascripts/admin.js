@@ -687,10 +687,10 @@ $(document).on('admin#map:loaded', function(){
             case "lc_murray_hub":
                 $("#lc-form").show();
                 break;
-            case "new_college":
+            case "lc_newcollege":
                 $("#lc-form").show();
                 break;
-            case "new_college_hub":
+            case "lc_newcollege_hub":
                 $("#lc-form").show();
                 break;
             
