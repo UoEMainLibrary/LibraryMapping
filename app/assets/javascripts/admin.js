@@ -693,6 +693,15 @@ $(document).on('admin#map:loaded', function(){
             case "lc_newcollege_hub":
                 $("#lc-form").show();
                 break;
+            case "journal_newcollege":
+                $("#dewey-form").show();
+                $("#dewey-form .range_start_opt").append('<option value="Per. ">Per.</option>');
+                $("#dewey-form .range_end_opt").append('<option value="Per. ">Per.</option>');
+                $("#dewey-form .range_start_opt").val("Per. ");
+                $("#dewey-form .range_start_opt").prop('disabled', true);
+                $("#dewey-form .range_end_opt").val("Per. ");
+                $("#dewey-form .range_end_opt").prop('disabled', true);
+                break;
             
                
         }
