@@ -36,6 +36,7 @@ class ApplicationController < ActionController::Base
        subclass = NewcollegeLcSection.where(:letters => letters).first
      elsif identifier == "lc_newcollege"
        subclass = NewcollegeLcSection.where(:letters => letters).first
+    else
      end
 
 
@@ -52,7 +53,7 @@ class ApplicationController < ActionController::Base
 
     # Dewey Decimal classifications
     # Add other Dewey Decimal collections here
-    elsif identifier == "dewey_main" || identifier == "journal_main"
+    elsif identifier == "dewey_main" || identifier == "journal_main" || identifier == "journal_newcollege"
 
       offset = 0
 
