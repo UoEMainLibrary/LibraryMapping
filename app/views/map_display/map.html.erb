@@ -145,6 +145,16 @@
 </div>
 </body>
 <script>
+
+  var zoom = 0.1;
+ //if the library is not main library, w,h expand
+  var library_name = "<%=@library%>";
+  if(library_name == "murray"){
+    zoom = 1;
+  }else if(library_name == "newcollege"){
+    zoom = 1.5;
+  }
+
   var map = L.map('image-map', {
     minZoom: 0.1,
     maxZoom: 4,
@@ -170,15 +180,6 @@
   var w = libraries_data["<%=@library%>"].box_size.width,
       h = libraries_data["<%=@library%>"].box_size.height,
       url = '/assets/' + '<%= @library %>' + '_' + '<%= @floor %>' + '<%= @extension %>';
-  //if the library is not main library, w,h expand
-  var library_name = "<%=@library%>";
-  if(library_name == "murray"){
-    w *= 1.5;
-    h *= 1.5;
-  }else if(library_name == "newcollege"){
-    w *= 2.5;
-    h *= 2.5;
-  }
 
   //console.log(w,h);
   // calculate the edges of the image, in coordinate space
