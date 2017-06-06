@@ -1,40 +1,29 @@
 class MapDisplayController < ApplicationController
   def map
-
     # Select Leaflet image based on browser
     browser = Browser.new(request.user_agent)
-    @extension = ".png"
 
-    if (browser.chrome? or browser.firefox? or browser.safari?) and !browser.platform.ios? and !browser.platform.android?
-      @extension = ".svg"
-    end
+    @extension = (browser.chrome? || browser.firefox? || browser.safari?) ? ".svg" : ".png"
+    @extension = ".png" if browser.platform.ios? || browser.platform.android?
 
     # Read URL params
     @shelfmark = params[:shelfmark]
-    identifier = params[:identifier]
-    @library = params[:library]
-    @floor = params[:floor]
+    identifier = params[:identifier] || 'lc_hub'
+    @library = params[:library] || 'main'
+    @floor = params[:floor] || 1
     @title = params[:title]
     @author = params[:author]
     @element_name = params[:element_name]
-    if session[:ui_view].nil? then
-      session[:ui_view] = params[:view]
-    end
+    session[:ui_view] = params[:view] if session[:ui_view].nil?
 
-    unless @floor
-      @floor = 1
-    end
 
-    unless @library
-      @library = "main"
+    #search for the icons
+    if @element_name
+      @searching_element = true
+      @elementnames = Element.joins(:element_type).where("elements.library = :library AND elements.floor = :floor AND element_types.name like :name", {library: @library, floor: @floor, name: "%#{params[:element_name]}%"})
     end
-
-    unless identifier
-      identifier = "lc_hub"
-    end
-
     # If URL is passing paramenters
-    if @shelfmark and @library and @floor
+    if @shelfmark
         @is_searching = true
         
         unless browser.platform.ios? or browser.platform.android? or browser.platform.windows_phone?
@@ -66,20 +55,15 @@ class MapDisplayController < ApplicationController
         end
     end
 
-     #search for the icons
-    if @library and @floor and @element_name
-     @searching_element = true
-      @elementnames = Element.joins(:element_type).where("elements.library = :library AND elements.floor = :floor AND element_types.name like :name", {library: @library, floor: @floor, name: "%#{params[:element_name]}%"})
+    respond_to do |format|
+      format.js
+      format.html
     end
 
   end
 
   def save_statistics
-    found = params[:found]
-    if found
-      UsageStatistic.create(found: found)
-    end
-
+    UsageStatistic.create(found: params[:found]) if params[:found]
     head :ok
   end
 

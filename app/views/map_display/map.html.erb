@@ -72,25 +72,27 @@
   </nav>
   <div class="navbar-collapse optionsTopBar" <% if @elements %> style="display: none;" <% end %>>
 
-  <div class="col-xs-12 col-sm-6 label-style">
-    <label> Find on floor:</label>
-    <a class="btn btn-default btn-sm btn-floor" data-no-turbolink="true" href="/?floor=<%=@floor%>&library=<%=@library%>&element_name=print" alt="Printers" title="Printers">Printers</a>
-    <a class="btn btn-default btn-sm btn-floor" data-no-turbolink="true" href="/?floor=<%=@floor%>&library=<%=@library%>&element_name=toilet" alt="Toilets" title="Toilets">Toilets</a>
-    <a class="btn btn-default btn-sm btn-floor" data-no-turbolink="true" href="/?floor=<%=@floor%>&library=<%=@library%>&element_name=groupstudy" alt="Group study" title="Group study">Group study</a>
-    <a class="btn btn-default btn-sm btn-floor" data-no-turbolink="true" href="/?floor=<%=@floor%>&library=<%=@library%>&element_name=recent" alt="Recent Returns" title="Recent returns">Recent returns</a>
-    <a class="btn btn-default btn-sm btn-floor" data-no-turbolink="true" href="/?floor=<%=@floor%>&library=<%=@library%>&element_name=lift" alt="Lifts" title="Lifts">Lifts</a>
-    <a class="btn btn-default btn-sm btn-floor" data-no-turbolink="true" href="/?floor=<%=@floor%>&library=<%=@library%>&element_name=water" alt="Water Fountains" title="Water Fountains">Water Fountains</a>
+    <div class="col-xs-12 col-md-8 label-style">
+      <label> Find on floor:</label>
+      <%= link_to 'Printers', { controller: :map_display, action: :map, floor: @floor, library: @library, element_name: 'print' }, {class: "print btn btn-sm btn-floor ", remote: true}%>
+      <%= link_to 'Toilets', { controller: :map_display, action: :map, floor: @floor, library: @library, element_name: 'toilet' }, {class: "toilet btn btn-sm btn-floor ", remote: true}%>
+      <%= link_to 'Group study', { controller: :map_display, action: :map, floor: @floor, library: @library, element_name: 'groupstudy' }, {class: " groupstudy btn btn-sm btn-floor ", remote: true}%>
+      <%= link_to 'Recent returns', { controller: :map_display, action: :map, floor: @floor, library: @library, element_name: 'recent' }, {class: " recent btn btn-sm btn-floor ", remote: true}%>
+      <%= link_to 'Lifts', { controller: :map_display, action: :map, floor: @floor, library: @library, element_name: 'lift' }, {class: "lift btn btn-sm btn-floor ", remote: true}%>
+      <%= link_to 'Water fountains', { controller: :map_display, action: :map, floor: @floor, library: @library, element_name: 'water' }, {class: "water btn btn-sm btn-floor ", remote: true}%>
+    </div>
 
-  </div>
-    <% if @title %>
-      <label> Title: </label>
-      <span><%= @title %></span>
-    <% end %>
+    <div class="col-xs-12 col-md-4">
+      <% if @title %>
+        <label> Title: </label>
+        <span><%= @title %></span>
+      <% end %>
 
-    <% if @author %>
-      <label> Author: </label>
-      <span><%= @author %></span>
-    <% end %>
+      <% if @author %>
+        <label> Author: </label>
+        <span><%= @author %></span>
+      <% end %>
+    </div>
   </div>
 
   <div id="qr-container">
@@ -105,17 +107,17 @@
     <div id="compass">
       <% if @library == 'main' then %>
           <div class="compass-up">
-            <span class="compass">Meadows</span>
+            Meadows
           </div>
           <div class="compass-down">
-            <span class="compass">George Square</span>
+            George Square
           </div>
       <% else %>
           <div class="compass-up">
-            <span class="compass">North</span>
+            North
           </div>
           <div class="compass-down">
-            <span class="compass">South</span>
+            South
           </div>
       <% end %>
     </div>
@@ -145,7 +147,7 @@
 </div>
 </body>
 <script>
-
+    var markers = [];
   var zoom = 0.1;
  //if the library is not main library
   var library_name = "<%=@library%>";
@@ -240,25 +242,6 @@
         message: 'We could not locate this item on this floor. Please ask someone at the Helpdesk.'
       },{
         type: 'danger',
-        offset: 10
-      });
-    <% end %>
-
-    //check the elements
-    <% if @elementnames and @elementnames.length > 0
-      @elementnames.each do |elementname| %>
-      L.marker(map.unproject([<%= elementname.left %>, <%= elementname.top%>], map.getMaxZoom()-1), {
-          icon: L.AwesomeMarkers.icon({
-            icon: 'location-arrow',
-            markerColor: 'blue'
-          })
-        }).addTo(map)
-      <%  end %>
-    <% elsif @searching_element %>
-      $.notify({
-        message: 'This facility is not available on this floor.'
-      },{
-        type: 'info',
         offset: 10
       });
     <% end %>

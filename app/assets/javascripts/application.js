@@ -21,4 +21,5 @@
 //= require bootstrap-notify
 //= require leaflet
 //= require leaflet.awesome-markers
+//= require notifyjs_rails
 //= require_tree .

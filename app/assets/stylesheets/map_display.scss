@@ -2,14 +2,14 @@
 // They will automatically be included in application.css.
 // You can use Sass (SCSS) here: http://sass-lang.com/
 body, html {
-	height: 100%;
+  height: 100%;
 }
 
 #image-map {
-	width: 100%;
-	border: 1px solid #ccc;
-    height: calc(100% - 80px);
-	margin:auto;
+  width: 100%;
+  border: 1px solid #ccc;
+  height: calc(100% - 80px);
+  margin:auto;
 }
 
 .image-map-open {
@@ -17,7 +17,7 @@ body, html {
 }
 
 #main-container{
-	height: 100%;
+  height: 100%;
 }
 
 .footerHolder{
@@ -44,93 +44,66 @@ body, html {
 }
 
 #i-label{
-	margin: 0;
-	font-size: 1em;
-	color: #1B325E;
-	float: left;
+  margin: 0;
+  font-size: 1em;
+  color: #1B325E;
+  float: left;
 }
 
 #tip-close{
-	margin: 0;
-	font-size: 1em;
-	color: #A94442;
-	float: right;
-	cursor: pointer;
+  margin: 0;
+  font-size: 1em;
+  color: #A94442;
+  float: right;
+  cursor: pointer;
 }
 
 .tip{
-	background-color: #ECEAD0;
-	width: 100%;
+  background-color: #ECEAD0;
+  width: 100%;
 }
 
 .tip-btn{
-	background-color: #ECEAD0;
-    position: fixed;
-    left: 0;
-    color: #777;
-    cursor: pointer;
-    z-index: 1000;
-    border-radius: 22%;
-    border: 1px solid #ccc;
-    padding: 4px;
-    margin: 80px 10px;
+  background-color: #ECEAD0;
+  position: fixed;
+  left: 0;
+  color: #777;
+  cursor: pointer;
+  z-index: 1000;
+  border-radius: 22%;
+  border: 1px solid #ccc;
+  padding: 4px;
+  margin: 80px 10px;
 }
-
 .optionsTopBar{
   padding: 9px 0 6px 0;
   height: auto;
 }
-
-.label-style{
-   margin-bottom: 8px;
-
+.compass-up, .compass-down {
+  position: absolute;
+  width: 200px;
+  left: calc(50% - 100px);
+  text-align: center;
+  font-weight: bold;
+  font-size: 18px;
 }
 .compass-up{
-  position: absolute;
   top: 25px;
-  left: 47%;
-  z-index: 100;
 }
-
 .compass-down{
-  position: absolute;
   bottom: 25px;
-  left: 47%;
-  z-index: 100;
 }
-
-.compass{
-    display: inline-block;
-    margin-bottom: 0;
-    font-weight: normal;
-    text-align: center;
-    vertical-align: middle;
-    touch-action: manipulation;
-    border: 1px solid #eea236;
-    white-space: nowrap;
-    padding: 6px 12px;
-    font-size: 14px;
-    line-height: 1.42857143;
-    border-radius: 4px;
-    color: #fff;
-    opacity: 0.7;
-    background-color: #1ABB9C;
-}
-
 .btn-floor{
   margin-top: -3px;
   margin-right: 3px;
   padding: 3px 10px !important;
 }
-
 .currentButton{
   background-color: #F0F0F0!important;
 }
-
 #qr-container{
   display: none;
 }
-
 #qr-container {
   border-width: 0;
   border-style: none;
@@ -172,9 +145,9 @@ body, html {
   }
 
   .dropdown-menu > li > a {
-     background-color: #1B325E;
-     color: #ffffff;
-   }
+    background-color: #1B325E;
+    color: #ffffff;
+  }
 
   .dropdown-menu > li > a.hover {
     color: #1B325E;
