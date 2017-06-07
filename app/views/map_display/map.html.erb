@@ -5,17 +5,7 @@
 <% end %>
 
 <body data-controller="<%= controller.controller_name %>" data-action="<%= controller.action_name %>">
-<link rel="stylesheet" href="//maxcdn.bootstrapcdn.com/font-awesome/4.5.0/css/font-awesome.min.css">
-<link rel="stylesheet" href="https://domoritz.github.io/leaflet-locatecontrol/dist/L.Control.Locate.min.css"/>
-
 <div id="main-container">
-  <!--[if IE]>
-  <script src="/assets/Delicious.font.js"></script><![endif]-->
-
-  <link href='https://fonts.googleapis.com/css?family=Plaster' rel='stylesheet' type='text/css'>
-  <link href='https://fonts.googleapis.com/css?family=Engagement' rel='stylesheet' type='text/css'>
-
-  <!--nav-->
   <nav id="mappingNavbar" class="bg-blue" role="navigation">
     <%= render 'mapping_navbar' %>
   </nav>

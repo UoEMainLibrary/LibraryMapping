@@ -30,7 +30,6 @@ class AdminController < ApplicationController
     head :ok
   end
 
-  #Save a single element
   def save_element
     if params[:element]
       element = JSON.parse params[:element]
@@ -38,23 +37,20 @@ class AdminController < ApplicationController
       res = save_single_element(element)
       p res
       if res != true
-        response = { error: 'Could not save element' }
+        response = {error: 'Could not save element'}
         status = :unprocessable_entity
 
       else
-        response = {:next_id => Element.maximum(:id).to_i }
+        response = {:next_id => Element.maximum(:id).to_i}
         status = :ok
       end
       render json: response, status: status
     end
-
-
   end
 
-
   def map
-    @floor = params[:floor]
-    @library = params[:library]
+    @floor = params[:floor] || 1
+    @library = params[:library] || 'main'
 
     # Saving the canvas
     if params[:elements] then
@@ -64,7 +60,7 @@ class AdminController < ApplicationController
 
       # Loop through each element to save
       @elements.each do |element|
-        unless Element.exists?(:id => element["id"])
+        unless Element.exists?(id: element["id"])
           newElementsCount += 1
         end
         save_single_element(element)
@@ -99,42 +95,22 @@ class AdminController < ApplicationController
 
     if element["element_type_id"] == ElementType.find_by(name: "Shelf").id
 
-      if element["range_end_opt"] == nil
-        element["range_end_opt"] = ''
-      end
-
-      if element["range_end_digits"] == nil
-        element["range_end_digits"] = ''
-      end
-
-      if element["range_end_letters"] == nil
-        element["range_end_letters"] = ''
-      end
-
-      if element["range_start_opt"] == nil
-        element["range_start_opt"] = ''
-      end
-
-      if element["range_start_digits"] == nil
-        element["range_start_digits"] = ''
-      end
-
-      if element["range_start_letters"] == nil
-        element["range_start_letters"] = ''
-      end
+      element["range_end_opt"] ||= ''
+      element["range_end_digits"] ||= ''
+      element["range_end_letters"] ||= ''
+      element["range_start_opt"] ||= ''
+      element["range_start_digits"] ||= ''
+      element["range_start_letters"]||= ''
 
       # Validate shelfmark
-      if (element["range_end_opt"] == "Ref. ")
-        shelfmark_end = element["range_end_letters"] + element["range_end_digits"]
-      else
-        shelfmark_end = element["range_end_opt"] + element["range_end_letters"] + element["range_end_digits"]
-      end
+      shelfmark_end = element["range_end_opt"] == "Ref. " ?
+                          element["range_end_letters"] + element["range_end_digits"] :
+                          element["range_end_opt"] + element["range_end_letters"] + element["range_end_digits"]
 
-      if (element["range_start_opt"] == "Ref. ")
-        shelfmark_start = element["range_start_letters"] + element["range_start_digits"]
-      else
-        shelfmark_start = element["range_start_opt"] + element["range_start_letters"] + element["range_start_digits"]
-      end
+
+      shelfmark_start = element["range_start_opt"] == "Ref. " ?
+                            element["range_start_letters"] + element["range_start_digits"] :
+                            element["range_start_opt"] + element["range_start_letters"] + element["range_start_digits"]
 
       if shelfmark_end == "" and shelfmark_start == ""
         canvasElement.identifier = element["identifier"]
@@ -180,18 +156,11 @@ class AdminController < ApplicationController
       canvasElement.range_start_letters = element["range_start_letters"]
 
     elsif element["element_type_id"] == ElementType.find_by(name: "Wall").id
-
       canvasElement.right = element["right"]
       canvasElement.bottom = element["bottom"]
-
     end
 
-    if canvasElement.save
-      return true
-    else
-      return {"error" => canvasElement.errors.full_messages}
-    end
-
+    canvasElement.save ? return true : return {"error" => canvasElement.errors.full_messages}
   end
 
 end
