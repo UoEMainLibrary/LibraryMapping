@@ -16,7 +16,6 @@ class MapDisplayController < ApplicationController
     @element_name = params[:element_name]
     session[:ui_view] = params[:view] if session[:ui_view].nil?
 
-
     #search for the icons
     if @element_name
       @searching_element = true

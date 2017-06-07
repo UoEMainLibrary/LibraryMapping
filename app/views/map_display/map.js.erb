@@ -1,28 +1,12 @@
 /**
  * Created by Kristiyan on 05/06/2017.
  */
-deleteMarkers();
-//check the elements
-<% if @elementnames && @elementnames.any? %>
-  if(markers.length > 0){
-  }
-  <% @elementnames.each do |elementname| %>
-  var marker = L.marker(map.unproject([<%= elementname.left %>, <%= elementname.top%>], map.getMaxZoom()-1), {
-    icon: L.AwesomeMarkers.icon({
-        icon: 'location-arrow',
-        markerColor: 'blue'
-    })
-  }).addTo(map)
-  markers.push(marker);
-  <%  end %>
-<% elsif @searching_element %>
-  $(".<%= @element_name %>").notify('We could not locate this item on this floor. Please ask someone at the Helpdesk.');
-<% end %>
 
-// Deletes all markers in the array by removing references to them.
-function deleteMarkers() {
-    for (var i = 0; i < markers.length; i++) {
-        markers[i].setOpacity(0);
-    }
-    markers = [];
-}
+<%= render 'map_script.js.erb' %>
+$('#mappingNavbar').html("<%= escape_javascript(render 'mapping_navbar') %>");
+$('.optionsTopBar').html("<%= escape_javascript(render 'subheader') %>");
+$('#compass').html("<%= escape_javascript(render 'compass') %>");
+
+<% if @searching_element && !@elementnames.any? %>
+$('.<%=@element_name%>').notify('We could not locate this item on this floor. Please ask someone at the Helpdesk.');
+<% end %>

@@ -1,125 +1,55 @@
 <!-- User maps -->
 
 <% content_for :head do %>
-    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no"/>
 <% end %>
 
 <body data-controller="<%= controller.controller_name %>" data-action="<%= controller.action_name %>">
 <link rel="stylesheet" href="//maxcdn.bootstrapcdn.com/font-awesome/4.5.0/css/font-awesome.min.css">
-<link rel="stylesheet" href="https://domoritz.github.io/leaflet-locatecontrol/dist/L.Control.Locate.min.css" />
+<link rel="stylesheet" href="https://domoritz.github.io/leaflet-locatecontrol/dist/L.Control.Locate.min.css"/>
 
 <div id="main-container">
-  <!--[if IE]><script src="/assets/Delicious.font.js"></script><![endif]-->
+  <!--[if IE]>
+  <script src="/assets/Delicious.font.js"></script><![endif]-->
 
   <link href='https://fonts.googleapis.com/css?family=Plaster' rel='stylesheet' type='text/css'>
   <link href='https://fonts.googleapis.com/css?family=Engagement' rel='stylesheet' type='text/css'>
 
   <!--nav-->
- <nav id="mappingNavbar" class="bg-blue" role="navigation">
-    <div class="container-fluid">
-        <div class="navbar-header">
-          <p class="navbar-text visible-xs-inline-block"><span id="floor_info" title="Expand right menu to change library and floor"></span></p>
-          <button type="button" class="navbar-toggle" data-toggle="collapse" data-target="#myNavbar">
-            <span class="icon-bar"></span>
-            <span class="icon-bar"></span>
-            <span class="icon-bar"></span>
-          </button>
-          <img class="logo" src="/assets/logo-01.png" title="University of Edinburgh Library Maps" alt="University of Edinburgh Library Maps">
-
-        </div>
-        <div class="collapse navbar-collapse" id="myNavbar">
-            <ul class="nav navbar-nav navbar-right ">
-              <li>
-                <a class="white-font" id="compass_btn" href="javascript:;" title="Show Direction"><i class="fa fa-compass" aria-hidden="true"></i> Direction</a>
-              </li>
-              <li><a class="white-font" id="libraries-and-floors" href="javascript:;" title="Show Direction"><span class="glyphicon glyphicon-search"></span>Find</a></li>
-              <% if @qr %>
-                  <li><a class="white-font" id="qr-code" href="javascript:;" title="Show Direction"><span class="glyphicon glyphicon glyphicon-phone"></span>Get on mobile</a></li>
-              <% end %>
-              <li><%= link_to '<span class="glyphicon glyphicon-send"></span>Feedback'.html_safe, {controller: "map_display", action: "feedback"}, class: "white-font", data: { no_turbolink: true } %></li>
-              <li><%= link_to '<i class="fa fa-question" aria-hidden="true"></i>&nbsp;FAQ'.html_safe, {controller: "map_display", action: "faq"}, class: "white-font", data: { no_turbolink: true } %></li>
-              <script>
-                var objParent = window.opener;
-                if(objParent) {
-                  document.write('<li><a href="#" onclick="window.close();" class="white-font" id="close_btn" title="Close Window"><i class="fa fa-close" aria-hidden="true"></i> Close</a></li>');
-                }
-                else {
-                  document.write('<li><a class="white-font" id="compass_btn" href="http://discovered.ed.ac.uk" target="_blank"  title="DiscoverEd Link"><i class="fa fa-book" aria-hidden="true"></i> DiscoverEd</a></li>');
-                }
-              </script>
-            </ul>
-              <ul class="nav navbar-nav navbar-left">
-                <li class="dropdown top_drop">
-                  <a href="#" class="dropdown-toggle" type="button" data-toggle="dropdown" aria-haspopup="true"
-                      aria-expanded="true" id="library_option_btn">Library
-                    <span class="caret"></span></a>
-                  <ul class="dropdown-menu" id="library_option">
-                    <li value="main"><a href="#" data-value="main">Main Library</a></li>
-                    <li value="murray"><a href="#" data-value="murray">Murray Library</a></li>
-                    <li value="newcollege"><a href="#" data-value="newcollege">New College Library</a></li>
-                  </ul>
-                </li>
-                <li>
-                  <a href="#" class="dropdown-toggle" type="button" data-toggle="dropdown" aria-haspopup="true"
-                        aria-expanded="true" id="floor_btn">Floor
-                  <span class="caret"></span></a>
-                  <ul class="dropdown-menu" id="floor_buttons">
-                  </ul>
-                </li>
-              </ul>
-        </div>
-   </div>
+  <nav id="mappingNavbar" class="bg-blue" role="navigation">
+    <%= render 'mapping_navbar' %>
   </nav>
-  <div class="navbar-collapse optionsTopBar" <% if @elements %> style="display: none;" <% end %>>
 
-    <div class="col-xs-12 col-md-8 label-style">
-      <label> Find on floor:</label>
-      <%= link_to 'Printers', { controller: :map_display, action: :map, floor: @floor, library: @library, element_name: 'print' }, {class: "print btn btn-sm btn-floor ", remote: true}%>
-      <%= link_to 'Toilets', { controller: :map_display, action: :map, floor: @floor, library: @library, element_name: 'toilet' }, {class: "toilet btn btn-sm btn-floor ", remote: true}%>
-      <%= link_to 'Group study', { controller: :map_display, action: :map, floor: @floor, library: @library, element_name: 'groupstudy' }, {class: " groupstudy btn btn-sm btn-floor ", remote: true}%>
-      <%= link_to 'Recent returns', { controller: :map_display, action: :map, floor: @floor, library: @library, element_name: 'recent' }, {class: " recent btn btn-sm btn-floor ", remote: true}%>
-      <%= link_to 'Lifts', { controller: :map_display, action: :map, floor: @floor, library: @library, element_name: 'lift' }, {class: "lift btn btn-sm btn-floor ", remote: true}%>
-      <%= link_to 'Water fountains', { controller: :map_display, action: :map, floor: @floor, library: @library, element_name: 'water' }, {class: "water btn btn-sm btn-floor ", remote: true}%>
-    </div>
-
-    <div class="col-xs-12 col-md-4">
-      <% if @title %>
-        <label> Title: </label>
-        <span><%= @title %></span>
-      <% end %>
-
-      <% if @author %>
-        <label> Author: </label>
-        <span><%= @author %></span>
-      <% end %>
-    </div>
+  <div class="navbar-collapse optionsTopBar">
+    <%= render 'subheader' %>
   </div>
 
   <div id="qr-container">
     <% if @qr %>
-      <%= raw @qr.as_html %>
+        <%= raw @qr.as_html %>
     <% end %>
-    <div>Scan the QR Code <br> using your mobile device. </div>
+    <div>Scan the QR Code <br> using your mobile device.</div>
   </div>
 
   <!--Image map canvas-->
-  <div id="image-map" class="<% unless @elements %> image-map-open <% end %>">
+  <div id="image-map" class="
+    <% unless @elements %> image-map-open
+    <% end %>">
+    <script type="text/javascript" charset="utf-8">
+      // This should be called only once, so don't move it in the partials
+        var library_name = "<%=@library%>", markers = [], overlay;
+        var map = L.map('image-map', {
+            minZoom: 0.1,
+            maxZoom: 4,
+            center: [0, 0],
+            zoom: 1,
+            attributionControl: false,
+            crs: L.CRS.Simple
+        });
+        <%= render 'map_script.js.erb' %>
+    </script>
     <div id="compass">
-      <% if @library == 'main' then %>
-          <div class="compass-up">
-            Meadows
-          </div>
-          <div class="compass-down">
-            George Square
-          </div>
-      <% else %>
-          <div class="compass-up">
-            North
-          </div>
-          <div class="compass-down">
-            South
-          </div>
-      <% end %>
+      <%= render 'compass' %>
     </div>
   </div>
 
@@ -128,147 +58,20 @@
       Have you found your book yet?
     </div>
     <a href="#" id="help-info-yes">
-    <div class="bottom-menu">
-      Yes!
-    </div>
+      <div class="bottom-menu">
+        Yes!
+      </div>
     </a>
     <a href="#" id="help-info-not-yet">
-    <div class="bottom-menu">
-      Not yet...
-    </div>
+      <div class="bottom-menu">
+        Not yet...
+      </div>
     </a>
     <a href="#">
-    <div class="bottom-menu" id="help-info-no">
-      I cannot find it
-    </div>
+      <div class="bottom-menu" id="help-info-no">
+        I cannot find it
+      </div>
     </a>
   </div>
-
 </div>
 </body>
-<script>
-    var markers = [];
-  var zoom = 0.1;
- //if the library is not main library
-  var library_name = "<%=@library%>";
-  if(library_name == "murray"){
-    zoom = 1;
-  }else if(library_name == "newcollege"){
-    zoom = 1.5;
-  }
-
-  var map = L.map('image-map', {
-    minZoom: 0.1,
-    maxZoom: 4,
-    center: [0, 0],
-    zoom: zoom,
-    attributionControl: false,
-    crs: L.CRS.Simple
-  });
-
-  // if the library does not exist in the data set - reset to main library ground floor and display message
-  if (!libraries_data["<%=@library%>"]) {
-
-    window.location.replace(document.location.origin + "?library=main&floor=1");
-
-    $.notify({
-      message: 'This location is not mapped, please try another. <%=@library%> <%=@floor%>'
-    },{
-      type: 'info',
-      offset: 10
-    });
-  }
-  // dimensions of the image
-  var w = libraries_data["<%=@library%>"].box_size.width,
-      h = libraries_data["<%=@library%>"].box_size.height,
-      url = '/assets/' + '<%= @library %>' + '_' + '<%= @floor %>' + '<%= @extension %>';
-
-  //console.log(w,h);
-  // calculate the edges of the image, in coordinate space
-  var southWest = map.unproject([0, h], map.getMaxZoom()-1);
-  var northEast = map.unproject([w, 0], map.getMaxZoom()-1);
-  var bounds = new L.LatLngBounds(southWest, northEast);
-
-  L.imageOverlay(url, bounds).addTo(map);
-
-  // tell leaflet that the map is exactly as big as the image
-  map.setMaxBounds(bounds);
-
-    // Load appropriate floors buttons into container
-    libraries_data["<%=@library%>"].floors.forEach(function(floor) {
-      $("#floor_buttons").append("<li value='"+floor.order+"'><a href='#' data-value='"+floor.order+"'>"+floor.name+"</a></li>");
-    });
-
-    L.AwesomeMarkers.Icon.prototype.options.prefix = 'fa';
-    <% if @elements and @elements.length > 0
-
-      @elements.each do |element|
-
-      #todo check if empty
-       %>
-        //reload map
-        // dimensions of the image
-        var w = libraries_data["<%=@library%>"].box_size.width,
-            h = libraries_data["<%=@library%>"].box_size.height,
-            url = '/assets/' + '<%= @library %>' + '_' + '<%= @floor %>' + '<%= @extension %>';
-
-        //console.log(w,h);
-        // calculate the edges of the image, in coordinate space
-        var southWest = map.unproject([0, h], map.getMaxZoom()-1);
-        var northEast = map.unproject([w, 0], map.getMaxZoom()-1);
-        var bounds = new L.LatLngBounds(southWest, northEast);
-
-        L.imageOverlay(url, bounds).addTo(map);
-
-        // tell leaflet that the map is exactly as big as the image
-        map.setMaxBounds(bounds);
-
-              L.marker(map.unproject([<%= element.left %>, <%= element.top %>], map.getMaxZoom()-1), {
-                icon: L.AwesomeMarkers.icon({
-                  icon: 'book',
-                  markerColor: 'red'
-                })
-              }).addTo(map).bindPopup("<b><%= @title %></b><br> <%= @author %><br> <%= @shelfmark%> ("+libraries_data["<%=@library%>"].floors[<%= @floor%>].name +" floor)").openPopup();
-            <%  end %>
-
-            <% if session[:ui_view] != 'kiosk' then%>
-             // if($(window).width() < 1100) {
-                helpInfo(90000);
-             // }
-            <%  end %>
-
-    <% elsif @is_searching %>
-      $.notify({
-        message: 'We could not locate this item on this floor. Please ask someone at the Helpdesk.'
-      },{
-        type: 'danger',
-        offset: 10
-      });
-    <% end %>
-
-    $('#floor_info').html("<%=@library.capitalize%> Library : " + libraries_data["<%=@library%>"].floors["<%= @floor%>"].name);
-
-    $('#library_option_btn').html('<%=@library.capitalize%> Library <span class="caret"></span>');
-    $('#library_option_btn').val('<%= @library %>');
-    $('#library_option li a ').click(function() {
-      window.location.replace(document.location.origin + "?library=" + $(this).data('value') + "&floor=1");
-
-      $('#library_option_btn').html($(this).text() + ' <span class="caret"></span>');
-      $('#library_option_btn').val($(this).data('value'));
-     });
-
-    $('#floor_btn').html('' + libraries_data["<%=@library%>"].floors[<%= @floor%>].name + ' <span class="caret"></span>');
-    $('#floor_btn').val('<%= @floor %>');
-    $('#floor_buttons li a').click(function() {
-      <% @floor = @floor.presence || '1'%>
-      window.location.replace(document.location.origin + "?library=<%=@library%>&floor=" + $(this).data('value'));
-      $('#floor_btn').html($(this).text() + ' <span class="caret"></span>');
-      $('#floor_btn').val($(this).data('value'));
-    });
-
-    //toggle button for show direction
-    $('#compass_btn').click(function(){
-      $('#compass').toggle();
-    })
-
-</script>

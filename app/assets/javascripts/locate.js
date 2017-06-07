@@ -471,8 +471,8 @@ $(document).on('map_display#map:loaded', function() {
                 if (this._event === undefined) {
                     return false;
                 }
-                return false;
                 return this._map.options.maxBounds && !this._map.options.maxBounds.contains(this._event.latlng);
+                return false;
             },
 
             /**
