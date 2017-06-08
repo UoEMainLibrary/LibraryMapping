@@ -1,38 +1,25 @@
-<!--Footer include-->
-<% if session[:ui_view] == 'kiosk' then%>
-    <div class="footerHolder">
-      <p>
-        &copy; The University of Edinburgh
-        <script type="text/javascript">
-          var currentTime = new Date()
-          var year = currentTime.getFullYear()
-          document.write(+ year)
-        </script>
-      </p>
-    </div>
-<% else %>
-    <div class="footerHolder">
-      <p>
-        &copy; <a href="http://www.ed.ac.uk" target="_blank">The University of Edinburgh</a>
-        <script type="text/javascript">
-          var currentTime = new Date()
-          var year = currentTime.getFullYear()
-          document.write(+ year)
-        </script>&nbsp;|
+<div class="footerHolder">
+  <p>
+    &copy; <a href="http://www.ed.ac.uk" target="_blank">The University of Edinburgh <%= Time.current.year %></a>
+    <% unless session[:ui_view] == 'kiosk' %>
         <a href="http://www.ed.ac.uk/about/website/accessibility" title="Website Accessibility" target="_blank">Website accessibility</a>&nbsp;|
         <a href="http://www.ed.ac.uk/about/website/privacy" title="Privacy & Cookies" target="_blank">Privacy & Cookies</a>
-      </p>
-    </div>
-<% end %>
+    <% end %>
+  </p>
+</div>
 <script>
-  // Google Analytics tracking
+    (function (i, s, o, g, r, a, m) {
+        i['GoogleAnalyticsObject'] = r;
+        i[r] = i[r] || function () {
+                (i[r].q = i[r].q || []).push(arguments)
+            }, i[r].l = 1 * new Date();
+        a = s.createElement(o),
+            m = s.getElementsByTagName(o)[0];
+        a.async = 1;
+        a.src = g;
+        m.parentNode.insertBefore(a, m)
+    })(window, document, 'script', 'https://www.google-analytics.com/analytics.js', 'ga');
 
-  (function(i,s,o,g,r,a,m){i['GoogleAnalyticsObject']=r;i[r]=i[r]||function(){
-        (i[r].q=i[r].q||[]).push(arguments)},i[r].l=1*new Date();a=s.createElement(o),
-      m=s.getElementsByTagName(o)[0];a.async=1;a.src=g;m.parentNode.insertBefore(a,m)
-  })(window,document,'script','https://www.google-analytics.com/analytics.js','ga');
-
-  ga('create', 'UA-9679556-82', 'auto');
-  ga('send', 'pageview');
-
+    ga('create', 'UA-9679556-82', 'auto');
+    ga('send', 'pageview');
 </script>

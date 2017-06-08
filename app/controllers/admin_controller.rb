@@ -160,7 +160,7 @@ class AdminController < ApplicationController
       canvasElement.bottom = element["bottom"]
     end
 
-    canvasElement.save ? return true : return {"error" => canvasElement.errors.full_messages}
+    return canvasElement.save ? true : {"error" => canvasElement.errors.full_messages}
   end
 
 end
