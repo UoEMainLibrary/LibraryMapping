@@ -3,7 +3,9 @@
  */
 
 <%= render 'map_script.js.erb' %>
-$('#mappingNavbar').html("<%= escape_javascript(render 'mapping_navbar') %>");
+<% unless @elementnames %>
+  $('#mappingNavbar').html("<%= escape_javascript(render 'mapping_navbar') %>");
+<% end %>
 $('.optionsTopBar').html("<%= escape_javascript(render 'subheader') %>");
 $('#compass').html("<%= escape_javascript(render 'compass') %>");
 

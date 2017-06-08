@@ -41,8 +41,7 @@ var libraries_data = {
     }
 };
 
-$(document).on('admin#map:loaded', function(){
-
+$(document).ready(function(){
     /* ------- CANVAS PROPERTIES ------- */
     var floor = $('body').data().floor;
     var library = $('body').data().library;
@@ -58,11 +57,11 @@ $(document).on('admin#map:loaded', function(){
         width: libraries_data[library].box_size.width,
         height: libraries_data[library].box_size.height,
         hasBorders: false,
-        hasControls: false,
-        lockMovementX: true,
-        lockMovementY: true,
+        hasControls: true,
+        lockMovementX: false,
+        lockMovementY: false,
         evented: false,
-        selectable: false,
+        selectable: true,
         stroke: "#333"
     });
 
@@ -407,6 +406,7 @@ $(document).on('admin#map:loaded', function(){
 
     // Select a shelf with id in the canvas
     selectShelf = function(id) {
+        debugger;
         var shelf = canvas.getObjects().find(function(o) {return o.id == id});
         canvas.setActiveObject(shelf);
         canvas.setZoom(0.78);
