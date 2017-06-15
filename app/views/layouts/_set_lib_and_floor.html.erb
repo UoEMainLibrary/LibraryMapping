@@ -1,0 +1,47 @@
+<% if @library %>
+    <% isRemote = params[:controller] == 'admin' ? false : true %>
+    <ul class="nav navbar-nav navbar-left">
+      <li class="dropdown top_drop">
+        <a href="#" class="dropdown-toggle" type="button" data-toggle="dropdown" aria-haspopup="true"
+           aria-expanded="true" id="library_option_btn">Library
+          <span class="caret"></span></a>
+        <ul class="dropdown-menu" id="library_option">
+          <li><%= link_to 'Main Library', {library: 'main', floor: 1}, {remote: isRemote} %></li>
+          <li><%= link_to 'Murray Library', {library: 'murray', floor: 1}, {remote: isRemote} %></li>
+          <li><%= link_to 'New College Library', {library: 'newcollege', floor: 1}, {remote: isRemote} %></li>
+        </ul>
+      </li>
+      <li>
+        <a href="#" class="dropdown-toggle" type="button" data-toggle="dropdown" aria-haspopup="true"
+           aria-expanded="true" id="floor_btn">Floor
+          <span class="caret"></span></a>
+        <ul class="dropdown-menu" id="floor_buttons">
+        </ul>
+      </li>
+    </ul>
+    <script type="text/javascript" charset="utf-8">
+        // Load appropriate floors buttons into container
+        $("#floor_buttons").html("");
+        libraries_data["<%=@library%>"].floors.forEach(function (floor) {
+            <% href = "#{root_url}#{'admin/' if params[:controller] == 'admin'}#{@library}/"%>
+            $("#floor_buttons").append("<li><a data-remote='<%= isRemote %>' href='<%= href %>" + floor.order + "'>" + floor.name + "</a></li>");
+        });
+
+        $('#floor_info').html("<%=@library.capitalize%> Library : " + libraries_data["<%=@library%>"].floors["<%= @floor%>"].name);
+
+        $('#library_option_btn').html('<%=@library.capitalize%> Library <span class="caret"></span>');
+        $('#library_option_btn').val('<%= @library %>');
+        $('#library_option li a ').click(function () {
+            $('#library_option_btn').html($(this).text() + ' <span class="caret"></span>');
+            $('#library_option_btn').val($(this).data('value'));
+        });
+
+        $('#floor_btn').html('' + libraries_data["<%=@library%>"].floors[<%= @floor%>].name + ' <span class="caret"></span>');
+        $('#floor_btn').val('<%= @floor %>');
+        $('#floor_buttons li a').click(function (e) {
+            <% @floor = @floor.presence || '1'%>
+            $('#floor_btn').html($(this).text() + ' <span class="caret"></span>');
+            $('#floor_btn').val($(this).data('value'));
+        });
+    </script>
+<% end %>

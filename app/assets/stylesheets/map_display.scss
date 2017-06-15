@@ -134,7 +134,7 @@ body, html {
   }
 }
 
-.navbar-left {
+.bg-blue .navbar-left {
 
   li {
     background-color: #1B325E;
@@ -153,6 +153,14 @@ body, html {
     color: #1B325E;
   }
 }
+.navbar-left {
+  a{
+    color: white;
+    font-weight: bold;
+  }
+}
+
+
 
 .navbar-right{
   span{

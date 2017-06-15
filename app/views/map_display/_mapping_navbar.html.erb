@@ -1,9 +1,3 @@
-<link rel="stylesheet" href="//maxcdn.bootstrapcdn.com/font-awesome/4.5.0/css/font-awesome.min.css">
-<link rel="stylesheet" href="https://domoritz.github.io/leaflet-locatecontrol/dist/L.Control.Locate.min.css"/>
-<script src="/assets/Delicious.font.js"></script><![endif]-->
-<link href='https://fonts.googleapis.com/css?family=Plaster' rel='stylesheet' type='text/css'>
-<link href='https://fonts.googleapis.com/css?family=Engagement' rel='stylesheet' type='text/css'>
-
 <div class="container-fluid">
   <div class="navbar-header">
     <p class="navbar-text visible-xs-inline-block">
@@ -16,51 +10,9 @@
     <a href="/"><img class="logo" src="/assets/logo-01.png" title="University of Edinburgh Library Maps" alt="University of Edinburgh Library Maps"></a>
   </div>
   <div class="collapse navbar-collapse" id="myNavbar">
-    <% if @library %>
-      <ul class="nav navbar-nav navbar-left">
-        <li class="dropdown top_drop">
-          <a href="#" class="dropdown-toggle" type="button" data-toggle="dropdown" aria-haspopup="true"
-             aria-expanded="true" id="library_option_btn">Library
-            <span class="caret"></span></a>
-          <ul class="dropdown-menu" id="library_option">
-            <li><%= link_to 'Main Library', {}, {remote: true} %></li>
-            <li><%= link_to 'Murray Library', {library: 'murray', floor: 1}, {remote: true} %></li>
-            <li><%= link_to 'New College Library', {library: 'newcollege', floor: 1}, {remote: true} %></li>
-          </ul>
-        </li>
-        <li>
-          <a href="#" class="dropdown-toggle" type="button" data-toggle="dropdown" aria-haspopup="true"
-             aria-expanded="true" id="floor_btn">Floor
-            <span class="caret"></span></a>
-          <ul class="dropdown-menu" id="floor_buttons">
-          </ul>
-        </li>
-      </ul>
-      <script type="text/javascript" charset="utf-8">
-          // Load appropriate floors buttons into container
-          $("#floor_buttons").html("");
-          libraries_data["<%=@library%>"].floors.forEach(function (floor) {
-              $("#floor_buttons").append("<li value='" + floor.order + "'><a data-remote='true' href='" + document.location.origin + "?library=<%=@library%>&floor=" + floor.order + "' data-value='" + floor.order + "'>" + floor.name + "</a></li>");
-          });
-
-          $('#floor_info').html("<%=@library.capitalize%> Library : " + libraries_data["<%=@library%>"].floors["<%= @floor%>"].name);
-
-          $('#library_option_btn').html('<%=@library.capitalize%> Library <span class="caret"></span>');
-          $('#library_option_btn').val('<%= @library %>');
-          $('#library_option li a ').click(function () {
-              $('#library_option_btn').html($(this).text() + ' <span class="caret"></span>');
-              $('#library_option_btn').val($(this).data('value'));
-          });
-
-          $('#floor_btn').html('' + libraries_data["<%=@library%>"].floors[<%= @floor%>].name + ' <span class="caret"></span>');
-          $('#floor_btn').val('<%= @floor %>');
-          $('#floor_buttons li a').click(function (e) {
-              <% @floor = @floor.presence || '1'%>
-              $('#floor_btn').html($(this).text() + ' <span class="caret"></span>');
-              $('#floor_btn').val($(this).data('value'));
-          });
-      </script>
-    <% end %>
+    <span class="location_navigation">
+      <%= render 'layouts/set_lib_and_floor' %>
+    </span>
     <ul class="nav navbar-nav navbar-right ">
       <li>
         <a class="white-font" id="libraries-and-floors" href="/" title="Show Direction"><span class="glyphicon glyphicon-search"></span>Find</a>

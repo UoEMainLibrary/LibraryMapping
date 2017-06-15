@@ -28,21 +28,21 @@ map.setMaxBounds(bounds);
 
 // Adding markers if someone looked for a book
 L.AwesomeMarkers.Icon.prototype.options.prefix = 'fa';
-<% @elements.each do |element| %>
+<% @elements.try(:each) do |element| %>
   L.marker(map.unproject([<%= element.left %>, <%= element.top %>], map.getMaxZoom()-1), {
       icon: L.AwesomeMarkers.icon({
           icon: 'book',
           markerColor: 'red'
       })
-  }).addTo(map).bindPopup("<b><%= @title %></b><br> <%= @author %><br> <%= @shelfmark%> ("+libraries_data["<%=@library%>"].floors[<%= @floor%>].name +" floor)").openPopup();
+  }).addTo(map).bindPopup("<b><%= @title %></b><br> <%= @author %><br> <%= @shelfmark%> ("+libraries_data["<%=@library%>"].floors[<%= @floor%>].name +")").openPopup();
 
   <% if session[:ui_view] != 'kiosk' then%>
   helpInfo(90000);
   <% end %>
-<% end if @elemenets %>
+<% end %>
 
 // Adding markers if any elements searched
-<% @elementnames.each do |elementname| %>
+<% @elementnames.try(:each) do |elementname| %>
   var marker = L.marker(map.unproject([<%= elementname.left %>, <%= elementname.top%>], map.getMaxZoom()-1), {
       icon: L.AwesomeMarkers.icon({
           icon: 'location-arrow',
@@ -50,7 +50,7 @@ L.AwesomeMarkers.Icon.prototype.options.prefix = 'fa';
       })
   }).addTo(map)
   markers.push(marker);
-<%end if @elementnames&.any? %>
+<% end %>
 
 // Deletes all markers in the array by removing references to them.
 function deleteMarkers() {

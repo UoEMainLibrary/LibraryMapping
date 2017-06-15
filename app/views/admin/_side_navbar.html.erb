@@ -1,0 +1,205 @@
+<div id="commands">
+  <span class="dashboard">Dashboard</span>
+  <ul class="nav nav-tabs" style="background-color:white" id="main_tabs">
+    <li><a href="#svg-shapes" data-toggle="tab">SVG</a></li>
+    <li class="active"><a href="#object-controls-pane" data-toggle="tab" id="controls_tab">Controls</a></li>
+    <li><a href="#shelves-overview" data-toggle="tab">Shelves</a></li>
+    <div class="pin-sidebar glyphicon glyphicon-pushpin"></div>
+  </ul>
+
+  <div class="tab-content" style="padding: 20px;background-color:white; height:670px; overflow: auto;">
+    <div class="tab-pane" id="svg-shapes">
+      <form class="navbar-form nav-bar marginSearch" role="search">
+        <input type="text" id="search" name="search" class="form-control search" placeholder="Search Elements">
+        <button type="submit" name="submit" class="btn btn-primary go">Go</button>
+      </form>
+      <div style="clear:both"></div>
+      <p>Add <strong>SVG shapes</strong> to canvas:</p>
+
+      <ul class="svg-shapes">
+        <% ElementType.all.each do |type| %>
+            <% if type.name != "Wall" %>
+                <li>
+                  <button class="fix-width-btn" onclick="addShape(<%= type.id %>, '<%= type.name %>', '<%= asset_path(type.svg_path) %>')">
+                    <img src="<%= asset_path(type.svg_path) %>" width="150px" height="150px"> <br>
+
+                  </button>
+                  <div class="container-fluid description">
+                    <strong><%= type.name %></strong>
+                  </div>
+                </li>
+            <% else %>
+                <li>
+                  <button class="fix-width-btn" onclick="addWall(<%= type.id %>)">
+                    <img src="https://upload.wikimedia.org/wikipedia/commons/thumb/d/d1/Brick_wall_close-up_view.jpg/640px-Brick_wall_close-up_view.jpg" width="150px" height="150px"> <br>
+                  </button>
+                  <div class="container-fluid description">
+                    <strong>Wall</strong>
+                  </div>
+                </li>
+            <% end %>
+        <% end %>
+      </ul>
+    </div>
+
+    <div class="tab-pane active" id="object-controls-pane">
+      <div class="commandCtr">
+        <span>Move:</span>
+        <i onclick="moveUp()" class="fa fa-2x fa-arrow-up" aria-hidden="true"></i>
+        <i onclick="moveDown()" class="fa fa-2x fa-arrow-down" aria-hidden="true"></i>
+        <i onclick="moveLeft()" class="fa fa-2x fa-arrow-left" aria-hidden="true"></i>
+        <i onclick="moveRight()" class="fa fa-2x fa-arrow-right" aria-hidden="true"></i>
+      </div>
+      <div style="clear:both;"></div>
+      <div id="gridCheckbox" class="commandCtr">
+        <span class="switch-button-label">Grid:</span>
+        <div class="switch-button-background">
+          <div class="switch-button-button checked" id="gridCheckbox" ></div>
+        </div>
+      </div>
+      <div style="clear:both;"></div>
+      <div id="mode" class="commandCtr">
+        <span class="switch-button-label">Mode:</span>
+        <div class="mode-background">
+          <div class="mode-button grab" id="modeSwitch" >Grab</div>
+        </div>
+      </div>
+      <div style="clear:both;"></div>
+      <div class="row text-center">
+        <div class="col-sm-2"> <button class="btn btn-zoom" id="zoomOut">-</button></div>
+        <div class="progress-frame col-sm-6">
+          <input type="range" value="0.3" step="0.05" min="0.1" max="1" id="zoomSlider"/>
+        </div>
+        <div class="col-sm-2"><button class="btn btn-zoom" id="zoomIn">+</button></div>
+      </div>
+      <hr>
+      <div>
+        <p class="commandCtr text-center">
+          <button class="btn btn-save clear" onclick="saveCanvas()"><span class="glyphicon glyphicon-floppy-disk"></span> Save elements</button>
+        </p>
+      </div>
+
+      <div >
+        <p class="commandCtr text-center">
+          <button class="btn btn-object-action" id="remove-selected"
+                  onclick="removeSelected()">
+            <span class="glyphicon glyphicon-trash"></span> Remove selected
+          </button>
+        </p>
+      </div>
+
+      <div style="clear:both;"></div>
+      <div id="shelfData">
+        <label for="identifier"> Identifier: </label>
+        <br>
+        <select id="identifier" class="form-control" name="identifier">
+          <option value="lc_main" selected="selected">Main Library - Main Collection (LC)</option>
+          <option value="lc_hub">Main Library - Hub (LC)</option>
+          <option value="dewey_main">Main Library - Old Collection Dewey</option>
+          <option value="cwss_main">Main Library - C.A.S. / Watt / Smith / Serj. </option>
+          <option value="eas_main">Main Library - East Asian Studies (EAS) </option>
+          <option value="journal_main">Main Library - Journals</option>
+          <option value="lc_murray_hub">Murray Library - Reserve Collection (LC)</option>
+          <option value="lc_murray">Murray Library - Main Collection (LC)</option>
+          <option value="lc_newcollege_hub">New College Library - Reserve Collection (LC)</option>
+          <option value="lc_newcollege">New College Library - Main Collection (LC)</option>
+          <option value="journal_newcollege">New College Library -Journals</option>
+        </select>
+        <br>
+
+        <div class="range-form" id ="lc-form" style="display:none">
+          <div class="form-group">
+            <label> Range Start: </label><br>
+            <div class="col-sm-4 marginSearch">
+              <select class="range_start_opt form-control">
+                <option value=""></option>
+                <option value="Folio ">Folio</option>
+                <option value="Pamph. ">Pamph.</option>
+                <option value="Ref. ">Ref.</option>
+              </select>
+            </div>
+            <div class="col-sm-4"><input type="text" class="range_start_letters form-control" name="rangeDown" placeholder="e.g. QA"></div>
+
+            <div class="col-sm-4"><input type="text" class="range_start_digits form-control" name="rangeDown" placeholder="e.g. 273"></div>
+          </div>
+
+          <br>
+          <div class="form-group">
+            <label> Range End: </label><br>
+            <div class="col-sm-4 marginSearch">
+              <select class="range_end_opt form-control">
+                <option value=""></option>
+                <option value="Folio ">Folio</option>
+                <option value="Pamph. ">Pamph.</option>
+                <option value="Ref. ">Ref.</option>
+              </select>
+            </div>
+            <div class="col-sm-4"><input type="text" class="range_end_letters form-control" name="rangeUp" placeholder="e.g. QA"></div>
+            <div class="col-sm-4"><input type="text" class="range_end_digits form-control" name="rangeUp" placeholder="e.g. 273"></div>
+          </div>
+          <br><br>
+        </div>
+
+        <div class="range-form" id="dewey-form" style="display:none">
+          <div class="form-group">
+            <label> Range Start: </label><br>
+            <div class="col-sm-4 marginSearch">
+              <select class="range_start_opt form-control">
+                <option value=""></option>
+                <option value="P ">P</option>
+                <option value="F ">F</option>
+              </select>
+            </div>
+            <div class="col-sm-6"><input type="text" class="range_start_digits form-control" name="rangeDown" placeholder="e.g. .273"></div>
+          </div>
+          <br>
+          <div class="form-group">
+            <label> Range End: </label><br>
+            <div class="col-sm-4 marginSearch">
+              <select class="range_end_opt form-control">
+                <option value=""></option>
+                <option value="P ">P</option>
+                <option value="F ">F</option>
+              </select>
+            </div>
+            <div class="col-sm-6"><input type="text" class="range_end_digits form-control" name="rangeUp" placeholder="e.g. .273"></div>
+          </div>
+          <br><br>
+        </div>
+
+        <button class="btn btn-primary" id="saveElems" onclick="saveElementData()">Save Element Data</button>
+      </div>
+    </div>
+
+    <div class="tab-pane" id="shelves-overview">
+      <table id="shelves-table" class="table table-stripped">
+        <thead>
+          <tr>
+            <th>Shelf id</th>
+            <th>Start range</th>
+            <th>End range</th>
+            <th>Identifier</th>
+            <th>Actions</th>
+          </tr>
+        </thead>
+        <tbody>
+          <% elements = Element.where(floor: @floor).where(library: @library).where(element_type_id: 3).order("identifier, range_end") %>
+          <% elements.each do |element| %>
+            <tr>
+              <td><%= element.id %></td>
+              <td><%= "#{element.range_start_opt} #{element.range_start_letters} #{element.range_start_digits}" %></td>
+              <td><%= "#{element.range_end_opt} #{element.range_end_letters} #{element.range_end_digits}"%></td>
+              <td><%= element.identifier%></td>
+              <td>
+                <span onclick="selectShelf(<%= element.id %>)">Select</span> |
+                <span onclick="openEditShelf(<%= element.id %>)">Edit</span>
+              </td>
+            </tr>
+          <% end %>
+        </tbody>
+      </table>
+
+      <button class="btn shortcutbtn btn-primary" onclick="printRanges()"><span class="glyphicon glyphicon-print"></span> Print ranges</button>
+    </div>
+  </div>
+</div>

@@ -39,7 +39,9 @@ gem 'rqrcode'
 
 gem 'browser'
 
-gem 'notifyjs_rails'
+gem 'notifyjs_rails', '~> 0.0.2'
+
+gem 'awesome_print'
 
 # Use ActiveModel has_secure_password
 # gem 'bcrypt', '~> 3.1.7'

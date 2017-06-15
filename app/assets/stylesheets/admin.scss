@@ -31,6 +31,17 @@ ul {
   transition: right 0.4s;
   height: 710px;
 }
+.dashboard{
+  -ms-transform: rotate(90deg); /* IE 9 */
+  -webkit-transform: rotate(90deg); /* Safari */
+  transform: rotate(90deg);
+  position: absolute;
+  left: -55px;
+  top: 40px;
+  font-size: 15px;
+  color: #1B325E;
+  font-weight: bold;
+}
 label {
   display: inline-block;
   margin-right: 8px;
@@ -61,7 +72,6 @@ input[type=radio] {
 
 .canvas-container {
   margin: 0 auto;
-  border: 1px solid #aaa;
 }
 .svg-shapes {
   overflow: hidden;
@@ -287,7 +297,7 @@ input[type=radio] {
   user-select: none;
 }
 .shortcut{
-  background-color: #ccc;
+  background-color: rgb(120,150,170);
   width: 100%;
 }
 .shortcutbtn{
@@ -405,13 +415,6 @@ input[type=radio] {
 
 #shelves-overview {
   width: 450px;
-
-  #shelves-table, th, td {
-    border: 1px solid black;
-    th, td {
-      padding: 5px;
-    }
-  }
 }
 
 .pin-sidebar{

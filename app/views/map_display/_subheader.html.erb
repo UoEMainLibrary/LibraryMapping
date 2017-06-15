@@ -7,15 +7,3 @@
     <%= link_to 'Lifts', { controller: :map_display, action: :map, floor: @floor, library: @library, element_name: 'lift' }, {class: "lift btn btn-sm btn-floor ", remote: true}%>
     <%= link_to 'Water fountains', { controller: :map_display, action: :map, floor: @floor, library: @library, element_name: 'water' }, {class: "water btn btn-sm btn-floor ", remote: true}%>
   </div>
-
-  <div class="col-xs-12 col-md-4">
-    <% if @title %>
-        <label> Title: </label>
-        <span><%= @title %></span>
-    <% end %>
-
-    <% if @author %>
-        <label> Author: </label>
-        <span><%= @author %></span>
-    <% end %>
-  </div>

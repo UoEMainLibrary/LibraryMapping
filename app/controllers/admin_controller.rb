@@ -75,11 +75,7 @@ class AdminController < ApplicationController
   private
   def save_single_element(element)
 
-    if Element.exists?(:id => element["id"])
-      canvasElement = Element.find(element["id"])
-    else
-      canvasElement = Element.new
-    end
+    canvasElement = Element.exists?(element["id"]) ? Element.find(element["id"]) : Element.new
 
     # Set element general attributes
     canvasElement.left = element["left"]
@@ -101,48 +97,6 @@ class AdminController < ApplicationController
       element["range_start_opt"] ||= ''
       element["range_start_digits"] ||= ''
       element["range_start_letters"]||= ''
-
-      # Validate shelfmark
-      shelfmark_end = element["range_end_opt"] == "Ref. " ?
-                          element["range_end_letters"] + element["range_end_digits"] :
-                          element["range_end_opt"] + element["range_end_letters"] + element["range_end_digits"]
-
-
-      shelfmark_start = element["range_start_opt"] == "Ref. " ?
-                            element["range_start_letters"] + element["range_start_digits"] :
-                            element["range_start_opt"] + element["range_start_letters"] + element["range_start_digits"]
-
-      if shelfmark_end == "" and shelfmark_start == ""
-        canvasElement.identifier = element["identifier"]
-        if canvasElement.save
-          return true
-        else
-          return {"error" => canvasElement.errors.full_messages}
-        end
-      end
-
-      if shelfmark_start != ""
-        shelfmark_start = shelfmarkToOrder(shelfmark_start, element["identifier"])
-        if shelfmark_start == -1
-          return {"error" => "Invalid start shelfmark"}
-        end
-      else
-        return {"error" => "Start shelfmark cannot be empty"}
-      end
-
-      if shelfmark_end != ""
-        shelfmark_end = shelfmarkToOrder(shelfmark_end, element["identifier"])
-        puts shelfmark_start
-        if shelfmark_end == -1
-          return {"error" => "Invalid end shelfmark"}
-        end
-      else
-        return {"error" => "End shelfmark cannot be empty"}
-      end
-
-      if shelfmark_start > shelfmark_end
-        return {"error" => "Invalid range: start shelfmark should be lower than end shelfmark"}
-      end
 
       # Update shelve's custom attribute
       canvasElement.range_end = shelfmark_end

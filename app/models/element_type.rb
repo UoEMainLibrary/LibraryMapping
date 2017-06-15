@@ -1,3 +1,3 @@
 class ElementType < ActiveRecord::Base
-  has_many :element, dependent: :destroy
+  has_many :elements, dependent: :destroy
 end

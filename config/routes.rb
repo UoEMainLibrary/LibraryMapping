@@ -11,6 +11,7 @@ Rails.application.routes.draw do
   get '/faq', to: 'map_display#faq'
   get '/admin', to: 'admin#index'
   get '/feedback', to: 'map_display#feedback'
+  get '/:library/:floor', to: 'map_display#map'
   get '/admin/:library/:floor',to: 'admin#map'
 
   delete '/admin/:library/:floor', to: 'admin#destroy'
