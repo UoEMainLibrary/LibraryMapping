@@ -28,9 +28,8 @@ class MapDisplayController < ApplicationController
         unless browser.platform.ios? or browser.platform.android? or browser.platform.windows_phone?
           @qr = RQRCode::QRCode.new(request.original_url)
         end
-
         @elements = Element.find_shelf(@library, identifier, @shelfmark)
-        @floor = @elements.first.floor if @elements.any?
+        @floor = @elements.try(:first).try(:floor)
     end
 
     respond_to do |format|

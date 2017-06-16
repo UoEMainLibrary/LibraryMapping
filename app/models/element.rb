@@ -1,45 +1,88 @@
 # In future if the code finds the location too slowly, put the shelves in a 
 # separate model.
-
 class Element < ActiveRecord::Base
   belongs_to :element_type
 
   def self.find_shelf(library, identifier, shelfmark)
-    shelfmark, optional = self.prepare_search_arguments(shelfmark)
+    shelfmark, optional, part_one, part_two = self.prepare_search_arguments(shelfmark)
+    elements = self.feasible_elements(library, identifier)
+    elements = self.common_filter(elements, part_one, part_two)
     case library
     when 'main'
-      self.classify_in_main(library, identifier, shelfmark, optional)
+      return self.classify_in_main(elements, optional, part_one, part_two)
     when 'newcollege'
-      self.classify_in_newcollege(library, identifier, shelfmark, optional)
+      return self.classify_in_newcollege
     else
       # Put other libraries
     end
   end
 
+# No matter the system used, there are always two parts of any book code
+# AB12 AB-part one 12-part 2
+# C4/b3 C4-part one b3-part 2
+# .092(8327) Gar .092-part one 8Gar-part 2
+# Transform part_one and part_two to the way you would like them to be compared
+# For example if you want '345' to be compared as a number, send '345'.to_i
   def self.prepare_search_arguments(shelfmark)
     # Saving prepend if any (The prepend can be either Folio or just F.(i.e. 4th floor))
     optional = self.find_optional(shelfmark)
     shelfmark.sub! optional, ''
-    return shelfmark, optional
+    # Dewey example .01 exa - 0.1 exc
+    if shelfmark[0] == '.' 
+      if shelfmark.include?('(')
+        shelfmark.sub! ')', ''
+        part_one, part_two = shelfmark.split('(')
+        part_one = part_one.to_f
+      else
+        part_one = shelfmark.to_f.to_s
+        part_two = shelfmark.split(' ').second
+      end
+    # Strange system in Newcollege example A8/b3
+    elsif shelfmark.include?('/') 
+      part_one, part_two = shelfmark.split('/')
+      part_one = part_one.to_alphanum
+    # Normal system example AB12-AC19
+    else 
+      part_one = shelfmark.split(/\d/).try(:first)
+      part_two = shelfmark[part_one.length..-1].to_i unless part_one.blank?
+    end
+
+    return shelfmark, optional, part_one, part_two
   end
 
   def self.find_optional(shelfmark)
     # Remove Ref. as it has no affect on the position but can confuse the algorithm
     # If there are other abbreviations of Ref. remove them also
     shelfmark.sub! 'Ref. ', ''
+    shelfmark.sub! 'C.A.S. ', ''
+
     # Find the optional if any(it would be always at the beginning)
     # If there is a new class or new abbreviation of Pamph and Folio put them here
     # https://docs.ruby-lang.org/en/trunk/Regexp.html (How to work with regexp and ruby)
-    optional = shelfmark.match(/\A^((Folio )|(Pamph. )|(P. )|(F. )|(F )|(p)|(f)|(sf))/)
+    optional = shelfmark.match(/\A^((Folio )|(Pamph. )|(P. )|(F. )|(F )|(p)|(f)|(sf)|(Per. ))/)
     optional.nil? ? '' : optional[0]
   end
 
-  def start_range
-    range_start_letters.to_s + range_start_digits.to_s
+  def self.feasible_elements(library, identifier)
+    Element.where(element_type_id: 3, library: library, identifier: identifier)
   end
 
-  def end_range
-    range_end_letters.to_s + range_end_digits.to_s
+  def self.common_filter(elements, part_one, part_two)
+    if part_two.class == Fixnum
+      elements.select{ |el| (el.range_start_letters || '') <= part_one && 
+                           (el.range_end_letters   || '') >= part_one &&
+                           (el.range_start_digits.to_i <= part_two || el.range_start_letters < part_one) &&
+                           (el.range_end_digits.to_i   >= part_two || el.range_end_letters   > part_one) }
+    else
+      elements.select{ |el| (el.range_start_letters || '') <= part_one && 
+                           (el.range_end_letters   || '') >= part_one &&
+                           (el.range_start_digits <= part_two || el.range_start_letters < part_one) &&
+                           (el.range_end_digits   >= part_two || el.range_end_letters   > part_one) }
+    end
+  end
+
+  def self.require_optional(elements, optional)
+    elements.select{ |el| [el.range_start_opt, el.range_end_opt].include?(optional)}
   end
 
   # MAIN LIBRARY
@@ -57,14 +100,9 @@ class Element < ActiveRecord::Base
   # There are wrong shelves in the system, one should go around and check everything
   # When there is Ref. Folio don't write folio in the range start letters
   # TODO: Add tags to shelves and remove the optional thing
-  def self.classify_in_main(library, identifier, shelfmark, optional)
-    # Finding all shelves given condition
-    answer = Element.select{ |el| el.element_type_id == 3 && el.identifier == identifier && 
-      el.start_range<=shelfmark && el.end_range>=shelfmark}
+  def self.classify_in_main(elements, optional, part_one, part_two)
     # If shelf starts with N the folios can be anywhere
-    unless shelfmark[0]=='N' && ['Folio ', 'F. ', 'F '].include?(optional)
-      answer.select{ |el| [el.range_start_opt, el.range_end_opt].include?(optional)}
-    end
+    part_one[0]=='N' && ['Folio ', 'F. ', 'F '].include?(optional) ? elements : Element.require_optional(elements, optional)
   end
 
   # NEWCOLLEGE LIBRARY
@@ -74,22 +112,15 @@ class Element < ActiveRecord::Base
   # For that system to be used we substitute each number with letter code 
   # That way, we guarantee that 'B9'<'B10' as we would compare 'Bj' to 'Bk'
   # This works under the assumption that the numbers in the code do not exceed 25
-  # If that changes, instead of changing the nums to letters, change them to numbers
-  # with (5 - number.digit_count) zeros upfront so that it compares 00009 to 00010
+  # If that's not the case, instead of changing the nums to letters, change them to numbers
+  # with (5 - number.digit_count) zeros upfront so that it compares 'B00009' to 'B00010'
   # Remove any lower-cased letters from the beginning(there are some sCB instead 
   # of just CB and same with 'r')
   def self.classify_in_newcollege(library, identifier, shelfmark, optional)
     shelfmark = shelfmark.start_with?('s', 'r') ? shelfmark[1..-1] : shelfmark
-
-    # The strange classification in the form A9/b2
-    if shelfmark.include?('/')
-      shelfmark = shelfmark.to_alphanum
-      Element.select{ |el| el.element_type_id == 3 && el.identifier == identifier && el.start_range.include?('/') &&
-        el.start_range.to_alphanum<=shelfmark && el.end_range.to_alphanum>=shelfmark && ["", el.range_start_opt, el.range_end_opt].include?(optional)}
-    # Normal letter classification
-    else
-      Element.select{ |el| el.element_type_id == 3 && el.identifier == identifier &&
-        el.start_range<=shelfmark && el.end_range>=shelfmark && ["", el.range_start_opt, el.range_end_opt].include?(optional)}
-    end
   end
 end
+
+
+
+
