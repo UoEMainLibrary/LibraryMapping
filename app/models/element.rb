@@ -11,9 +11,10 @@ class Element < ActiveRecord::Base
     when 'main'
       return self.classify_in_main(elements, optional, part_one, part_two)
     when 'newcollege'
-      return self.classify_in_newcollege
-    else
-      # Put other libraries
+      return self.classify_in_newcollege(elements, optional, part_one, part_tow)
+    when 'murray'
+      return self.classify_in_murray(elements, optional, part_one, part_two) 
+    else ## add other libraries
     end
   end
 
@@ -26,9 +27,12 @@ class Element < ActiveRecord::Base
   def self.prepare_search_arguments(shelfmark)
     # Saving prepend if any (The prepend can be either Folio or just F.(i.e. 4th floor))
     optional = self.find_optional(shelfmark)
+    # Removing prepend
     shelfmark.sub! optional, ''
+    # Removing confusing 's' and 'r' in Newcollege
+    shelfmark = shelfmark.start_with?('s', 'r') ? shelfmark[1..-1] : shelfmark
     # Dewey example .01 exa - 0.1 exc
-    if shelfmark[0] == '.' 
+    if shelfmark[0] == '.' # if there are any other shelmarks with a . change this condition
       if shelfmark.include?('(')
         shelfmark.sub! ')', ''
         part_one, part_two = shelfmark.split('(')
@@ -116,11 +120,19 @@ class Element < ActiveRecord::Base
   # with (5 - number.digit_count) zeros upfront so that it compares 'B00009' to 'B00010'
   # Remove any lower-cased letters from the beginning(there are some sCB instead 
   # of just CB and same with 'r')
-  def self.classify_in_newcollege(library, identifier, shelfmark, optional)
-    shelfmark = shelfmark.start_with?('s', 'r') ? shelfmark[1..-1] : shelfmark
+  def self.classify_in_newcollege(elements, optional, part_one, part_two)
+    elements
   end
+
+  # MURRAY LIBRARY
+  #############################################################################
+  # The books are ordered alphanumerically on shelves
+  # The only difference with the normal classification is that there are
+  # two special shelves for frquently used books and all reserved books
+  # stay there. 
+  def self.classify_in_murray(elements, optional, part_one, part_two)
+    elements
+  end
+
 end
-
-
-
 
