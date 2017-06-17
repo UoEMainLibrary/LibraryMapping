@@ -74,7 +74,6 @@ class AdminController < ApplicationController
 
   private
   def save_single_element(element)
-
     canvasElement = Element.exists?(element["id"]) ? Element.find(element["id"]) : Element.new
 
     # Set element general attributes
@@ -99,8 +98,6 @@ class AdminController < ApplicationController
       element["range_start_letters"]||= ''
 
       # Update shelve's custom attribute
-      canvasElement.range_end = shelfmark_end
-      canvasElement.range_start = shelfmark_start
       canvasElement.identifier = element["identifier"]
       canvasElement.range_end_opt = element["range_end_opt"]
       canvasElement.range_end_digits = element["range_end_digits"]

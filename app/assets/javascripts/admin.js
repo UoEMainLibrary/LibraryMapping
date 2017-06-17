@@ -153,10 +153,11 @@ $(window).load(function () {
         var obj = canvas.getActiveObject();
 
         // Get values of visible form
-        obj.range_end_opt = $(".range-form:visible .range_end_opt").val();
         obj.range_end_digits = $(".range-form:visible .range_end_digits").val();
         obj.range_end_letters = $(".range-form:visible .range_end_letters").val();
 
+        calculateStartOpt();
+        console.log($(".range-form:visible .range_start_opt").val());
         obj.range_start_opt = $(".range-form:visible .range_start_opt").val();
         obj.range_start_digits = $(".range-form:visible .range_start_digits").val();
         obj.range_start_letters = $(".range-form:visible .range_start_letters").val();
@@ -637,11 +638,18 @@ $(window).load(function () {
             // Trigger change
             $("#identifier").change();
 
-            $(".range_end_opt").val(options.target.range_end_opt);
+            // Filling in object values
+            $(".range_start_opt").val(options.target.range_start_opt);
+            // Resetting checkboxes
+            $( "input:checkbox[name=type]:checked" ).each(function(){
+                $(this).prop('checked', false);
+            });
+            // Checking the ones owned
+            $(".range_start_opt").val().split('|').forEach(function(item, index){
+                $('input:checkbox[name=type][value="|' + item + '"]').prop('checked', true);
+            });
             $(".range_end_letters").val(options.target.range_end_letters);
             $(".range_end_digits").val(options.target.range_end_digits);
-
-            $(".range_start_opt").val(options.target.range_start_opt);
             $(".range_start_letters").val(options.target.range_start_letters);
             $(".range_start_digits").val(options.target.range_start_digits);
 
@@ -708,14 +716,6 @@ $(window).load(function () {
         }
 
     });
-
-        // Calculate the optional tags
-    function calculateTags(){
-        $( "input[value='type']:checked" ).each(function(){
-            $('.range_start_opt').val() = $('.range_start_opt').val() + this.val(); 
-        })
-    }
-
 
     canvas.on("object:moving", function (e) {
         var obj = e.target;
@@ -842,6 +842,13 @@ $(window).load(function () {
     $(document).trigger('canvas:preloaded');
 });
 
+function calculateStartOpt(){
+    var a=$('.range_start_opt');
+    $( "input:checkbox[name=type]:checked" ).each(function(){
+        a.text(a.text()+$(this).val());
+    });
+    a.val(a.text());
+}
 
 // Loads a particular element into the canvas, adding all custom properties
 // Function is called in a loop in admin/map.html.erb

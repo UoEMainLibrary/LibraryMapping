@@ -64,7 +64,7 @@ class Element < ActiveRecord::Base
     # If there is a new class or new abbreviation of Pamph and Folio put them here
     # https://docs.ruby-lang.org/en/trunk/Regexp.html (How to work with regexp and ruby)
     optional = shelfmark.match(/\A^((Folio )|(Pamph. )|(P. )|(F. )|(F )|(p)|(f)|(sf)|(Per. ))/)
-    optional.nil? ? '' : optional[0]
+    optional.nil? ? ' ' : optional[0]
   end
 
   def self.feasible_elements(library, identifier)
@@ -91,7 +91,7 @@ class Element < ActiveRecord::Base
   end
 
   def self.require_optional(elements, optional)
-    elements.select{ |el| [el.range_start_opt, el.range_end_opt].include?(optional)}
+    elements.select{ |el| el.range_start_opt.include?('|' + optional)}
   end
 
   # MAIN LIBRARY

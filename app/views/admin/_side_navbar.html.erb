@@ -79,7 +79,7 @@
         </p>
       </div>
 
-      <div >
+      <div>
         <p class="commandCtr text-center">
           <button class="btn btn-object-action" id="remove-selected"
                   onclick="removeSelected()">
@@ -107,42 +107,39 @@
           <option value="strange_newcollege">New College Library - Strange</option>
         </select>
         <br>
-
         <div class="range-form" id="shelf-form" style="display:none">
-
           <div class="form-group">
             <label> Types of books: </label>
-            <div class="col-sm-4 marginSearch">
-              <input type="checkbox" name="type" value="| "  checked> Normal <br>
-              <input type="checkbox" name="type" value="|Ref. "     > Ref. <br>
-              <input type="checkbox" name="type" value="|Pamph. "   > Pamph. <br>
-              <input type="checkbox" name="type" value="|Folio "    > Folio <br>
-              <input type="checkbox" name="type" value="|F. "       > F. <br>
-              <input type="checkbox" name="type" value="|P. "       > P. <br>              
-              <input type="checkbox" name="type" value="|F "        > F <br>
-              <input type="checkbox" name="type" value="|P "        > P <br>              
-              <input type="checkbox" name="type" value="|f "        > f <br>
-              <input type="checkbox" name="type" value="|p "        > p <br>
-              <input type="text" class="range_start_opt form-control" name="range_start_opt">
+            <br>
+            <div class="col-sm-12 marginSearch">
+              <div class="col-xs-4"><input type="checkbox" name="type" value="| "  checked> No tag</div>
+              <div class="col-xs-4"><input type="checkbox" name="type" value="|Ref. "     > Ref.</div>
+              <div class="col-xs-4"><input type="checkbox" name="type" value="|Pamph. "   > Pamph.</div>
+              <div class="col-xs-4"><input type="checkbox" name="type" value="|Folio "    > Folio</div>
+              <div class="col-xs-4"><input type="checkbox" name="type" value="|F. "       > F.</div>
+              <div class="col-xs-4"><input type="checkbox" name="type" value="|P. "       > P.</div>           
+              <div class="col-xs-4"><input type="checkbox" name="type" value="|F "        > F</div>
+              <div class="col-xs-4"><input type="checkbox" name="type" value="|P "        > P</div>            
+              <div class="col-xs-4"><input type="checkbox" name="type" value="|f "        > f</div>
+              <div class="col-xs-4"><input type="checkbox" name="type" value="|p "        > p</div>
+              <div class="col-xs-4"><input type="text" class="range_start_opt form-control hidden" name="range_start_opt"></div>
             </div>
+            <br>
+            <div class="form-group">
+              <div class="col-xs-4"><label> Range Start: </label></div>
+              <div class="col-xs-4"><input type="text" class="form-control range_start_letters" name="range_start_letters" placeholder="part one"></div>
+              <div class="col-xs-4"><input type="text" class="form-control range_start_digits" name="range_start_digits" placeholder="part two"></div>
+            </div>
+            <br><br>
+            <div class="form-group">
+              <div class="col-xs-4"><label> Range End: </label></div>
+              <div class="col-xs-4"><input type="text" class="form-control range_end_letters" name="range_end_letters" placeholder="part one"></div>
+              <div class="col-xs-4"><input type="text" class="form-control range_end_digits" name="range_end_digits" placeholder="part two"></div>
+            </div>
+            <br><br>
           </div>
-
-          <div class="form-group">
-            <label> Range Start: </label><br>
-            <input type="text" class="form-control col-xs-6" name="range_start_letters" placeholder="part oen">
-            <input type="text" class="form-control col-xs-6" name="range_start_digits" placeholder="part two">
-          </div>
-
-          <br>
-          <div class="form-group">
-            <label> Range End: </label><br>
-            <input type="text" class="form-control col-xs-6" name="range_end_letters" placeholder="part one">
-            <input type="text" class="form-control col-xs-6" name="range_end_digits" placeholder="part two">
-          </div>
-          <br><br>
+          <button class="btn btn-primary" id="saveElems" onclick="saveElementData()">Save Element Data</button>
         </div>
-
-        <button class="btn btn-primary" id="saveElems" onclick="saveElementData()">Save Element Data</button>
       </div>
     </div>
 
