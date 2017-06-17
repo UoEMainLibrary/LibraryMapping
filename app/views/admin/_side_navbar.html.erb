@@ -104,65 +104,40 @@
           <option value="lc_newcollege_hub">New College Library - Reserve Collection (LC)</option>
           <option value="lc_newcollege">New College Library - Main Collection (LC)</option>
           <option value="journal_newcollege">New College Library -Journals</option>
+          <option value="strange_newcollege">New College Library - Strange</option>
         </select>
         <br>
 
-        <div class="range-form" id ="lc-form" style="display:none">
+        <div class="range-form" id="shelf-form" style="display:none">
+
+          <div class="form-group">
+            <label> Types of books: </label>
+            <div class="col-sm-4 marginSearch">
+              <input type="checkbox" name="type" value="| "  checked> Normal <br>
+              <input type="checkbox" name="type" value="|Ref. "     > Ref. <br>
+              <input type="checkbox" name="type" value="|Pamph. "   > Pamph. <br>
+              <input type="checkbox" name="type" value="|Folio "    > Folio <br>
+              <input type="checkbox" name="type" value="|F. "       > F. <br>
+              <input type="checkbox" name="type" value="|P. "       > P. <br>              
+              <input type="checkbox" name="type" value="|F "        > F <br>
+              <input type="checkbox" name="type" value="|P "        > P <br>              
+              <input type="checkbox" name="type" value="|f "        > f <br>
+              <input type="checkbox" name="type" value="|p "        > p <br>
+              <input type="text" class="range_start_opt form-control" name="range_start_opt">
+            </div>
+          </div>
+
           <div class="form-group">
             <label> Range Start: </label><br>
-            <div class="col-sm-4 marginSearch">
-              <select class="range_start_opt form-control">
-                <option value=""></option>
-                <option value="Folio ">Folio</option>
-                <option value="Pamph. ">Pamph.</option>
-                <option value="Ref. ">Ref.</option>
-              </select>
-            </div>
-            <div class="col-sm-4"><input type="text" class="range_start_letters form-control" name="rangeDown" placeholder="e.g. QA"></div>
-
-            <div class="col-sm-4"><input type="text" class="range_start_digits form-control" name="rangeDown" placeholder="e.g. 273"></div>
+            <input type="text" class="form-control col-xs-6" name="range_start_letters" placeholder="part oen">
+            <input type="text" class="form-control col-xs-6" name="range_start_digits" placeholder="part two">
           </div>
 
           <br>
           <div class="form-group">
             <label> Range End: </label><br>
-            <div class="col-sm-4 marginSearch">
-              <select class="range_end_opt form-control">
-                <option value=""></option>
-                <option value="Folio ">Folio</option>
-                <option value="Pamph. ">Pamph.</option>
-                <option value="Ref. ">Ref.</option>
-              </select>
-            </div>
-            <div class="col-sm-4"><input type="text" class="range_end_letters form-control" name="rangeUp" placeholder="e.g. QA"></div>
-            <div class="col-sm-4"><input type="text" class="range_end_digits form-control" name="rangeUp" placeholder="e.g. 273"></div>
-          </div>
-          <br><br>
-        </div>
-
-        <div class="range-form" id="dewey-form" style="display:none">
-          <div class="form-group">
-            <label> Range Start: </label><br>
-            <div class="col-sm-4 marginSearch">
-              <select class="range_start_opt form-control">
-                <option value=""></option>
-                <option value="P ">P</option>
-                <option value="F ">F</option>
-              </select>
-            </div>
-            <div class="col-sm-6"><input type="text" class="range_start_digits form-control" name="rangeDown" placeholder="e.g. .273"></div>
-          </div>
-          <br>
-          <div class="form-group">
-            <label> Range End: </label><br>
-            <div class="col-sm-4 marginSearch">
-              <select class="range_end_opt form-control">
-                <option value=""></option>
-                <option value="P ">P</option>
-                <option value="F ">F</option>
-              </select>
-            </div>
-            <div class="col-sm-6"><input type="text" class="range_end_digits form-control" name="rangeUp" placeholder="e.g. .273"></div>
+            <input type="text" class="form-control col-xs-6" name="range_end_letters" placeholder="part one">
+            <input type="text" class="form-control col-xs-6" name="range_end_digits" placeholder="part two">
           </div>
           <br><br>
         </div>

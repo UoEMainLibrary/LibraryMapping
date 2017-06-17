@@ -676,51 +676,46 @@ $(window).load(function () {
 
         switch (val) {
             case "lc_hub":
-                $("#lc-form").show();
+                $(".range-form").show();
                 break;
             case "lc_main":
-                $("#lc-form").show();
+                $(".range-form").show();
                 break;
             case "dewey_main":
-                $("#dewey-form .range_start_opt").prop('disabled', false);
-                $("#dewey-form .range_end_opt").prop('disabled', false);
-                $("#dewey-form .range_start_opt option[value='Per. ']").remove();
-                $("#dewey-form .range_end_opt option[value='Per. ']").remove();
-                $("#dewey-form").show();
+                $(".range-form").show();
                 break;
             case "journal_main":
-                $("#dewey-form").show();
-                $("#dewey-form .range_start_opt").append('<option value="Per. ">Per.</option>');
-                $("#dewey-form .range_end_opt").append('<option value="Per. ">Per.</option>');
-                $("#dewey-form .range_start_opt").val("Per. ");
-                $("#dewey-form .range_start_opt").prop('disabled', true);
-                $("#dewey-form .range_end_opt").val("Per. ");
-                $("#dewey-form .range_end_opt").prop('disabled', true);
+                $(".range-form").show();
                 break;
             case "lc_murray":
-                $("#lc-form").show();
+                $(".range-form").show();
                 break;
             case "lc_murray_hub":
-                $("#lc-form").show();
+                $(".range-form").show();
                 break;
             case "lc_newcollege":
-                $("#lc-form").show();
+                $(".range-form").show();
                 break;
             case "lc_newcollege_hub":
-                $("#lc-form").show();
+                $(".range-form").show();
                 break;
             case "journal_newcollege":
-                $("#dewey-form").show();
-                $("#dewey-form .range_start_opt").append('<option value="Per. ">Per.</option>');
-                $("#dewey-form .range_end_opt").append('<option value="Per. ">Per.</option>');
-                $("#dewey-form .range_start_opt").val("Per. ");
-                $("#dewey-form .range_start_opt").prop('disabled', true);
-                $("#dewey-form .range_end_opt").val("Per. ");
-                $("#dewey-form .range_end_opt").prop('disabled', true);
+                $(".range-form").show();
+                break;
+            case "strange_newcollege":
+                $(".range-form").show();
                 break;
         }
 
     });
+
+        // Calculate the optional tags
+    function calculateTags(){
+        $( "input[value='type']:checked" ).each(function(){
+            $('.range_start_opt').val() = $('.range_start_opt').val() + this.val(); 
+        })
+    }
+
 
     canvas.on("object:moving", function (e) {
         var obj = e.target;

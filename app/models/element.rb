@@ -6,7 +6,7 @@ class Element < ActiveRecord::Base
   def self.find_shelf(library, identifier, shelfmark)
     shelfmark, optional, part_one, part_two = self.prepare_search_arguments(shelfmark)
     elements = self.feasible_elements(library, identifier)
-    elements = self.common_filter(elements, part_one, part_two)
+    elements = self.common_filter(elements, part_one, part_two, identifier)
     case library
     when 'main'
       return self.classify_in_main(elements, optional, part_one, part_two)
@@ -71,12 +71,17 @@ class Element < ActiveRecord::Base
     Element.where(element_type_id: 3, library: library, identifier: identifier)
   end
 
-  def self.common_filter(elements, part_one, part_two)
+  def self.common_filter(elements, part_one, part_two, identifier)
     if part_two.class == Fixnum
       elements.select{ |el| (el.range_start_letters || '') <= part_one && 
                            (el.range_end_letters   || '') >= part_one &&
                            (el.range_start_digits.to_i <= part_two || el.range_start_letters < part_one) &&
                            (el.range_end_digits.to_i   >= part_two || el.range_end_letters   > part_one) }
+    elsif identifier == 'strange_newcollege'
+      elements.select{ |el| (el.range_start_letters.to_alphanum || '') <= part_one && 
+                           (el.range_end_letters.to_alphanum   || '') >= part_one &&
+                           (el.range_start_digits.to_alphanum <= part_two || el.range_start_letters.to_alphanum < part_one) &&
+                           (el.range_end_digits.to_alphanum   >= part_two || el.range_end_letters.to_alphanum   > part_one) }
     else
       elements.select{ |el| (el.range_start_letters || '') <= part_one && 
                            (el.range_end_letters   || '') >= part_one &&
