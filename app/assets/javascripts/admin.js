@@ -677,44 +677,8 @@ $(window).load(function () {
 
     // Load the correct form according to the identifier chosen
     $("#identifier").change(function () {
-        var val = $("#identifier").val();
-        // console.log(val);
-
         $(".range-form").hide();
-
-        switch (val) {
-            case "lc_hub":
-                $(".range-form").show();
-                break;
-            case "lc_main":
-                $(".range-form").show();
-                break;
-            case "dewey_main":
-                $(".range-form").show();
-                break;
-            case "journal_main":
-                $(".range-form").show();
-                break;
-            case "lc_murray":
-                $(".range-form").show();
-                break;
-            case "lc_murray_hub":
-                $(".range-form").show();
-                break;
-            case "lc_newcollege":
-                $(".range-form").show();
-                break;
-            case "lc_newcollege_hub":
-                $(".range-form").show();
-                break;
-            case "journal_newcollege":
-                $(".range-form").show();
-                break;
-            case "strange_newcollege":
-                $(".range-form").show();
-                break;
-        }
-
+        $(".range-form").show();
     });
 
     canvas.on("object:moving", function (e) {
@@ -1022,24 +986,4 @@ function makeCircle(left, top, line1, line2) {
     c.line2 = line2;
 
     return c;
-}
-
-function moveUp(){
-    selected_item.set('top', selected_item.top-1);
-    canvas.renderAll();
-}
-
-function moveDown(){
-    selected_item.set('top', selected_item.top+1);
-    canvas.renderAll();
-}
-
-function moveRight(){
-    selected_item.set('left', selected_item.left+1);
-    canvas.renderAll();
-}
-
-function moveLeft(){
-    selected_item.set('left', selected_item.left-1);
-    canvas.renderAll();
 }

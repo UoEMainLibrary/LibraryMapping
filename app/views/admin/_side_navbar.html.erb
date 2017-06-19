@@ -43,13 +43,6 @@
     </div>
 
     <div class="tab-pane active" id="object-controls-pane">
-      <div class="commandCtr">
-        <span>Move:</span>
-        <i onclick="moveUp()" class="fa fa-2x fa-arrow-up" aria-hidden="true"></i>
-        <i onclick="moveDown()" class="fa fa-2x fa-arrow-down" aria-hidden="true"></i>
-        <i onclick="moveLeft()" class="fa fa-2x fa-arrow-left" aria-hidden="true"></i>
-        <i onclick="moveRight()" class="fa fa-2x fa-arrow-right" aria-hidden="true"></i>
-      </div>
       <div style="clear:both;"></div>
       <div id="gridCheckbox" class="commandCtr">
         <span class="switch-button-label">Grid:</span>
@@ -90,6 +83,8 @@
 
       <div style="clear:both;"></div>
       <div id="shelfData">
+        <hr>
+        <button type="button" class="btn btn-info" data-toggle="modal" data-target="#myModal">How to add/edit shelves</button><br><br>
         <label for="identifier"> Identifier: </label>
         <br>
         <select id="identifier" class="form-control" name="identifier">
@@ -112,16 +107,10 @@
             <label> Types of books: </label>
             <br>
             <div class="col-sm-12 marginSearch">
-              <div class="col-xs-4"><input type="checkbox" name="type" value="| "  checked> No tag</div>
-              <div class="col-xs-4"><input type="checkbox" name="type" value="|Ref. "     > Ref.</div>
-              <div class="col-xs-4"><input type="checkbox" name="type" value="|Pamph. "   > Pamph.</div>
-              <div class="col-xs-4"><input type="checkbox" name="type" value="|Folio "    > Folio</div>
-              <div class="col-xs-4"><input type="checkbox" name="type" value="|F. "       > F.</div>
-              <div class="col-xs-4"><input type="checkbox" name="type" value="|P. "       > P.</div>           
-              <div class="col-xs-4"><input type="checkbox" name="type" value="|F "        > F</div>
-              <div class="col-xs-4"><input type="checkbox" name="type" value="|P "        > P</div>            
-              <div class="col-xs-4"><input type="checkbox" name="type" value="|f "        > f</div>
-              <div class="col-xs-4"><input type="checkbox" name="type" value="|p "        > p</div>
+              <div class="col-xs-4"><input type="checkbox" name="type" value="| "  > No tag</div>
+              <% Element.tags.each do |tag| %>
+                <div class="col-xs-4"><input type="checkbox" name="type" value="|<%= tag %>"     > <%= tag %></div>
+              <% end %>
               <div class="col-xs-4"><input type="text" class="range_start_opt form-control hidden" name="range_start_opt"></div>
             </div>
             <br>
@@ -172,6 +161,85 @@
       </table>
 
       <button class="btn shortcutbtn btn-primary" onclick="printRanges()"><span class="glyphicon glyphicon-print"></span> Print ranges</button>
+    </div>
+  </div>
+</div>
+
+<!-- Modal -->
+<div id="myModal" class="modal fade" role="dialog">
+  <div class="modal-dialog">
+
+    <!-- Modal content-->
+    <div class="modal-content">
+      <div class="modal-header">
+        <button type="button" class="close" data-dismiss="modal">&times;</button>
+        <h4 class="modal-title">How to add/edit shelves ranges</h4>
+      </div>
+      <div class="modal-body">
+        Most classifications use code which consists of two parts. It is important to put them in the
+        right place. Follow the examples below
+
+        <table class="table">
+          <thead>
+            <tr>
+              <th>Book code</th>
+              <th>Tag</th>
+              <th>Part one</th>
+              <th>Part two</th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr>
+              <td>Ref. Folio AB12</td>
+              <td>Ref. and Folio</td>
+              <td>AB</td>
+              <td>12</td>
+            </tr>
+            <tr>
+              <td>Folio N5300 Fau.</td>
+              <td>Folio</td>
+              <td>N</td>
+              <td>5300</td>
+            </tr>    
+            <tr>
+              <td>C.A.S.Gha. Fla.</td>
+              <td>No tag</td>
+              <td>AB</td>
+              <td>12</td>
+            </tr>        
+            <tr>
+              <td>A8/b3</td>
+              <td>No tag</td>
+              <td>A8</td>
+              <td>b3</td>
+            </tr>            
+            <tr>
+              <td>f. .12(456) DWA</td>
+              <td>f.</td>
+              <td>.12</td>
+              <td>456</td>
+            </tr>            
+            <tr>
+              <td>BD581 Ahr.</td>
+              <td>No tag</td>
+              <td>BD</td>
+              <td>581</td>
+            </tr>
+            <tr>
+              <td>F. .9(74811) Tin.</td>
+              <td>F.</td>
+              <td>.9</td>
+              <td>74811</td>
+            </tr>            
+          </tbody>
+        </table>
+        It is important to state which kind of books are on the shelf. For example if the range is
+        Folio EA89 - EB12 you should check both 'Folio' and 'No tag' or all the books which have no tag will
+        be misclassified.
+      </div>
+      <div class="modal-footer">
+        <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
+      </div>
     </div>
   </div>
 </div>

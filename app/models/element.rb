@@ -18,6 +18,10 @@ class Element < ActiveRecord::Base
     end
   end
 
+  # If there is a new class or new abbreviation of Pamph and Folio put them here
+  def self.tags
+    ['p ', 'p. ', 'P ', 'P. ', 'Pamph. ', 'F ', 'F. ', 'Folio ', 'f ', 'f. ', 'sf ', 'Per. ']
+  end
 # No matter the system used, there are always two parts of any book code
 # AB12 AB-part one 12-part 2
 # C4/b3 C4-part one b3-part 2
@@ -28,7 +32,7 @@ class Element < ActiveRecord::Base
     # Saving prepend if any (The prepend can be either Folio or just F.(i.e. 4th floor))
     optional = self.find_optional(shelfmark)
     # Removing prepend
-    shelfmark.sub! optional, ''
+    shelfmark.sub! optional, '' unless optional == ' '
     # Removing confusing 's' and 'r' in Newcollege
     shelfmark = shelfmark.start_with?('s', 'r') ? shelfmark[1..-1] : shelfmark
     # Dewey example .01 exa - 0.1 exc
@@ -36,11 +40,13 @@ class Element < ActiveRecord::Base
       if shelfmark.include?('(')
         shelfmark.sub! ')', ''
         part_one, part_two = shelfmark.split('(')
-        part_one = part_one.to_f
       else
-        part_one = shelfmark.to_f.to_s
+        part_one = shelfmark.to_f.to_s[1..-1]
         part_two = shelfmark.split(' ').second
       end
+    # C.A.S. on fourth floor
+    elsif shelfmark.include?('C.A.S.')
+      part_one, part_two = shelfmark.split(' ').drop(1)
     # Strange system in Newcollege example A8/b3
     elsif shelfmark.include?('/') 
       part_one, part_two = shelfmark.split('/')
@@ -58,12 +64,10 @@ class Element < ActiveRecord::Base
     # Remove Ref. as it has no affect on the position but can confuse the algorithm
     # If there are other abbreviations of Ref. remove them also
     shelfmark.sub! 'Ref. ', ''
-    shelfmark.sub! 'C.A.S. ', ''
 
     # Find the optional if any(it would be always at the beginning)
-    # If there is a new class or new abbreviation of Pamph and Folio put them here
     # https://docs.ruby-lang.org/en/trunk/Regexp.html (How to work with regexp and ruby)
-    optional = shelfmark.match(/\A^((Folio )|(Pamph. )|(P. )|(F. )|(F )|(p)|(f)|(sf)|(Per. ))/)
+    optional = shelfmark.match(/\A^(#{'(' + Element.tags.join(')|(') + ')'})/)
     optional.nil? ? ' ' : optional[0]
   end
 
@@ -83,10 +87,10 @@ class Element < ActiveRecord::Base
                            (el.range_start_digits.to_alphanum <= part_two || el.range_start_letters.to_alphanum < part_one) &&
                            (el.range_end_digits.to_alphanum   >= part_two || el.range_end_letters.to_alphanum   > part_one) }
     else
-      elements.select{ |el| (el.range_start_letters || '') <= part_one && 
-                           (el.range_end_letters   || '') >= part_one &&
-                           (el.range_start_digits <= part_two || el.range_start_letters < part_one) &&
-                           (el.range_end_digits   >= part_two || el.range_end_letters   > part_one) }
+      elements.select{ |el| (el.range_start_letters || '') <= part_one.to_s && 
+                           (el.range_end_letters   || '') >= part_one.to_s &&
+                           (el.range_start_digits.to_s <= part_two || el.range_start_letters < part_one) &&
+                           (el.range_end_digits.to_s   >= part_two || el.range_end_letters   > part_one) }
     end
   end
 
@@ -111,7 +115,7 @@ class Element < ActiveRecord::Base
   # TODO: Add tags to shelves and remove the optional thing
   def self.classify_in_main(elements, optional, part_one, part_two)
     # If shelf starts with N the folios can be anywhere
-    part_one[0]=='N' && ['Folio ', 'F. ', 'F '].include?(optional) ? elements : Element.require_optional(elements, optional)
+    part_one.to_s.first=='N' && ['Folio ', 'F. ', 'F '].include?(optional) ? elements : Element.require_optional(elements, optional)
   end
 
   # NEWCOLLEGE LIBRARY
