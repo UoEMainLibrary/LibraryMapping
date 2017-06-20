@@ -39,6 +39,10 @@ gem 'rqrcode'
 
 gem 'browser'
 
+gem 'notifyjs_rails', '~> 0.0.2'
+
+gem 'awesome_print'
+
 # Use ActiveModel has_secure_password
 # gem 'bcrypt', '~> 3.1.7'
 
@@ -54,6 +58,8 @@ gem 'health_check', '~> 1.5', '>= 1.5.1'
 group :development, :test do
   # Call 'byebug' anywhere in the code to stop execution and get a debugger console
   gem 'byebug'
+  gem "better_errors"
+  gem "binding_of_caller"
 end
 
 group :development do

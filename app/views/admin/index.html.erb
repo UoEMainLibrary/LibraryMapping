@@ -4,7 +4,7 @@
     <div class="container-fluid">
         <div class="navbar-header">
           <img class="logo" src="/assets/logo-01.png"><h2>Library Maps | Feedback |
-          <a href="/admin/library/floor">Admin Panel</a></h2>
+          <%= link_to 'Admin Panel', {controller: :admin, action: :map, library: :main, floor: 1} %></h2>
         </div>
    </div>
   </nav>
@@ -40,18 +40,14 @@
     </div>
   </div>
   <div class="linkblock row">
-    <%= link_to "Main Library", {controller: "admin", action: "map", floor: 1, library: "main"}, data: { no_turbolink: true, floor: 1 }, :class=>"links col-sm-6" %>
-  <%= link_to "Murray Library", {controller: "admin", action: "map", floor: 1, library: "murray"}, data: { no_turbolink: true, floor: 1 },  :class=>"links col-sm-6"%>
-  <%= link_to "New College Library", {controller: "admin", action: "map", floor: 1, library: "newcollege"}, data: { no_turbolink: true, floor: 1 },  :class=>"links col-sm-6"%>
+    <%= link_to "Main Library", {controller: "admin", action: "map", floor: 1, library: "main"}, data: { no_turbolink: true, floor: 1 }, :class=>"links col-xs-12 col-md-4" %>
+    <%= link_to "Murray Library", {controller: "admin", action: "map", floor: 1, library: "murray"}, data: { no_turbolink: true, floor: 1 },  :class=>"links col-xs-12 col-md-4"%>
+    <%= link_to "New College Library", {controller: "admin", action: "map", floor: 1, library: "newcollege"}, data: { no_turbolink: true, floor: 1 },  :class=>"links col-xs-12 col-md-4"%>
   </div>
   <div class="row">
+    <hr>
     <h5>Messages</h5>
-    <table class="table table-bordered">
-      <thead style="background-color: #1B325E; color:#fff;">
-        <td>NAME</td>
-        <td>EMAIL</td>
-        <td>MESSAGE</td>
-      </thead>
+    <table class="table table-striped">
       <tbody>
       <% @feedback_messages.each do |feedback| %>
           <tr>

@@ -2,7 +2,6 @@ class AdminController < ApplicationController
   http_basic_authenticate_with :name => APP_CONFIG["name"], :password => APP_CONFIG["password"], realm: "Contact the Library Digital Development Team digital.library@ed.ac.uk for access"
 
   def index
-    #redirect_to action: "map", floor: 1, library: "main"
     @total = UsageStatistic.count
     @found = UsageStatistic.where(found: true).count
     @feedback_messages = FeedbackMessage.all
@@ -31,7 +30,6 @@ class AdminController < ApplicationController
     head :ok
   end
 
-  #Save a single element
   def save_element
     if params[:element]
       element = JSON.parse params[:element]
@@ -39,23 +37,20 @@ class AdminController < ApplicationController
       res = save_single_element(element)
       p res
       if res != true
-        response = { error: 'Could not save element' }
+        response = {error: 'Could not save element'}
         status = :unprocessable_entity
 
       else
-        response = {:next_id => Element.maximum(:id).to_i }
+        response = {:next_id => Element.maximum(:id).to_i}
         status = :ok
       end
       render json: response, status: status
     end
-
-
   end
 
-
   def map
-    @floor = params[:floor]
-    @library = params[:library]
+    @floor = params[:floor] || 1
+    @library = params[:library] || 'main'
 
     # Saving the canvas
     if params[:elements] then
@@ -65,7 +60,7 @@ class AdminController < ApplicationController
 
       # Loop through each element to save
       @elements.each do |element|
-        unless Element.exists?(:id => element["id"])
+        unless Element.exists?(id: element["id"])
           newElementsCount += 1
         end
         save_single_element(element)
@@ -79,12 +74,7 @@ class AdminController < ApplicationController
 
   private
   def save_single_element(element)
-
-    if Element.exists?(:id => element["id"])
-      canvasElement = Element.find(element["id"])
-    else
-      canvasElement = Element.new
-    end
+    canvasElement = Element.exists?(element["id"]) ? Element.find(element["id"]) : Element.new
 
     # Set element general attributes
     canvasElement.left = element["left"]
@@ -100,78 +90,14 @@ class AdminController < ApplicationController
 
     if element["element_type_id"] == ElementType.find_by(name: "Shelf").id
 
-      if element["range_end_opt"] == nil
-        element["range_end_opt"] = ''
-      end
-
-      if element["range_end_digits"] == nil
-        element["range_end_digits"] = ''
-      end
-
-      if element["range_end_letters"] == nil
-        element["range_end_letters"] = ''
-      end
-
-      if element["range_start_opt"] == nil
-        element["range_start_opt"] = ''
-      end
-
-      if element["range_start_digits"] == nil
-        element["range_start_digits"] = ''
-      end
-
-      if element["range_start_letters"] == nil
-        element["range_start_letters"] = ''
-      end
-
-      # Validate shelfmark
-      if (element["range_end_opt"] == "Ref. ")
-        shelfmark_end = element["range_end_letters"] + element["range_end_digits"]
-      else
-        shelfmark_end = element["range_end_opt"] + element["range_end_letters"] + element["range_end_digits"]
-      end
-
-      if (element["range_start_opt"] == "Ref. ")
-        shelfmark_start = element["range_start_letters"] + element["range_start_digits"]
-      else
-        shelfmark_start = element["range_start_opt"] + element["range_start_letters"] + element["range_start_digits"]
-      end
-
-      if shelfmark_end == "" and shelfmark_start == ""
-        canvasElement.identifier = element["identifier"]
-        if canvasElement.save
-          return true
-        else
-          return {"error" => canvasElement.errors.full_messages}
-        end
-      end
-
-      if shelfmark_start != ""
-        shelfmark_start = shelfmarkToOrder(shelfmark_start, element["identifier"])
-        if shelfmark_start == -1
-          return {"error" => "Invalid start shelfmark"}
-        end
-      else
-        return {"error" => "Start shelfmark cannot be empty"}
-      end
-
-      if shelfmark_end != ""
-        shelfmark_end = shelfmarkToOrder(shelfmark_end, element["identifier"])
-        puts shelfmark_start
-        if shelfmark_end == -1
-          return {"error" => "Invalid end shelfmark"}
-        end
-      else
-        return {"error" => "End shelfmark cannot be empty"}
-      end
-
-      if shelfmark_start > shelfmark_end
-        return {"error" => "Invalid range: start shelfmark should be lower than end shelfmark"}
-      end
+      element["range_end_opt"] ||= ''
+      element["range_end_digits"] ||= ''
+      element["range_end_letters"] ||= ''
+      element["range_start_opt"] ||= ''
+      element["range_start_digits"] ||= ''
+      element["range_start_letters"]||= ''
 
       # Update shelve's custom attribute
-      canvasElement.range_end = shelfmark_end
-      canvasElement.range_start = shelfmark_start
       canvasElement.identifier = element["identifier"]
       canvasElement.range_end_opt = element["range_end_opt"]
       canvasElement.range_end_digits = element["range_end_digits"]
@@ -181,18 +107,11 @@ class AdminController < ApplicationController
       canvasElement.range_start_letters = element["range_start_letters"]
 
     elsif element["element_type_id"] == ElementType.find_by(name: "Wall").id
-
       canvasElement.right = element["right"]
       canvasElement.bottom = element["bottom"]
-
     end
 
-    if canvasElement.save
-      return true
-    else
-      return {"error" => canvasElement.errors.full_messages}
-    end
-
+    return canvasElement.save ? true : {"error" => canvasElement.errors.full_messages}
   end
 
 end

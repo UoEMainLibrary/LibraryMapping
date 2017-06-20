@@ -1,85 +1,45 @@
 class MapDisplayController < ApplicationController
   def map
-
     # Select Leaflet image based on browser
     browser = Browser.new(request.user_agent)
-    @extension = ".png"
 
-    if (browser.chrome? or browser.firefox? or browser.safari?) and !browser.platform.ios? and !browser.platform.android?
-      @extension = ".svg"
-    end
+    @extension = (browser.chrome? || browser.firefox? || browser.safari?) ? ".svg" : ".png"
+    @extension = ".png" if browser.platform.ios? || browser.platform.android?
 
     # Read URL params
     @shelfmark = params[:shelfmark]
-    identifier = params[:identifier]
-    @library = params[:library]
-    @floor = params[:floor]
+    identifier = params[:identifier] || 'lc_hub'
+    @library = params[:library] || 'main'
+    @floor = params[:floor] || 1
     @title = params[:title]
     @author = params[:author]
     @element_name = params[:element_name]
-    if session[:ui_view].nil? then
-      session[:ui_view] = params[:view]
-    end
+    session[:ui_view] = params[:view] if session[:ui_view].nil?
 
-    unless @floor
-      @floor = 1
+    #search for the icons
+    if @element_name
+      @searching = true
+      @elementnames = Element.joins(:element_type).where("elements.library = :library AND elements.floor = :floor AND element_types.name like :name", {library: @library, floor: @floor, name: "%#{params[:element_name]}%"})
     end
-
-    unless @library
-      @library = "main"
-    end
-
-    unless identifier
-      identifier = "lc_hub"
-    end
-
     # If URL is passing paramenters
-    if @shelfmark and @library and @floor
-        @is_searching = true
+    if @shelfmark
+        @searching = true
         
         unless browser.platform.ios? or browser.platform.android? or browser.platform.windows_phone?
           @qr = RQRCode::QRCode.new(request.original_url)
         end
-
-        #If Main Library Floor is passed through, else floor needs to be calculated
-        if @library == "main"
-          # Matches all the shelves in the EAS Collection
-          if identifier == "eas_main"
-            @elements = Element.where("identifier = :identifier AND library = :library AND floor = :floor", {identifier: identifier, library: @library, floor: @floor})
-
-            # Matches all the file in special collections (C.A.S., Watt, Smith, Serjeant)
-          elsif @shelfmark.match(/^(Smith Coll.|Watt Coll.|Serj. Coll.|C.A.S.)/)
-            identifier = "cwss_main"
-            @elements = Element.where("identifier = :identifier AND library = :library AND floor = :floor", {identifier: identifier, library: @library, floor: @floor})
-
-            # Matches all other shelves (HUB, Library of Congress, Dewey Decimal...)
-          else
-            shelfmarkNumber = shelfmarkToOrder(@shelfmark, identifier)
-            @elements = Element.where("range_end >= :shelfmark AND range_start <= :shelfmark AND library = :library AND floor = :floor AND identifier = :identifier", {shelfmark: shelfmarkNumber, library: @library, floor: @floor, identifier: identifier})
-          end
-        else
-          shelfmarkNumber = shelfmarkToOrder(@shelfmark, identifier)
-          @elements = Element.where("range_end >= :shelfmark AND range_start <= :shelfmark AND library = :library AND identifier = :identifier", {shelfmark: shelfmarkNumber, library: @library, identifier: identifier})
-          if @elements.any?
-            @floor = @elements[0].floor
-          end
-        end
+        @elements = Element.find_shelf(@library, identifier, @shelfmark)
+        @floor = @elements.try(:first).try(:floor)
     end
 
-     #search for the icons
-    if @library and @floor and @element_name
-     @searching_element = true
-      @elementnames = Element.joins(:element_type).where("elements.library = :library AND elements.floor = :floor AND element_types.name like :name", {library: @library, floor: @floor, name: "%#{params[:element_name]}%"})
+    respond_to do |format|
+      format.js
+      format.html
     end
-
   end
 
   def save_statistics
-    found = params[:found]
-    if found
-      UsageStatistic.create(found: found)
-    end
-
+    UsageStatistic.create(found: params[:found]) if params[:found]
     head :ok
   end
 

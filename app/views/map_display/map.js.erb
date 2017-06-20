@@ -1,0 +1,15 @@
+/**
+ * Created by Kristiyan on 05/06/2017.
+ */
+
+<%= render 'map_script.js.erb' %>
+<% unless @elementnames %>
+  // Dynamically change navbar library and floor buttons unless we are just looking for an element
+  $('.location_navigation').html("<%= escape_javascript(render 'layouts/set_lib_and_floor') %>");
+<% end %>
+$('.optionsTopBar').html("<%= escape_javascript(render 'subheader') %>");
+$('#compass').html("<%= escape_javascript(render 'compass') %>");
+
+<% if @searching && !@elementnames.any? && !@elements %>
+$.notify('We could not locate this item on this floor. Please ask someone at the Helpdesk.');
+<% end %>

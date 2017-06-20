@@ -1,0 +1,29 @@
+<div class="container-fluid">
+  <div class="navbar-header">
+    <p class="navbar-text visible-xs-inline-block">
+      <span id="floor_info" title="Expand right menu to change library and floor"></span></p>
+    <button type="button" class="navbar-toggle" data-toggle="collapse" data-target="#myNavbar">
+      <span class="icon-bar"></span>
+      <span class="icon-bar"></span>
+      <span class="icon-bar"></span>
+    </button>
+    <a href="/"><img class="logo" src="/assets/logo-01.png" title="University of Edinburgh Library Maps" alt="University of Edinburgh Library Maps"></a>
+  </div>
+  <div class="collapse navbar-collapse" id="myNavbar">
+    <span class="location_navigation">
+      <%= render 'layouts/set_lib_and_floor' %>
+    </span>
+    <ul class="nav navbar-nav navbar-right ">
+      <li>
+        <a class="white-font" id="libraries-and-floors" href="/" title="Show Direction"><span class="glyphicon glyphicon-search"></span>Find</a>
+      </li>
+      <% if @qr %>
+          <li>
+            <a class="white-font" id="qr-code" href="javascript:;" title="Show Direction"><span class="glyphicon glyphicon glyphicon-phone"></span>Get
+              on mobile</a></li>
+      <% end %>
+      <li><%= link_to '<span class="glyphicon glyphicon-send"></span>Feedback'.html_safe, {controller: "map_display", action: "feedback"}, class: "white-font", data: {no_turbolink: true} %></li>
+      <li><%= link_to '<i class="fa fa-question" aria-hidden="true"></i>&nbsp;FAQ'.html_safe, {controller: "map_display", action: "faq"}, class: "white-font", data: {no_turbolink: true} %></li>
+    </ul>
+  </div>
+</div>

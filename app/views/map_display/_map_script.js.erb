@@ -1,0 +1,62 @@
+var library_name = "<%=@library%>";
+
+var w = libraries_data["<%=@library%>"].box_size.width,
+    h = libraries_data["<%=@library%>"].box_size.height,
+    url = '/assets/' + '<%= @library %>' + '_' + '<%= @floor %>' + '<%= @extension %>';
+
+// calculate the edges of the image, in coordinate space
+var southWest = map.unproject([0, h], map.getMaxZoom()-1),
+    northEast = map.unproject([w, 0], map.getMaxZoom()-1);
+
+var bounds = new L.LatLngBounds(southWest, northEast);
+
+if(overlay) overlay.setOpacity(0);
+deleteMarkers();
+overlay = L.imageOverlay(url, bounds).addTo(map);
+
+// Setting appropriate zoom
+if(library_name == "murray"){
+    map.setZoom(1);
+}else if(library_name == "newcollege"){
+    map.setZoom(1.5);
+}else{
+    map.setZoom(0.1);
+}
+
+// tell leaflet that the map is exactly as big as the image
+map.setMaxBounds(bounds);
+
+// Adding markers if someone looked for a book
+L.AwesomeMarkers.Icon.prototype.options.prefix = 'fa';
+<% @elements.try(:each) do |element| %>
+  L.marker(map.unproject([<%= element.left %>, <%= element.top %>], map.getMaxZoom()-1), {
+      icon: L.AwesomeMarkers.icon({
+          icon: 'book',
+          markerColor: 'red'
+      })
+  }).addTo(map).bindPopup("<b><%= @title %></b><br> <%= @author %><br> <%= @shelfmark%> ("+libraries_data["<%=@library%>"].floors[<%= @floor%>].name +")").openPopup();
+
+  <% if session[:ui_view] != 'kiosk' then%>
+  helpInfo(90000);
+  <% end %>
+<% end %>
+
+// Adding markers if any elements searched
+<% @elementnames.try(:each) do |elementname| %>
+  var marker = L.marker(map.unproject([<%= elementname.left %>, <%= elementname.top%>], map.getMaxZoom()-1), {
+      icon: L.AwesomeMarkers.icon({
+          icon: 'location-arrow',
+          markerColor: 'blue'
+      })
+  }).addTo(map)
+  markers.push(marker);
+<% end %>
+
+// Deletes all markers in the array by removing references to them.
+function deleteMarkers() {
+    for (var i = 0; i < markers.length; i++) {
+        markers[i].setOpacity(0);
+    }
+    markers = [];
+}
+

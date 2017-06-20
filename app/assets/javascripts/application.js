@@ -13,12 +13,13 @@
 //= require jquery
 //= require jquery_ujs
 //= require turbolinks
+//= require admin.js
 //= require fabric.min.js
 //= require fabricjs_viewport
 //= require sylvester
 //= require jspdf.min.js
 //= require bootstrap-sprockets
-//= require bootstrap-notify
 //= require leaflet
 //= require leaflet.awesome-markers
+//= require notifyjs_rails
 //= require_tree .

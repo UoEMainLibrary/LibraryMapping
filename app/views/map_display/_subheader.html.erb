@@ -1,0 +1,9 @@
+  <div class="col-xs-12 col-md-8 label-style subheader">
+    <label> Find on floor:</label>
+    <%= link_to 'Printers', { controller: :map_display, action: :map, floor: @floor, library: @library, element_name: 'print' }, {class: "print btn btn-sm btn-floor ", remote: true}%>
+    <%= link_to 'Toilets', { controller: :map_display, action: :map, floor: @floor, library: @library, element_name: 'toilet' }, {class: "toilet btn btn-sm btn-floor ", remote: true}%>
+    <%= link_to 'Group study', { controller: :map_display, action: :map, floor: @floor, library: @library, element_name: 'groupstudy' }, {class: "groupstudy btn btn-sm btn-floor ", remote: true}%>
+    <%= link_to 'Recent returns', { controller: :map_display, action: :map, floor: @floor, library: @library, element_name: 'recent' }, {class: "recent btn btn-sm btn-floor ", remote: true}%>
+    <%= link_to 'Lifts', { controller: :map_display, action: :map, floor: @floor, library: @library, element_name: 'lift' }, {class: "lift btn btn-sm btn-floor ", remote: true}%>
+    <%= link_to 'Water fountains', { controller: :map_display, action: :map, floor: @floor, library: @library, element_name: 'water' }, {class: "water btn btn-sm btn-floor ", remote: true}%>
+  </div>
