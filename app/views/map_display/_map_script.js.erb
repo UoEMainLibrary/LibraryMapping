@@ -21,9 +21,9 @@ if(library_name == "murray"){
 }else{
     zoom = 0.1;
 }
-map.fitBounds(bounds);
+
 map.setZoom(zoom);
-// tell leaflet that the map is exactly as big as the image
+map.fitBounds(bounds);
 
 // Adding markers if someone looked for a book
 L.AwesomeMarkers.Icon.prototype.options.prefix = 'fa';
