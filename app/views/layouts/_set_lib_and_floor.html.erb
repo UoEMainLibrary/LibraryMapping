@@ -24,7 +24,7 @@
         $("#floor_buttons").html("");
         libraries_data["<%=@library%>"].floors.forEach(function (floor) {
             <% href = "#{root_url}#{'admin/' if params[:controller] == 'admin'}#{@library}/"%>
-            $("#floor_buttons").append("<li><a data-remote='<%= isRemote %>' data-turbolinks='<%= isRemote %>' href='<%= href %>"+ floor.order +"'>" + floor.name + "</a></li>");
+            $("#floor_buttons").append("<li><a data-remote='<%= isRemote %>' data-turbolinks='<%= isRemote %>' href='<%= root_path %><%= @library %>/"+ floor.order +"'>" + floor.name + "</a></li>");
         });
 
         $('#floor_info').html("<%=@library.capitalize%> Library : " + libraries_data["<%=@library%>"].floors["<%= @floor%>"].name);
