@@ -1,0 +1,76 @@
+// Place all the styles related to the application controller here.
+// They will automatically be included in application.css.
+// You can use Sass (SCSS) here: http://sass-lang.com/
+
+.navbar-header {
+  img {
+    margin-right: 7px;
+  }
+}
+
+.bg-blue .navbar-left {
+
+  li {
+    background-color: #1B325E;
+  }
+
+  a {
+    color: #ffffff;
+  }
+
+  li > a:hover, .nav > li > a:focus {
+    background-color: #337ab7;
+    text-decoration: none;
+  }
+
+  .open > a, .open > a:hover, .open > a:focus {
+    background-color: #337ab7;
+    border-color: #337ab7;
+  }
+
+  .dropdown-menu > li > a {
+    background-color: #1B325E;
+    color: #ffffff;
+  }
+
+  .dropdown-menu > li > a:hover, .dropdown-menu > li > a:focus {
+    background-color: #337ab7;
+    color: #ffffff;
+    text-decoration: none;
+  }
+}
+.navbar-left {
+
+  a {
+    color: white;
+    font-weight: bold;
+  }
+}
+
+.navbar-right{
+
+  span{
+    margin-right:7px;
+  }
+
+  .white-font:active,
+  .white-font:focus {
+    background-color: inherit;
+    color: inherit;
+  }
+
+  .white-font:hover{
+    background-color: #eeeeee;
+    color: #1B325E;
+  }
+}
+
+
+@media screen and (max-width: 767px) {
+  .nav>li {
+    position: relative;
+    display: block;
+    width: auto;
+    float: left;
+  }
+}

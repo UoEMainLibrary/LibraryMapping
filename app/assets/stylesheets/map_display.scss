@@ -128,57 +128,6 @@ body, html {
   height: 3px;
 }
 
-.navbar-header {
-  img {
-    margin-right: 7px;
-  }
-}
-
-.bg-blue .navbar-left {
-
-  li {
-    background-color: #1B325E;
-  }
-
-  a{
-    color: #ffffff;
-  }
-
-  .dropdown-menu > li > a {
-    background-color: #1B325E;
-    color: #ffffff;
-  }
-
-  .dropdown-menu > li > a.hover {
-    color: #1B325E;
-  }
-}
-.navbar-left {
-  a{
-    color: white;
-    font-weight: bold;
-  }
-}
-
-
-
-.navbar-right{
-  span{
-    margin-right:7px;
-  }
-
-  .white-font:active,
-  .white-font:focus {
-    background-color: inherit;
-    color: inherit;
-  }
-
-  .white-font:hover{
-    background-color: #eeeeee;
-    color: #1B325E;
-  }
-}
-
 #help-info{
   position: fixed;
   bottom: 0;
@@ -215,12 +164,7 @@ body, html {
 #qr-container td.white { border-color: #fff; }
 
 @media screen and (max-width: 767px) {
-  .nav>li {
-    position: relative;
-    display: block;
-    width: auto;
-    float: left;
-  }
+
   #image-map {
     height: calc(100% - 50px);
   }
