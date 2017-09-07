@@ -6,7 +6,7 @@ class Element < ActiveRecord::Base
   def self.find_shelf(library, identifier, shelfmark)
     shelfmark, optional, part_one, part_two = self.prepare_search_arguments(shelfmark)
     elements = self.feasible_elements(library, identifier)
-    elements = self.common_filter(elements, part_one, part_two, identifier)
+    elements = self.common_filter(elements, part_one, part_two, identifier, optional)
     case library
     when 'main'
       return self.classify_in_main(elements, optional, part_one, part_two)
@@ -75,19 +75,37 @@ class Element < ActiveRecord::Base
     Element.where(element_type_id: 3, library: library, identifier: identifier)
   end
 
-  def self.common_filter(elements, part_one, part_two, identifier)
+  def self.common_filter(elements, part_one, part_two, identifier, optional)
     if part_two.class == Fixnum
-      elements.select{ |el| (el.range_start_letters || '') <= part_one && 
-                           (el.range_end_letters   || '') >= part_one &&
-                           (el.range_start_digits.to_i <= part_two || el.range_start_letters < part_one) &&
-                           (el.range_end_digits.to_i   >= part_two || el.range_end_letters   > part_one) }
-    elsif identifier == 'strange_newcollege'
-      elements.select{ |el| (el.range_start_letters.to_alphanum || '') <= part_one && 
+      if optional == ' '
+        elements.select{ |el| (el.range_start_letters || '') <= part_one &&
+                              (el.range_end_letters   || '') >= part_one &&
+                              (el.range_start_digits.to_i <= part_two || el.range_start_letters < part_one) &&
+                              (el.range_end_digits.to_i   >= part_two || el.range_end_letters   > part_one) &&
+                              (el.range_start_opt == ' ' && el.range_end_opt == ' ') }
+      else
+        elements.select{ |el| (el.range_start_letters || '') <= part_one &&
+                              (el.range_end_letters   || '') >= part_one &&
+                              (el.range_start_digits.to_i <= part_two || el.range_start_letters < part_one) &&
+                              (el.range_end_digits.to_i   >= part_two || el.range_end_letters   > part_one) }
+      end
+    elsif identifier == 'dewey_main'
+      if optional == ' '
+        elements.select{ |el| (el.range_start_digits.to_s <= part_one) &&
+                              (el.range_end_digits.to_s   >= part_one) &&
+                              (el.range_start_opt == ' ' && el.range_end_opt == ' ') }
+      else
+        elements.select{ |el| (el.range_start_digits.to_s <= part_one) &&
+                              (el.range_end_digits.to_s   >= part_one) &&
+                              (el.range_start_opt == optional || el.range_end_opt == optional) }
+      end
+    elsif identifier == 'collection_newcollege'
+      elements.select{ |el| (el.range_start_letters.to_alphanum || '') <= part_one &&
                            (el.range_end_letters.to_alphanum   || '') >= part_one &&
                            (el.range_start_digits.to_alphanum <= part_two || el.range_start_letters.to_alphanum < part_one) &&
                            (el.range_end_digits.to_alphanum   >= part_two || el.range_end_letters.to_alphanum   > part_one) }
     else
-      elements.select{ |el| (el.range_start_letters || '') <= part_one.to_s && 
+      elements.select{ |el| (el.range_start_letters || '') <= part_one.to_s &&
                            (el.range_end_letters   || '') >= part_one.to_s &&
                            (el.range_start_digits.to_s <= part_two || el.range_start_letters < part_one) &&
                            (el.range_end_digits.to_s   >= part_two || el.range_end_letters   > part_one) }
@@ -96,7 +114,7 @@ class Element < ActiveRecord::Base
 
   def self.require_optional(elements, optional)
     elements.select{ |el| el.range_start_opt.include?('|' + optional)}
-  end
+x  end
 
   # MAIN LIBRARY
   #############################################################################
@@ -115,7 +133,9 @@ class Element < ActiveRecord::Base
   # TODO: Add tags to shelves and remove the optional thing
   def self.classify_in_main(elements, optional, part_one, part_two)
     # If shelf starts with N the folios can be anywhere
-    part_one.to_s.first=='N' && ['Folio ', 'F. ', 'F '].include?(optional) ? elements : Element.require_optional(elements, optional)
+    # part_one.to_s.first=='N' && ['Folio ', 'F. ', 'F '].include?(optional) ? Element.require_optional(elements, optional) : elements
+    # taking care of optional in common_filter so just return elements
+    elements
   end
 
   # NEWCOLLEGE LIBRARY

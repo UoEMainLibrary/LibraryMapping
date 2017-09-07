@@ -8,6 +8,7 @@ class MapDisplayController < ApplicationController
 
     # Read URL params
     @shelfmark = params[:shelfmark]
+    @original_shelfmark = @shelfmark.dup
     identifier = params[:identifier] || 'lc_hub'
     @library = params[:library] || 'main'
     @floor = params[:floor] || 1
@@ -21,7 +22,7 @@ class MapDisplayController < ApplicationController
       @searching = true
       @elementnames = Element.joins(:element_type).where("elements.library = :library AND elements.floor = :floor AND element_types.name like :name", {library: @library, floor: @floor, name: "%#{params[:element_name]}%"})
     end
-    # If URL is passing paramenters
+    # If URL is passing parameters
     if @shelfmark
         @searching = true
         
