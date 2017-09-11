@@ -5,11 +5,8 @@ class Element < ActiveRecord::Base
 
   def self.find_shelf(library, identifier, shelfmark)
     shelfmark, optional, part_one, part_two = self.prepare_search_arguments(shelfmark)
-    debugger
     elements = self.feasible_elements(library, identifier)
-    debugger
     elements = self.common_filter(elements, part_one, part_two, identifier, optional)
-    debugger
     case library
     when 'main'
       return self.classify_in_main(elements, optional, part_one, part_two)
@@ -79,22 +76,19 @@ class Element < ActiveRecord::Base
   end
 
   def self.common_filter(elements, part_one, part_two, identifier, optional)
-    debugger
     if part_two.class == Fixnum
-      debugger
       if optional == ' '
-        debugger
         elements.select{ |el| (el.range_start_letters || '') <= part_one &&
                               (el.range_end_letters   || '') >= part_one &&
                               (el.range_start_digits.to_i <= part_two || el.range_start_letters < part_one) &&
                               (el.range_end_digits.to_i   >= part_two || el.range_end_letters   > part_one) &&
-                              (el.range_start_opt == '' && el.range_end_opt == '') }
+                              (el.range_start_opt == ' ' && el.range_end_opt == ' ') }
       else
-        debugger
         elements.select{ |el| (el.range_start_letters || '') <= part_one &&
                               (el.range_end_letters   || '') >= part_one &&
                               (el.range_start_digits.to_i <= part_two || el.range_start_letters < part_one) &&
-                              (el.range_end_digits.to_i   >= part_two || el.range_end_letters   > part_one) }
+                              (el.range_end_digits.to_i   >= part_two || el.range_end_letters   > part_one) &&
+                              (!el.range_start_opt == ' ' || !el.range_end_opt == ' ') }
       end
     elsif identifier == 'dewey_main'
       if optional == ' '
@@ -105,15 +99,14 @@ class Element < ActiveRecord::Base
         elements.select{ |el| (el.range_start_digits.to_s <= part_one) &&
                               (el.range_end_digits.to_s   >= part_one) &&
                               (el.range_start_opt == optional || el.range_end_opt == optional) }
+
       end
-    elsif identifier == 'collection_newcollege'
-      debugger
+    elsif identifier == 'strange_newcollege'
       elements.select{ |el| (el.range_start_letters.to_alphanum || '') <= part_one &&
                            (el.range_end_letters.to_alphanum   || '') >= part_one &&
                            (el.range_start_digits.to_alphanum <= part_two || el.range_start_letters.to_alphanum < part_one) &&
                            (el.range_end_digits.to_alphanum   >= part_two || el.range_end_letters.to_alphanum   > part_one) }
     else
-      debugger
       elements.select{ |el| (el.range_start_letters || '') <= part_one.to_s &&
                            (el.range_end_letters   || '') >= part_one.to_s &&
                            (el.range_start_digits.to_s <= part_two || el.range_start_letters < part_one) &&
