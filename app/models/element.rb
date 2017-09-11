@@ -82,19 +82,19 @@ class Element < ActiveRecord::Base
                               (el.range_end_letters   || '') >= part_one &&
                               (el.range_start_digits.to_i <= part_two || el.range_start_letters < part_one) &&
                               (el.range_end_digits.to_i   >= part_two || el.range_end_letters   > part_one) &&
-                              (el.range_start_opt == '' && el.range_end_opt == '') }
+                              (el.range_start_opt.blank? && el.range_end_opt.blank?) }
       else
         elements.select{ |el| (el.range_start_letters || '') <= part_one &&
                               (el.range_end_letters   || '') >= part_one &&
                               (el.range_start_digits.to_i <= part_two || el.range_start_letters < part_one) &&
                               (el.range_end_digits.to_i   >= part_two || el.range_end_letters   > part_one) &&
-                              (!el.range_start_opt == '' || !el.range_end_opt == '') }
+                              (!el.range_start_opt.blank? || !el.range_end_opt.blank?) }
       end
     elsif identifier == 'dewey_main'
       if optional == ' '
         elements.select{ |el| (el.range_start_digits.to_s <= part_one) &&
                               (el.range_end_digits.to_s   >= part_one) &&
-                              (el.range_start_opt == '' && el.range_end_opt == '') }
+                              (el.range_start_opt.blank? && el.range_end_opt.blank?) }
       else
         elements.select{ |el| (el.range_start_digits.to_s <= part_one) &&
                               (el.range_end_digits.to_s   >= part_one) &&
