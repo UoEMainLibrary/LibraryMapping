@@ -8,7 +8,6 @@ class MapDisplayController < ApplicationController
 
     # Read URL params
     @shelfmark = params[:shelfmark]
-    @original_shelfmark = @shelfmark.dup
     identifier = params[:identifier] || 'lc_hub'
     @library = params[:library] || 'main'
     @floor = params[:floor] || 1
@@ -25,7 +24,8 @@ class MapDisplayController < ApplicationController
     # If URL is passing parameters
     if @shelfmark
         @searching = true
-        
+        @original_shelfmark = @shelfmark.dup
+
         unless browser.platform.ios? or browser.platform.android? or browser.platform.windows_phone?
           @qr = RQRCode::QRCode.new(request.original_url)
         end
