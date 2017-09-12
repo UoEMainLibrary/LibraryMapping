@@ -82,7 +82,7 @@ class Element < ActiveRecord::Base
                               (el.range_end_letters   || '') >= part_one &&
                               (el.range_start_digits.to_i <= part_two || el.range_start_letters < part_one) &&
                               (el.range_end_digits.to_i   >= part_two || el.range_end_letters   > part_one) &&
-                              (el.range_start_opt.blank? && el.range_end_opt.blank?) }
+                              (el.range_start_opt.blank? || el.range_end_opt.blank?) }
       else
         elements.select{ |el| (el.range_start_letters || '') <= part_one &&
                               (el.range_end_letters   || '') >= part_one &&
@@ -94,13 +94,13 @@ class Element < ActiveRecord::Base
       if optional == ' '
         elements.select{ |el| (el.range_start_digits.to_s <= part_one) &&
                               (el.range_end_digits.to_s   >= part_one) &&
-                              (el.range_start_opt.blank? && el.range_end_opt.blank?) }
+                              (el.range_start_opt.blank? || el.range_end_opt.blank?) }
       else
         elements.select{ |el| (el.range_start_digits.to_s <= part_one) &&
                               (el.range_end_digits.to_s   >= part_one) &&
                               (el.range_start_opt == optional || el.range_end_opt == optional) }
       end
-    elsif identifier == 'strange_newcollege'
+    elsif identifier == 'collection_newcollege'
       elements.select{ |el| (el.range_start_letters.to_alphanum || '') <= part_one &&
                            (el.range_end_letters.to_alphanum   || '') >= part_one &&
                            (el.range_start_digits.to_alphanum <= part_two || el.range_start_letters.to_alphanum < part_one) &&
