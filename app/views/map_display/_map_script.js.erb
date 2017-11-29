@@ -10,8 +10,8 @@ var w = libraries_data["<%=@library%>"].box_size.width,
 var southWest = map.unproject([0, h], map.getMaxZoom()-1);
 var northEast = map.unproject([w, 0], map.getMaxZoom()-1);
 
-alert('southWest: ' + southWest);
-alert('northEast: ' + northEast);
+//alert('southWest: ' + southWest);
+//alert('northEast: ' + northEast);
 
 var bounds = new L.LatLngBounds(southWest, northEast);
 
