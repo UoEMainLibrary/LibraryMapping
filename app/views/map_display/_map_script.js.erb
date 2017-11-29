@@ -15,23 +15,24 @@ var northEast = map.unproject([w, 0], map.getMaxZoom()-1);
 
 var bounds = new L.LatLngBounds(southWest, northEast);
 
-//alert('bounds: ' + bounds);
+overlay = L.imageOverlay(url, bounds).addTo(map);
 
+//alert('bounds: ' + bounds);
+/*
 // Setting appropriate zoom
 if(library_name == "murray"){
     zoom = 1;
 }else if(library_name == "newcollege"){
-    zoom = 0.75;
+    zoom = 1.5;
 }else{
     zoom = 0.5;
 }
+*/
 
-map.setZoom(zoom);
+map.setZoom(0.5);
 
 map.fitBounds(bounds);
 map.setMaxBounds(bounds);
-
-overlay = L.imageOverlay(url, bounds).addTo(map);
 
 
 // Adding markers if someone looked for a book
