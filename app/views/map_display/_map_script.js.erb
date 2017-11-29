@@ -9,21 +9,32 @@ var w = libraries_data["<%=@library%>"].box_size.width,
 // calculate the edges of the image, in coordinate space
 var southWest = map.unproject([0, h], map.getMaxZoom()-1);
 var northEast = map.unproject([w, 0], map.getMaxZoom()-1);
+
+alert('southWest: ' + southWest);
+alert('northEast: ' + northEast);
+
 var bounds = new L.LatLngBounds(southWest, northEast);
+
+//alert('bounds: ' + bounds);
 
 overlay = L.imageOverlay(url, bounds).addTo(map);
 
 // Setting appropriate zoom
 if(library_name == "murray"){
-    zoom = 1;
+    //zoom = 1;
+    map.setZoom(1);
 }else if(library_name == "newcollege"){
-    zoom = 1.5;
+    //zoom = 1.5;
+    map.setZoom(2.5);
 }else{
-    zoom = 0.1;
+    //zoom = 0.5;
+    map.setZoom(0.5);
 }
 
-map.setZoom(zoom);
-map.fitBounds(bounds);
+
+//map.setZoom(zoom);
+//map.fitBounds(bounds);
+map.setMaxBounds(bounds);
 
 // Adding markers if someone looked for a book
 L.AwesomeMarkers.Icon.prototype.options.prefix = 'fa';

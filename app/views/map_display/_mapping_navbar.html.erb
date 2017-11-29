@@ -14,16 +14,16 @@
       <%= render 'layouts/set_lib_and_floor' %>
     </span>
     <ul class="nav navbar-nav navbar-right ">
-      <li>
-        <a class="white-font" id="libraries-and-floors" href="/" title="Show Direction"><span class="glyphicon glyphicon-search"></span>Find</a>
-      </li>
+      <!--li>
+        <a class="white-font" id="libraries-and-floors" href="/" title="toggle find submenu"><span class="glyphicon glyphicon-search"></span><span title="toggle find submenu">Find</span></a>
+      </li-->
       <% if @qr %>
           <li>
-            <a class="white-font" id="qr-code" href="javascript:;" title="Show Direction"><span class="glyphicon glyphicon glyphicon-phone"></span>Get
+            <a class="white-font" id="qr-code" href="javascript:;" title="display QR code for mobile phone"><span class="glyphicon glyphicon glyphicon-phone"></span>Get
               on mobile</a></li>
       <% end %>
-      <li><%= link_to '<span class="glyphicon glyphicon-send"></span>Feedback'.html_safe, {controller: "map_display", action: "feedback"}, class: "white-font", data: {no_turbolink: true} %></li>
-      <li><%= link_to '<i class="fa fa-question" aria-hidden="true"></i>&nbsp;FAQ'.html_safe, {controller: "map_display", action: "faq"}, class: "white-font", data: {no_turbolink: true} %></li>
+      <li><%= link_to '<span class="glyphicon glyphicon-send" title="send feedback"></span><span title="send feedback">Feedback</span>'.html_safe, {controller: "map_display", action: "feedback"}, class: "white-font", data: {no_turbolink: true} %></li>
+      <li><%= link_to '<i class="fa fa-question" aria-hidden="true" title="see the frequently asked questions"></i><span title="see the frequently asked questions">&nbsp;FAQ</span>'.html_safe, {controller: "map_display", action: "faq"}, class: "white-font", data: {no_turbolink: true} %></li>
     </ul>
   </div>
 </div>

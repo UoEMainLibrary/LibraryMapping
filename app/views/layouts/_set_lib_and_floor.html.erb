@@ -6,9 +6,9 @@
            aria-expanded="true" id="library_option_btn">Library
           <span class="caret"></span></a>
         <ul class="dropdown-menu" id="library_option">
-          <li><%= link_to 'Main Library', {library: 'main', floor: 1}, {remote: isRemote, 'data-turbolinks' => isRemote } %></li>
-          <li><%= link_to 'Murray Library', {library: 'murray', floor: 1}, {remote: isRemote, 'data-turbolinks' => isRemote } %></li>
-          <li><%= link_to 'New College Library', {library: 'newcollege', floor: 1}, {remote: isRemote, 'data-turbolinks' => isRemote } %></li>
+          <li><%= link_to 'Main Library', {library: 'main', floor: 1}, {remote: isRemote, 'data-turbolinks' => isRemote, title: "view Main Library maps" } %></li>
+          <li><%= link_to 'Murray Library', {library: 'murray', floor: 1}, {remote: isRemote, 'data-turbolinks' => isRemote, title: "view Murray library maps" } %></li>
+          <li><%= link_to 'New College Library', {library: 'newcollege', floor: 1}, {remote: isRemote, 'data-turbolinks' => isRemote, title: "view New College Library maps" } %></li>
         </ul>
       </li>
       <li>
@@ -24,7 +24,7 @@
         $("#floor_buttons").html("");
         libraries_data["<%=@library%>"].floors.forEach(function (floor) {
             <% href = "#{root_url}#{'admin/' if params[:controller] == 'admin'}#{@library}/"%>
-            $("#floor_buttons").append("<li><a data-remote='<%= isRemote %>' data-turbolinks='<%= isRemote %>' href='<%= root_path %><%= @library %>/"+ floor.order +"'>" + floor.name + "</a></li>");
+            $("#floor_buttons").append("<li><a data-remote='<%= isRemote %>' data-turbolinks='<%= isRemote %>' href='"+ floor.order +"'>" title='view "+ floor.name + " map'>" + floor.name + "</a></li>");
         });
 
         $('#floor_info').html("<%=@library.capitalize%> Library : " + libraries_data["<%=@library%>"].floors["<%= @floor%>"].name);
