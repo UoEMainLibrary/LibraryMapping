@@ -26,7 +26,6 @@
             <% href = "#{root_path}#{params[:controller] == 'admin' ? 'admin/' : '' }#{@library}/"%>
             $("#floor_buttons").append("<li><a data-remote='<%= isRemote %>' data-turbolinks='<%= isRemote %>' href='<%= href %>"+ floor.order +"'>" + floor.name + "</a></li>");
         });
-        
         $('#floor_info').html("<%=@library.capitalize%> Library : " + libraries_data["<%=@library%>"].floors["<%= @floor%>"].name);
 
         $('#library_option_btn').html('<%=@library.capitalize%> Library <span class="caret"></span>');
