@@ -11,7 +11,7 @@ class Element < ActiveRecord::Base
     when 'main'
       return self.classify_in_main(elements, optional, part_one, part_two)
     when 'newcollege'
-      return self.classify_in_newcollege(elements, optional, part_one, part_tow)
+      return self.classify_in_newcollege(elements, optional, part_one, part_two)
     when 'murray'
       return self.classify_in_murray(elements, optional, part_one, part_two) 
     else ## add other libraries
@@ -47,7 +47,7 @@ class Element < ActiveRecord::Base
     # C.A.S. on fourth floor
     elsif shelfmark.include?('C.A.S.')
       part_one, part_two = shelfmark.split(' ').drop(1)
-    # Strange system in Newcollege example A8/b3
+    # Old Collection New College example A8/b3
     elsif shelfmark.include?('/') 
       part_one, part_two = shelfmark.split('/')
       part_one = part_one.to_alphanum
