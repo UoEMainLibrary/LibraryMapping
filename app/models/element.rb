@@ -95,6 +95,7 @@ class Element < ActiveRecord::Base
                                   (!el.range_start_opt.blank? && !el.range_end_opt.blank?) }
           end
         end
+      end
     elsif part_two.class == Fixnum
       # now it's the main library so the folios will be at the start or end of
       # the normal shelves
