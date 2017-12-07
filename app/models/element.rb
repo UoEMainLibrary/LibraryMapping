@@ -20,7 +20,7 @@ class Element < ActiveRecord::Base
 
   # If there is a new class or new abbreviation of Pamph and Folio put them here
   def self.tags
-    ['p ', 'p. ', 'P ', 'P. ', 'Pamph. ', 'F ', 'F. ', 'Folio ', 'f ', 'f. ', 'sf ']
+    ['p ', 'p. ', 'P ', 'P. ', 'Pamph. ', 'F ', 'F. ', 'Folio ', 'f ', 'f. ', 'sf ', 'sf', 'pf', 'p']
   end
 # No matter the system used, there are always two parts of any book code
 # AB12 AB-part one 12-part 2
