@@ -63,7 +63,7 @@ class Element < ActiveRecord::Base
   def self.find_optional(shelfmark)
     # Remove Ref. as it has no affect on the position but can confuse the algorithm
     # If there are other abbreviations of Ref. remove them also
-    shelfmark.sub! 'Ref. ', ''
+    # shelfmark.sub! 'Ref. ', ''
 
     # Find the optional if any(it would be always at the beginning)
     # https://docs.ruby-lang.org/en/trunk/Regexp.html (How to work with regexp and ruby)
