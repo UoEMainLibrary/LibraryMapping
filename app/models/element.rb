@@ -60,11 +60,11 @@ class Element < ActiveRecord::Base
       part_two = shelfmark[part_one.length..-1].to_i unless part_one.blank?
     end
 
-    Rails.logger.info "---------LOGGING----------"
-    Rails.logger.info "part_one:#{part_one}"
-    Rails.logger.info "part_two:#{part_two}"
-    Rails.logger.info "optional:#{optional}"
-    Rails.logger.info "shelfmark:#{shelfmark}"
+    #Rails.logger.info "---------LOGGING----------"
+    #Rails.logger.info "part_one:#{part_one}"
+    #Rails.logger.info "part_two:#{part_two}"
+    #Rails.logger.info "optional:#{optional}"
+    #Rails.logger.info "shelfmark:#{shelfmark}"
 
     return shelfmark, optional, part_one, part_two
   end
@@ -104,7 +104,7 @@ class Element < ActiveRecord::Base
                                 (el.range_end_letters   || '') >= part_one &&
                                 (el.range_start_digits.to_i <= part_two || el.range_start_letters < part_one) &&
                                 (el.range_end_digits.to_i   >= part_two || el.range_end_letters   > part_one) &&
-                                (el.range_start_opt == optional && el.range_end_opt == optional) }
+                                (el.range_start_opt == optional.strip && el.range_end_opt == optional.strip) }
         end
       end
     elsif identifier == 'journal_newcollege'
