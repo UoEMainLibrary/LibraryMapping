@@ -18,18 +18,18 @@ var bounds = new L.LatLngBounds(southWest, northEast);
 overlay = L.imageOverlay(url, bounds).addTo(map);
 
 //alert('bounds: ' + bounds);
-/*
+
 // Setting appropriate zoom
 if(library_name == "murray"){
     zoom = 1;
 }else if(library_name == "newcollege"){
-    zoom = 1.5;
+    zoom = 2;
 }else{
     zoom = 0.5;
 }
-*/
 
-map.setZoom(0.5);
+
+map.setZoom(zoom);
 
 map.fitBounds(bounds);
 map.setMaxBounds(bounds);
