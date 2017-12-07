@@ -65,11 +65,14 @@ class Element < ActiveRecord::Base
     # Remove Ref. as it has no affect on the position but can confuse the algorithm
     # If there are other abbreviations of Ref. remove them also
     # shelfmark.sub! 'Ref. ', ''
-
-    # Find the optional if any(it would be always at the beginning)
-    # https://docs.ruby-lang.org/en/trunk/Regexp.html (How to work with regexp and ruby)
-    optional = shelfmark.match(/\A^(#{'(' + Element.tags.join(')|(') + ')'})/)
-    optional.nil? ? ' ' : optional[0]
+    if initial.include?('Per.') || initial.include?('Per') || initial.include?('PER')
+        optional = initial
+    else
+        # Find the optional if any(it would be always at the beginning)
+        # https://docs.ruby-lang.org/en/trunk/Regexp.html (How to work with regexp and ruby)
+        optional = shelfmark.match(/\A^(#{'(' + Element.tags.join(')|(') + ')'})/)
+        optional.nil? ? ' ' : optional[0]
+    end
   end
 
   def self.feasible_elements(library, identifier)
@@ -100,7 +103,8 @@ class Element < ActiveRecord::Base
     elsif identifier == 'journal_newcollege'
       # just sort on part_one which will be the letter of the periodical
       # optional will be Per, Per. or PER
-      elements.select { |el| (el.range_start_letters <= part_one) &&
+      elements.select { |el| (el.identifier == 'journal_newcollege') &&
+                             (el.range_start_letters <= part_one) &&
                              (el.range_end_letters   >= part_one) }
     elsif part_two.class == Fixnum
       # now it's the main library so the folios will be at the start or end of
