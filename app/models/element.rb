@@ -31,10 +31,13 @@ class Element < ActiveRecord::Base
   def self.prepare_search_arguments(shelfmark)
     # Saving prepend if any (The prepend can be either Folio or just F.(i.e. 4th floor))
     optional = self.find_optional(shelfmark)
+    # Removing leading sf or p for uts_newcollege pamphlets and folios
+    shelfmark = shelfmark.start_with?('p') ? shelfmark[1..-1] : shelfmark
+    shelfmark = shelfmark.start_with?('sf', 'pf') ? shelfmark[1..-2] : shelfmark
     # Removing prepend
     shelfmark.sub! optional, '' unless optional == ' '
-    # Removing confusing 's' and 'r' in Newcollege
-    # shelfmark = shelfmark.start_with?('s', 'r') ? shelfmark[1..-1] : shelfmark
+    # Remove any leading spaces after prepend removed
+    shelfmark.strip
     # Dewey example .01 exa - 0.1 exc
     if shelfmark[0] == '.' # if there are any other shelmarks with a . change this condition
       if shelfmark.include?('(')
@@ -56,6 +59,12 @@ class Element < ActiveRecord::Base
       part_one = shelfmark.split(/\d/).try(:first)
       part_two = shelfmark[part_one.length..-1].to_i unless part_one.blank?
     end
+
+    Rails.logger.info "---------LOGGING----------"
+    Rails.logger.info "part_one:#{part_one}"
+    Rails.logger.info "part_two:#{part_two}"
+    Rails.logger.info "optional:#{optional}"
+    Rails.logger.info "shelfmark:#{shelfmark}"
 
     return shelfmark, optional, part_one, part_two
   end
@@ -82,22 +91,20 @@ class Element < ActiveRecord::Base
   def self.common_filter(elements, part_one, part_two, identifier, optional)
     # if it's new college then the folio shelves are separate so the ranges
     # will start and end with an optional tag
-    if identifier == 'lc_newcollege'
-      if optional == ' '
-        if part_two.class == Fixnum
-          if optional == ' '
-            elements.select{ |el| (el.range_start_letters || '') <= part_one &&
-                                  (el.range_end_letters   || '') >= part_one &&
-                                  (el.range_start_digits.to_i <= part_two || el.range_start_letters < part_one) &&
-                                  (el.range_end_digits.to_i   >= part_two || el.range_end_letters   > part_one) &&
-                                  (el.range_start_opt.blank? && el.range_end_opt.blank?) }
-          else
-            elements.select{ |el| (el.range_start_letters || '') <= part_one &&
-                                  (el.range_end_letters   || '') >= part_one &&
-                                  (el.range_start_digits.to_i <= part_two || el.range_start_letters < part_one) &&
-                                  (el.range_end_digits.to_i   >= part_two || el.range_end_letters   > part_one) &&
-                                  (!el.range_start_opt.blank? && !el.range_end_opt.blank?) }
-          end
+    if identifier == 'lc_newcollege' || identifier == 'uts_newcollege'
+      if part_two.class == Fixnum
+        if optional == ' '
+          elements.select{ |el| (el.range_start_letters || '') <= part_one &&
+                                (el.range_end_letters   || '') >= part_one &&
+                                (el.range_start_digits.to_i <= part_two || el.range_start_letters < part_one) &&
+                                (el.range_end_digits.to_i   >= part_two || el.range_end_letters   > part_one) &&
+                                (el.range_start_opt.blank? && el.range_end_opt.blank?) }
+        else
+          elements.select{ |el| (el.range_start_letters || '') <= part_one &&
+                                (el.range_end_letters   || '') >= part_one &&
+                                (el.range_start_digits.to_i <= part_two || el.range_start_letters < part_one) &&
+                                (el.range_end_digits.to_i   >= part_two || el.range_end_letters   > part_one) &&
+                                (!el.range_start_opt.blank? && !el.range_end_opt.blank?) }
         end
       end
     elsif identifier == 'journal_newcollege'
