@@ -20,7 +20,7 @@ class Element < ActiveRecord::Base
 
   # If there is a new class or new abbreviation of Pamph and Folio put them here
   def self.tags
-    ['p ', 'p. ', 'P ', 'P. ', 'Pamph. ', 'F ', 'F. ', 'Folio ', 'f ', 'f. ', 'sf ', 'Per. ']
+    ['p ', 'p. ', 'P ', 'P. ', 'Pamph. ', 'F ', 'F. ', 'Folio ', 'f ', 'f. ', 'sf ']
   end
 # No matter the system used, there are always two parts of any book code
 # AB12 AB-part one 12-part 2
@@ -96,6 +96,11 @@ class Element < ActiveRecord::Base
           end
         end
       end
+    elsif identifier == 'journal_newcollege'
+      # just sort on part_two which will be the letter of the periodical
+      # part one will be Per, Per. or PER
+      elements.select { |el| (el.range_start_letters <= part_two) &&
+                             (el.range_end_letters   >= part_two) }
     elsif part_two.class == Fixnum
       # now it's the main library so the folios will be at the start or end of
       # the normal shelves
