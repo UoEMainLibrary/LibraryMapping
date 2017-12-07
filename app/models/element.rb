@@ -131,7 +131,7 @@ class Element < ActiveRecord::Base
       elements.select{ |el| (el.range_start_letters || '') <= part_one.to_s &&
                            (el.range_end_letters   || '') >= part_one.to_s &&
                            (el.range_start_digits.to_s <= part_two || el.range_start_letters < part_one) &&
-                           (el.range_end_digits.to_s   >= part_two || el.range_end_letters   > part_one) }}
+                           (el.range_end_digits.to_s   >= part_two || el.range_end_letters   > part_one) }
     end
   end
 
