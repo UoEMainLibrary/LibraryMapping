@@ -34,7 +34,7 @@ class Element < ActiveRecord::Base
     # Removing prepend
     shelfmark.sub! optional, '' unless optional == ' '
     # Removing confusing 's' and 'r' in Newcollege
-    shelfmark = shelfmark.start_with?('s', 'r') ? shelfmark[1..-1] : shelfmark
+    # shelfmark = shelfmark.start_with?('s', 'r') ? shelfmark[1..-1] : shelfmark
     # Dewey example .01 exa - 0.1 exc
     if shelfmark[0] == '.' # if there are any other shelmarks with a . change this condition
       if shelfmark.include?('(')
@@ -76,7 +76,28 @@ class Element < ActiveRecord::Base
   end
 
   def self.common_filter(elements, part_one, part_two, identifier, optional)
-    if part_two.class == Fixnum
+    # if it's new college then the folio shelves are separate so the ranges
+    # will start and end with an optional tag
+    if identifier == 'lc_newcollege'
+      if optional == ' '
+        if part_two.class == Fixnum
+          if optional == ' '
+            elements.select{ |el| (el.range_start_letters || '') <= part_one &&
+                                  (el.range_end_letters   || '') >= part_one &&
+                                  (el.range_start_digits.to_i <= part_two || el.range_start_letters < part_one) &&
+                                  (el.range_end_digits.to_i   >= part_two || el.range_end_letters   > part_one) &&
+                                  (el.range_start_opt.blank? && el.range_end_opt.blank?) }
+          else
+            elements.select{ |el| (el.range_start_letters || '') <= part_one &&
+                                  (el.range_end_letters   || '') >= part_one &&
+                                  (el.range_start_digits.to_i <= part_two || el.range_start_letters < part_one) &&
+                                  (el.range_end_digits.to_i   >= part_two || el.range_end_letters   > part_one) &&
+                                  (!el.range_start_opt.blank? && !el.range_end_opt.blank?) }
+          end
+        end
+    elsif part_two.class == Fixnum
+      # now it's the main library so the folios will be at the start or end of
+      # the normal shelves
       if optional == ' '
         elements.select{ |el| (el.range_start_letters || '') <= part_one &&
                               (el.range_end_letters   || '') >= part_one &&
@@ -109,7 +130,7 @@ class Element < ActiveRecord::Base
       elements.select{ |el| (el.range_start_letters || '') <= part_one.to_s &&
                            (el.range_end_letters   || '') >= part_one.to_s &&
                            (el.range_start_digits.to_s <= part_two || el.range_start_letters < part_one) &&
-                           (el.range_end_digits.to_s   >= part_two || el.range_end_letters   > part_one) }
+                           (el.range_end_digits.to_s   >= part_two || el.range_end_letters   > part_one) }}
     end
   end
 
