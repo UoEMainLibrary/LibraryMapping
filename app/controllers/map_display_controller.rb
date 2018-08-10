@@ -30,7 +30,7 @@ class MapDisplayController < ApplicationController
           @qr = RQRCode::QRCode.new(request.original_url)
         end
         @elements = Element.find_shelf(@library, identifier, @shelfmark)
-        @floor = @elements.try(:first).try(:floor)
+        #@floor = @elements.try(:first).try(:floor)
     end
 
     respond_to do |format|
