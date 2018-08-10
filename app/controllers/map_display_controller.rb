@@ -21,7 +21,7 @@ class MapDisplayController < ApplicationController
       @searching = true
       @elementnames = Element.joins(:element_type).where("elements.library = :library AND elements.floor = :floor AND element_types.name like :name", {library: @library, floor: @floor, name: "%#{params[:element_name]}%"})
     end
-    # If URL is passing parameters
+    # If URL is passing parameters - this is what caused the problem...
     if @shelfmark
         @searching = true
         @original_shelfmark = @shelfmark.dup
