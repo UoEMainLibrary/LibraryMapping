@@ -14,7 +14,7 @@ class Element < ActiveRecord::Base
       return self.classify_in_newcollege(elements, optional, part_one, part_two)
     when 'murray'
       return self.classify_in_murray(elements, optional, part_one, part_two) 
-    else ## add other libraries
+    else
     end
   end
 
@@ -59,13 +59,6 @@ class Element < ActiveRecord::Base
       part_one = shelfmark.split(/\d/).try(:first)
       part_two = shelfmark[part_one.length..-1].to_i unless part_one.blank?
     end
-
-    #Rails.logger.info "---------LOGGING----------"
-    #Rails.logger.info "part_one:#{part_one}"
-    #Rails.logger.info "part_two:#{part_two}"
-    #Rails.logger.info "optional:#{optional}"
-    #Rails.logger.info "shelfmark:#{shelfmark}"
-
     return shelfmark, optional, part_one, part_two
   end
 
