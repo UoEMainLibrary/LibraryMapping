@@ -25,7 +25,6 @@ class MapDisplayController < ApplicationController
     if @shelfmark
         @searching = true
         @original_shelfmark = @shelfmark.dup
-
         unless browser.platform.ios? or browser.platform.android? or browser.platform.windows_phone?
           @qr = RQRCode::QRCode.new(request.original_url)
         end
